@@ -21,3 +21,7 @@ Le projet suit une stratégie de branches simple et professionnelle.
 - Toute fonctionnalité doit être développée dans une branche `feature/*`
 - Les branches `feature/*` sont fusionnées dans `develop`
 - Seule une version stable de `develop` peut être fusionnée dans `main`
+
+(plus tard il faudra mettre "Stratégie de branches" dans : docs/
+ └─ branching.md avec : Documentation
+- [Stratégie de branches](docs/branching.md))
