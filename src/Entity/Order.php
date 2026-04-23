@@ -35,11 +35,14 @@ class Order
     #[ORM\Column(length: 45)]
     private ?string $city = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $deliveryDate = null;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $deliveryDate = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $deliveryTime = null;
+    #[ORM\Column(type: Types::TIME_IMMUTABLE)]
+    private ?\DateTimeImmutable $deliveryTime = null;
+
+    #[ORM\Column]
+    private ?int $peopleCount = null;
 
     #[ORM\Column(length: 30)]
     private ?string $status = null;
@@ -56,7 +59,7 @@ class Order
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $totalPrice = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
@@ -171,24 +174,24 @@ class Order
         return $this;
     }
 
-    public function getDeliveryDate(): ?\DateTime
+    public function getDeliveryDate(): ?\DateTimeImmutable
     {
         return $this->deliveryDate;
     }
 
-    public function setDeliveryDate(\DateTime $deliveryDate): static
+    public function setDeliveryDate(\DateTimeImmutable $deliveryDate): static
     {
         $this->deliveryDate = $deliveryDate;
 
         return $this;
     }
 
-    public function getDeliveryTime(): ?\DateTime
+    public function getDeliveryTime(): ?\DateTimeImmutable
     {
         return $this->deliveryTime;
     }
 
-    public function setDeliveryTime(\DateTime $deliveryTime): static
+    public function setDeliveryTime(\DateTimeImmutable $deliveryTime): static
     {
         $this->deliveryTime = $deliveryTime;
 
@@ -311,6 +314,18 @@ class Order
     public function setMenu(?Menu $menu): static
     {
         $this->menu = $menu;
+
+        return $this;
+    }
+
+    public function getPeopleCount(): ?int
+    {
+        return $this->peopleCount;
+    }
+
+    public function setPeopleCount(int $peopleCount): static
+    {
+        $this->peopleCount = $peopleCount;
 
         return $this;
     }

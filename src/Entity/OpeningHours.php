@@ -18,10 +18,10 @@ class OpeningHours
     private ?string $day = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTime $openingTime = null;
+    private ?\DateTimeImmutable $openingTime = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTime $closingTime = null;
+    private ?\DateTimeImmutable $closingTime = null;
 
     #[ORM\Column]
     private ?bool $isClosed = null;
@@ -43,24 +43,24 @@ class OpeningHours
         return $this;
     }
 
-    public function getOpeningTime(): ?\DateTime
+    public function getOpeningTime(): ?\DateTimeImmutable
     {
         return $this->openingTime;
     }
 
-    public function setOpeningTime(?\DateTime $openingTime): static
+    public function setOpeningTime(?\DateTimeImmutable $openingTime): static
     {
         $this->openingTime = $openingTime;
 
         return $this;
     }
 
-    public function getClosingTime(): ?\DateTime
+    public function getClosingTime(): ?\DateTimeImmutable
     {
         return $this->closingTime;
     }
 
-    public function setClosingTime(?\DateTime $closingTime): static
+    public function setClosingTime(?\DateTimeImmutable $closingTime): static
     {
         $this->closingTime = $closingTime;
 
