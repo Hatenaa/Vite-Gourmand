@@ -28,4 +28,46 @@ class MenuRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findFilteredMenus(array $filters = []): array
+    {
+        $qb = $this->createQueryBuilder('m')
+        ->leftJoin('m.images', 'i')
+        ->addSelect('i')
+        ->leftJoin('m.theme', 't')
+        ->addSelect('t')
+        ->leftJoin('m.regime', 'r')
+        ->addSelect('r')
+        ->andWhere('m.isActive = :isActive')
+        ->setParameter('isActive', true)
+        ->orderBy('m.id', 'DESC')
+        ->addOrderBy('i.position', 'ASC');
+
+        if (isset($filters['minPrice']) && $filters['minPrice'] !== ''){
+            $qb->andWhere('m.basePrice >= :minPrice')
+            ->setParameter('minPrice', $filters['minPrice']);
+        }
+
+        if (isset($filters['maxPrice']) && $filters['maxPrice'] !== ''){
+            $qb->andWhere('m.basePrice <= :maxPrice')
+            ->setParameter('maxPrice', $filters['maxPrice']);
+        }
+
+        if (isset($filters['theme']) && $filters['theme'] !== ''){
+            $qb->andWhere('t.id = :theme')
+            ->setParameter('theme', $filters['theme']);
+        }
+
+        if (isset($filters['regime']) && $filters['regime'] !== ''){
+            $qb->andWhere('r.id = :regime')
+            ->setParameter('regime', $filters['regime']);
+        }
+
+        if (isset($filters['minPeople']) && $filters['minPeople'] !== ''){
+            $qb->andWhere('m.minPeople >= :minPeople')
+            ->setParameter('minPeople', $filters['minPeople']);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

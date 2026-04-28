@@ -6,18 +6,52 @@
 
 
 <main> 
+
+    <form id="menu-filter-form">
+        <div>
+            <label for="minPrice">Prix minimum</label>
+            <input type="number" id="minPrice" name="minPrice" min="0">
+        </div>
+        
+        <div>
+            <label for="maxPrice">Prix maximum</label>
+            <input type="number" id="maxPrice" name="maxPrice" min="0">
+        </div>
+
+        <div>
+            <label for="theme">Thème</label>
+            <select id="theme" name="theme">
+                <option value="">Tous les thèmes</option>
+                {% for theme in themes %}
+                    <option value="{{ theme.id }}">{{ theme.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        </div>
+            <label for="minPeople">Nombre de personnes</label>
+            <input type="number" id="minPeople" name="minPeople" min="1">
+        </div>
+
+        <button type="submit">Filtrer les menus</button>
+    </form>
+
     <h1>Nos menus</h1>
     {% if menus is not empty %}
 
-        {% for menu in menus %}
-            {%  include 'public/menu/_menu_card.html.twig' with {
-                menu: menu
-            }
-            %}
-        {% endfor %}
+        <div id="menus-list">
+            {% for menu in menus %}
+                {%  include 'public/menu/_menu_card.html.twig' with {
+                    menu: menu
+                }
+                %}
+            {% endfor %}
+        </div>
         
     {% else %}
      <p>Aucun menu disponible.</p>
     {% endif %}
 </main>
+
+<script src="{{ asset('assets/js/menu-filters.js') }}"></script>
 {% endblock %}
