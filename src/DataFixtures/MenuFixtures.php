@@ -28,7 +28,7 @@ class MenuFixtures extends Fixture implements DependentFixtureInterface
         $menusData = [
             [
                 'reference' => self::MENU_NOEL_PRESTIGE,
-                'title' => 'Menu de Noël Prestige',
+                'title' => 'Noël Prestige',
                 'description' => 'Un menu festif complet pour les repas de fin d’année.',
                 'minPeople' => 4,
                 'basePrice' => '89.00',
@@ -62,7 +62,7 @@ class MenuFixtures extends Fixture implements DependentFixtureInterface
             ],
             [
                 'reference' => self::MENU_SOUPE,
-                'title' => 'Menu Soupé',
+                'title' => 'Soupé',
                 'description' => 'Un menu réconfortant autour de saveurs chaudes et authentiques.',
                 'minPeople' => 4,
                 'basePrice' => '26.00',
@@ -78,7 +78,7 @@ class MenuFixtures extends Fixture implements DependentFixtureInterface
             ],
             [
                 'reference' => self::MENU_DOLCE_VITA,
-                'title' => 'Menu Dolce Vita',
+                'title' => 'Dolce Vita',
                 'description' => 'Un menu ensoleillé inspiré de l’Italie, entre convivialité et gourmandise.',
                 'minPeople' => 4,
                 'basePrice' => '24.00',
@@ -95,7 +95,7 @@ class MenuFixtures extends Fixture implements DependentFixtureInterface
             ],
             [
                 'reference' => self::MENU_DECOUVERTE,
-                'title' => 'Menu Découverte',
+                'title' => 'Découverte',
                 'description' => 'Une sélection variée de créations fraîches et modernes pour éveiller les papilles.',
                 'minPeople' => 2,
                 'basePrice' => '28.00',

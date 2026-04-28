@@ -4,13 +4,14 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -77,6 +78,16 @@ class User implements PasswordAuthenticatedUserInterface
         $this->orderStatusHistories = new ArrayCollection();
         $this->orderContacts = new ArrayCollection();
         $this->reviews = new ArrayCollection();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials(): void
+    {
+        
     }
 
     public function getId(): ?int

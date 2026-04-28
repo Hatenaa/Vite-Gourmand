@@ -1,22 +1,43 @@
 services:
   nginx:
     image: nginx:1.22-alpine
+    depends_on:
+      - php
     ports:
       - "8080:80"
     volumes:
-      - ./:/app
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./public:/app/public:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
   php:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfiles/php/Dockerfile
     working_dir: /app
+    depends_on:
+      - mysql
     volumes:
-      - ./:/app
+      - ./bin:/app/bin
+      - ./composer.json:/app/composer.json
+      - ./composer.lock:/app/composer.lock
+      - ./symfony.lock:/app/symfony.lock
+      - ./config:/app/config
+      - ./migrations:/app/migrations
+      - ./public:/app/public
+      - ./src:/app/src
+      - ./templates:/app/templates
+      - symfony_vendor:/app/vendor
+      - ./.env:/app/.env:ro
+      - ./.env.dev:/app/.env.dev:ro
+      - ./.env.local:/app/.env.local:ro
+      - symfony_cache:/app/var/cache
+      - symfony_log:/app/var/log
+      - symfony_sessions:/app/var/sessions
 
   mysql:
     build:
-      context: .
-      dockerfile: docker/mysql/Dockerfile
+      context: dockerfiles/mysql
+      dockerfile: Dockerfile
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
       - "3307:3306"
@@ -53,3 +74,7 @@ volumes:
   db:
   configdb:
   mongot:
+  symfony_vendor:
+  symfony_cache:
+  symfony_log:
+  symfony_sessions:

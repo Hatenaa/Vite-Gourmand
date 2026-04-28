@@ -17,10 +17,10 @@ class OpeningHours
     #[ORM\Column(length: 50)]
     private ?string $day = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::TIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $openingTime = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::TIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $closingTime = null;
 
     #[ORM\Column]

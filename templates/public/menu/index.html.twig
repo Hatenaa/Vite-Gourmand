@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos menus{% endblock %}
+
+{% block body %}
+
+
+<main> 
+    <h1>Nos menus</h1>
+    {% if menus is not empty %}
+
+        {% for menu in menus %}
+            {%  include 'public/menu/_menu_card.html.twig' with {
+                menu: menu
+            }
+            %}
+        {% endfor %}
+        
+    {% else %}
+     <p>Aucun menu disponible.</p>
+    {% endif %}
+</main>
+{% endblock %}
