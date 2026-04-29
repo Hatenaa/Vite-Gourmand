@@ -1,0 +1,16 @@
+<div>
+    <h3>{{ dish.title }}</h3>
+
+    {% if dish.description %}
+        <p>{{ dish.description }}</p>
+    {% endif %}
+
+    {% if dish.allergens|length > 0 %}
+        <p>
+            Allergènes:
+            {% for allergen in dish.allergens %}
+                <span>{{ allergen.label }}</span>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    {% endif %}
+</div>

@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function createMenuCard(menu) {
     const imageHtml = menu.image
-    ? `<img src="/${menu.image.path}" alt="${menu.image.alt ?? menu.title}" width="300"`
-    : '';
+        ? `<img src="/${menu.image.path}" alt="${menu.image.alt ?? menu.title}" width="300">`
+        : '';
 
     return `
         <article>

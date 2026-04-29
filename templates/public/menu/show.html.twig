@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ menu.title }}{% endblock %}
+
+{% block body %}
+<main>
+
+    {% if menu.images | length > 0 %}
+        <div>
+            {% for image in menu.images %}
+                <img src="{{ asset(image.path) }}" alt="{{ image.alt ?? menu.title }}" width="300">
+            {% endfor %}
+        </div>
+
+    {% endif %}
+
+    <h1>{{ menu.title }}</h1>
+    <p>{{ menu.theme.label }}</p>
+    <p>{{ menu.regime.label }}</p>
+    </p>{{ menu.description }}<p>
+
+    <p>À partir de {{ menu.minPeople }} personnes</p>
+    <p>{{ menu.basePrice }}</p>
+
+    {% if menu.stock > 0 %}
+        <p>{{ menu.stock }} commande(s) disponible(s)</p>
+    {% else %}
+        <p>Plus de stock disponible</p>
+    {% endif %}
+
+    {% if menu.conditions %}
+        <div>
+            <strong>Conditions importantes</strong>
+            <p>{{ menu.conditions }}</p>
+        </div>
+    {% endif %}
+
+    <!-- Plats par type -->
+
+    {% set entrees = menu.dishes|filter(d => d.type == 'entree') %}
+    {% set plats = menu.dishes|filter(d => d.type == 'plat') %}
+    {% set desserts = menu.dishes|filter(d => d.type == 'dessert') %}
+
+    {% if entrees|length > 0 %}
+        <h2>Entrées</h2>
+        {% for dish in entrees %}
+            {% include 'public/menu/_dish_row.html.twig' with { dish: dish } %}
+        {% endfor %}
+    {% endif %}
+
+    {% if plats|length > 0 %}
+        <h2>Plats</h2>
+        {% for dish in plats %}
+            {% include 'public/menu/_dish_row.html.twig' with { dish: dish } %}
+        {% endfor %}
+    {% endif %}
+
+    {% if desserts|length > 0 %}
+        <h2>Desserts</h2>
+        {% for dish in desserts %}
+            {% include 'public/menu/_dish_row.html.twig' with { dish: dish } %}
+        {% endfor %}
+    {% endif %}
+
+
+    <!-- Bouton de commande -->
+    {% if app.user %}
+        <a href="#">Commander ce menu</a>
+    {% else %}
+        <p>Pour commander, vous devez <a href="#">vous connecter</a> ou <a href="#">créer un compte</a>.</p>
+    {% endif %}
+
+
+</main>
+{% endblock %}

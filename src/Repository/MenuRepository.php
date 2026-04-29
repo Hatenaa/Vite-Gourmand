@@ -21,6 +21,10 @@ class MenuRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->leftJoin('m.images', 'i')
             ->addSelect('i')
+            ->leftJoin('m.theme', 't')
+            ->addSelect('t')
+            ->leftJoin('m.regime', 'r')
+            ->addSelect('r')
             ->andWhere('m.isActive = :isActive')
             ->setParameter('isActive', true)
             ->orderBy('m.id', 'DESC')
@@ -64,10 +68,32 @@ class MenuRepository extends ServiceEntityRepository
         }
 
         if (isset($filters['minPeople']) && $filters['minPeople'] !== ''){
-            $qb->andWhere('m.minPeople >= :minPeople')
+            $qb->andWhere('m.minPeople <= :minPeople')
             ->setParameter('minPeople', $filters['minPeople']);
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findOneForDetail(int $id): ?Menu
+    {
+        return $this->createQueryBuilder('m')
+        ->leftJoin('m.images', 'i')
+        ->addSelect('i')
+        ->leftJoin('m.theme', 't')
+        ->addSelect('t')
+        ->leftJoin('m.regime', 'r')
+        ->addSelect('r')
+        ->leftJoin('m.dishes', 'd')
+        ->addSelect('d')
+        ->leftJoin('d.allergens', 'a')
+        ->addSelect('a')
+        ->andWhere('m.id = :id')
+        ->andWhere('m.isActive = :isActive')
+        ->setParameter('id', $id)
+        ->setParameter('isActive', true)
+        ->orderBy('i.position', 'ASC')
+        ->getQuery()
+        ->getOneOrNullResult();
     }
 }

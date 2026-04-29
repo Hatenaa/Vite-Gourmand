@@ -2,16 +2,17 @@
 
 	{% if menu.images|length > 0 %}
 		{% set mainImage = menu.images|first %}
-
 		<img src="{{ asset(mainImage.path) }}" alt="{{ mainImage.alt ?? menu.title }}" width="300">
 	{% endif %}
-    
+
 	<h3>{{ menu.title }}</h3>
+
+	<p>À partir de {{ menu.minPeople }} personnes</p>
+
+	<p>{{ menu.basePrice }}€</p>
 
 	<p>{{ menu.description }}</p>
 
-	<p>{{ menu.basePrice }}</p>
-
-	<span>{{ menu.minPeople }}</span>
+	<a href="{{ path('menu_show', {id: menu.id}) }}">Voir en détail</a>
 
 </article>

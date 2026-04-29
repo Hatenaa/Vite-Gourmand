@@ -28,7 +28,17 @@
             </select>
         </div>
 
+        <div>
+            <label for="regime">Régime</label>
+            <select id="regime" name="regime">
+                <option value="">Tous les régimes</option>
+                {% for regime in regimes %}
+                    <option value="{{ regime.id }}">{{ regime.label }}</option>
+                {% endfor %}
+            </select>
         </div>
+
+        <div>
             <label for="minPeople">Nombre de personnes</label>
             <input type="number" id="minPeople" name="minPeople" min="1">
         </div>
