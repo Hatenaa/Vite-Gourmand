@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Public;
+namespace App\Controller\Public\Main;
 
 use App\Repository\ReviewRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +18,10 @@ class HomeController extends AbstractController
         #[Route('/', name: 'home')]
         public function index(): Response
         {
+
             $reviews = $this->reviewRepository->findValidateReviews();
 
-            return $this->render('public/home/home.html.twig', [
+            return $this->render('public/main/home.html.twig', [
                 'reviews' => $reviews,
             ]);
     }

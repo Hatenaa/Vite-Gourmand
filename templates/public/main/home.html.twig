@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | Vite & Gourmand
+{% endblock %}
+
+{% block body %}
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success">{{ message }}</div>
+	{% endfor %}
+	<h1>Bienvenue sur Vite & Gourmand</h1>
+	{% for review in reviews %}
+		{{review.note}}
+		{{review.comment}}
+		{{review.user.firstName}},
+		{{ review.user.lastName|slice(0,1)}}.
+	{% endfor %}
+{% endblock %}

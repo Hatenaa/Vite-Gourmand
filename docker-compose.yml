@@ -27,9 +27,9 @@ services:
       - ./src:/app/src
       - ./templates:/app/templates
       - symfony_vendor:/app/vendor
-      - ./.env:/app/.env:ro
-      - ./.env.dev:/app/.env.dev:ro
-      - ./.env.local:/app/.env.local:ro
+      - ./.env:/app/.env
+      - ./.env.dev:/app/.env.dev
+      - ./.env.local:/app/.env.local
       - symfony_cache:/app/var/cache
       - symfony_log:/app/var/log
       - symfony_sessions:/app/var/sessions

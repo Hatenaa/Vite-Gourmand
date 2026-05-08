@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Public;
+namespace App\Controller\Public\Menu;
 
 use App\Repository\MenuRepository;
 use App\Repository\RegimeRepository;
@@ -25,7 +25,7 @@ final class MenuController extends AbstractController
         $themes = $this->themeRepository->findAll();
         $regimes = $this->regimeRepository->findAll();
 
-        return $this->render('public/menu/index.html.twig', [
+        return $this->render('public/menu/menus.html.twig', [
             'menus' => $menus,
             'themes' => $themes,
             'regimes' => $regimes
