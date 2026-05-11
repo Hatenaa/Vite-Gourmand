@@ -65,9 +65,9 @@
 
     <!-- Bouton de commande -->
     {% if app.user %}
-        <a href="#">Commander ce menu</a>
+        <a href="{{ path('order_new', {'id': menu.id}) }}">Commander ce menu</a>
     {% else %}
-        <p>Pour commander, vous devez <a href="#">vous connecter</a> ou <a href="#">créer un compte</a>.</p>
+        <p>Pour commander, vous devez <a href="{{ path('login', {'_target_path': app.request.uri}) }}">vous connecter</a> ou <a href="{{ path('register', {'from_menu': menu.id}) }}">créer un compte</a>.</p>
     {% endif %}
 
 

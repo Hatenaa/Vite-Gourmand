@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmer la commande
+{% endblock %}
+
+{% block body %}
+
+	<h2>Récapitulatif de votre commande</h2>
+	<p>Nous vous prions de bien vérifier les informations communiqués avant de confirmer.</p>
+
+    <h3>Vos informations</h3>
+	<ul>
+		<li>Prénom: {{ orderData.firstName }}</li>
+		<li>Nom: {{ orderData.lastName }}</li>
+		<li>Email: {{ orderData.email }}</li>
+		<li>Téléphone: {{ orderData.phone }}</li>
+	</ul>
+
+	<h3>Détails de la prestation</h3>
+	<ul>
+		<li>Adresse: {{ orderData.address }}</li>
+		<li>Ville: {{ orderData.city }}</li>
+		<li>Date: {{ orderData.deliveryDate }}</li>
+		<li>Heure: {{ orderData.deliveryTime }}</li>
+		<li>Distance: {{ orderData.distanceKm }}km</li>
+	</ul>
+
+    <h3>Prix</h3>
+    <table>
+        <tr>
+            <td>Prix du menu ({{ orderData.peopleCount }} pers.)</td>
+            <td>{{ orderData.menuPrice }}</td>
+        </tr>
+        <tr>
+            <td>Livraison</td>
+            <td>{{ orderData.deliveryPrice }} €</td>
+        </tr>
+
+        {% if orderData.discount > 0 %}
+            <tr>
+                <td>Remise (10%)</td>
+                <td>-{{ orderData.discount }} €</td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <td><strong>Total</strong></td>
+            <td><strong>{{ orderData.totalPrice }} €</strong></td>
+        </tr>
+    </table>
+
+
+	<form method="post" action="{{ path('order_finalize') }}">
+		<button type="submit">Confirmer ma commande</button>
+		<a href="{{ path('order_new') }}">Modifier ma commande</a>
+	</form>
+
+{% endblock %}

@@ -14,5 +14,6 @@
 	<p>{{ menu.description }}</p>
 
 	<a href="{{ path('menu_show', {id: menu.id}) }}">Voir en détail</a>
-
+	<a href="{{ path('order_new', {'menuId': menu.id}) }}">Commander ce menu</a>
+	
 </article>

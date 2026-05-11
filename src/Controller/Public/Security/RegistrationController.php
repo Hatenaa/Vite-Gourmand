@@ -26,6 +26,14 @@ final class RegistrationController extends AbstractController
         
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
+
+        // If user came from menu
+        $fromMenu = $request->query->get('from_menu');
+        
+        if ($fromMenu) {
+            $request->getSession()->set('from_menu', $fromMenu);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,8 +59,21 @@ final class RegistrationController extends AbstractController
 
             $mailer->send($email);
 
-            $this->addFlash('success', 'Votre compte a été créé avec succès. Un email de bienvenue vous a été envoyé.');
-            return $this->redirectToRoute('home');
+            if ($fromMenu) {
+
+                $this->addFlash('success', 'Votre compte a été créé avec succès. Un email de bienvenue vous a été envoyé. Vous pouvez maintenant commander le menu que vous avez sélectionné.');
+                $request->getSession()->remove('from_menu');
+
+                return $this->redirectToRoute('login', [
+                    '_target_path' => $this->generateUrl('menu_show', ['id' => $fromMenu])
+                    // Quand la partie commande sera disponible: '_target_path' => $this->generateUrl('order_menu', ['id' => $fromMenu])
+                ]);
+
+            } else {
+
+                $this->addFlash('success', 'Votre compte a été créé avec succès. Un email de bienvenue vous a été envoyé.');
+                return $this->redirectToRoute('home');
+            }
 
         }
 
