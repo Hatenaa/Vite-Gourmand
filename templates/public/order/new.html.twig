@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commander un menu{% endblock %}
+
+{% block body %}
+    <h2>Vos informations</h2>
+
+    {{ form_errors(form) }}
+
+    <ul>
+        <li>Nom: {{ order.lastName }}</li>
+        <li>Prénom: {{ order.firstName }}</li>
+        <li>Email: {{ order.email }}</li>
+        <li>Téléphone: {{ order.phone}}</li>
+    </ul>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.address) }}
+    {{ form_row(form.city) }}
+    {{ form_row(form.deliveryDate) }}
+    {{ form_row(form.deliveryTime) }}
+    {{ form_row(form.distanceKm) }}
+
+    {% if preSelectedMenu %}
+
+        <div>   
+            <label>Menu choisi</label>
+            <input type="text" value="{{ preSelectedMenu.title }}" disabled>
+            <input type="hidden" name="selected_menu_id" value="{{ preSelectedMenu.id }}">
+            {{ form_widget(form.menu, { 'attr': {'hidden': 'hidden'} }) }}
+        </div>
+
+    {% else %}
+        {{ form_row(form.menu) }}
+    {% endif %}
+
+    {{ form_row(form.peopleCount) }}
+
+    <button type="submit">Valider la commande</button>
+
+    {{ form_end(form) }}
+{% endblock %}
