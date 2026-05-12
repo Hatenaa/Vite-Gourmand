@@ -330,6 +330,18 @@ class Order
         return $this;
     }
 
+    public function getReview(): ?Review
+    {
+        return $this->review;
+    }
+
+    public function setReview(?Review $review): static
+    {
+        $this->review = $review;
+        
+        return $this;
+    }
+
     /**
      * @return Collection<int, OrderStatusHistory>
      */

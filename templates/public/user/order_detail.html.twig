@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de ma commande{% endblock %}
+
+{% block body %}
+    <h1>Commande — {{ order.menu.title}}</h1>
+
+    <h2>Informations</h2>
+    <ul>
+        <li>Date de livraison: {{ order.deliveryDate|date('d/m/Y') }}</li>
+        <li>Heure: {{ order.deliveryTime|date('H:i') }}</li>
+        <li>Adresse: {{ order.address }}, {{ order.city }}</li>
+        <li>Nombre de personnes: {{ order.peopleCount }}</li>
+        <li>Statut: {{ order.status }}</li>
+    </ul>
+
+    <h2>Prix</h2>
+    <ul>
+        <li>Menu: {{ order.menuPrice|number_format(2, '.', ' ') }} €</li>
+        <li>Livraison: {{ order.deliveryPrice|number_format(2, '.', ' ') }} €</li>
+        {% if order.discount > 0 %}
+            <li>Remise: -{{ order.discount|number_format(2, '.', ' ') }} €</li>
+        {% endif %}
+        <li>Total: {{ order.totalPrice|number_format(2, '.', ' ') }} €</li>
+    </ul>
+
+    {% if order.status != 'PENDING' and order.status != 'CANCELLED' %}
+        <h2>Suivi de la commande</h2>
+        <ul>
+            {% for history in order.orderStatusHistories %}
+                <li>
+                    {{ history.status }} — {{ history.changedAt|date('d/m/Y à H:i') }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if order.status == 'COMPLETED' %}
+        {% if order.review is null %}
+            <a href="{{ path('user_submit_review', {id: order.id}) }}">Laisser un avis</a>
+
+        {% else %}
+            <p>Vous avez déjà laissé un avis pour cette commande.</p>
+            <p>Note: {{ order.review.note }}/5</p>
+            <p>{{ order.review.comment }}</p>
+        {% endif %}
+    {% endif %}
+
+    <a href="{{ path('user_dashboard') }}">Retour à mon espace</a>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier ma commande{% endblock %}
+
+{% block body %}
+    <h1>Modifier ma commande</h1>
+    <p>Menu: {{ order.menu.title }}</p>
+
+        {{ form_start(form) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.city) }}
+            {{ form_row(form.deliveryDate) }}
+            {{ form_row(form.deliveryTime) }}
+            {{ form_row(form.peopleCount) }}
+            <button type="submit">Enregistrer les modifications</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('user_order_detail', {id: order.id}) }}">Annuler</a>
+{% endblock %}
