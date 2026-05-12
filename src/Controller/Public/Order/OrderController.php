@@ -132,6 +132,26 @@ class OrderController extends AbstractController
                 ]);
             }
 
+            // Calculons la distance entre Bordeaux et le point de livraison via OpenStreetMap
+            $coords = $this->geocode($order->getAddress(), $order->getCity(), $httpClient);
+            if (!$coords) {
+                $form->addError(new FormError('Adress introuvable. Veuillez vérifier votre adresse et ville.'));
+                return $this->render('public/order/new.html.twig', [
+
+                    'form' => $form->createView(),
+                    'order' => $order,
+                    'preSelectedMenu' => $menu
+                ]);
+            }
+
+            $bordeauxLat = 44.837789;
+            $bordeauxLon = -0.57918;
+            $distance = $this->haversineDistance($coords['lat'], $coords['lon'], $bordeauxLat, $bordeauxLon);
+            $order->setDistanceKm((string) $distance);
+
+            $menuPrice = (float) $menu->getBasePrice() * $order->getPeopleCount();
+
+
             // Maintenant, calculons les prix...
             $menuPrice = (float) $menu->getBasePrice() * $order->getPeopleCount();
             $cityNormalized = mb_strtolower(trim($order->getCity()));
@@ -270,5 +290,45 @@ class OrderController extends AbstractController
         $this->addFlash('success', 'Commande confirmée avec succès ! Vous recevrez un email de confirmation.');
 
         return $this->redirectToRoute('home');
+    }
+
+    private function geocode(string $address, string $city, HttpClientInterface $httpClient): ?array
+    {
+        $query = urlencode($address . ', ' . $city . ', France');
+        $url = "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1";
+
+        try {
+            $response = $httpClient->request('GET', $url, [
+                'headers' => [
+                    'User-Agent' => 'Vite-et-Gourmand/1.0 (contact@vite-et-gourmand.fr)'
+                ]
+            ]);
+
+            $data = $response->toArray();
+            if (empty($data)) {
+                return null;
+            }
+            return [
+                'lat' => (float) $data[0]['lat'],
+                'lon' => (float) $data[0]['lon']
+            ];
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    private function haversineDistance(float $lat1, float $lon1, float $lat2, float $lon2): float
+    {
+        $earthRadius = 6371; // (km)
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+        cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+        sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
+
     }
 }

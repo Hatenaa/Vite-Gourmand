@@ -52,8 +52,7 @@ function createMenuCard(menu) {
             <a href="/menus/${menu.id}">
                 Voir en détail
             </a>
-
-            <a href="#">Commande ce menu</a>
+            <a href="/commande/nouvelle/${menu.id}">Commander ce menu</a>
 
         </article>
     `;

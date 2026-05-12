@@ -3,5 +3,5 @@
 <p>Bonjour {{ order.firstName }} {{ order.lastName }},</p>
 <p>Votre commande pour le menu <strong>{{ menu.title }}</strong> a bien été enregistrée.</p>
 <p>Nombre de personnes : {{ order.peopleCount }} </p>
-<p>Prix total : {{ order.totalPrice }} €</p>
+<p>Prix total : {{ order.totalPrice|number_format(2, '.', ' ') }} €</p>
 <p>Nous vous remercions de votre confiance.</p>

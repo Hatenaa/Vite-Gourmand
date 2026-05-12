@@ -32,10 +32,6 @@ class OrderType extends AbstractType
             ->add('peopleCount', IntegerType::class, [
                 'label' => 'Nombre de personnes',
             ])
-            ->add('distanceKm', NumberType::class, [
-                'label' => 'Distance (km)',
-                'input' => 'string',
-            ])
             ->add('menu', EntityType::class, [
                 'class' => Menu::class,
                 'choice_label' => 'title',

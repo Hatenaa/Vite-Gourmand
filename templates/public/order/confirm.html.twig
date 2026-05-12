@@ -22,30 +22,37 @@
 		<li>Ville: {{ orderData.city }}</li>
 		<li>Date: {{ orderData.deliveryDate }}</li>
 		<li>Heure: {{ orderData.deliveryTime }}</li>
-		<li>Distance: {{ orderData.distanceKm }}km</li>
+		<li>
+            Distance:
+            {% if orderData.distanceKm < 1 %}
+                {{ (orderData.distanceKm * 1000)|round }} m
+            {% else %}
+                {{ orderData.distanceKm|number_format(2, '.', ' ') }} km
+            {% endif %}
+        </li>
 	</ul>
 
     <h3>Prix</h3>
     <table>
         <tr>
             <td>Prix du menu ({{ orderData.peopleCount }} pers.)</td>
-            <td>{{ orderData.menuPrice }}</td>
+            <td>{{ orderData.menuPrice|number_format(2, '.',' ') }} €</td>
         </tr>
         <tr>
             <td>Livraison</td>
-            <td>{{ orderData.deliveryPrice }} €</td>
+            <td>{{ orderData.deliveryPrice|number_format(2, '.', ' ') }} €</td>
         </tr>
 
         {% if orderData.discount > 0 %}
             <tr>
                 <td>Remise (10%)</td>
-                <td>-{{ orderData.discount }} €</td>
+                <td>-{{ orderData.discount|number_format(2, '.', ' ')}} €</td>
             </tr>
         {% endif %}
 
         <tr>
             <td><strong>Total</strong></td>
-            <td><strong>{{ orderData.totalPrice }} €</strong></td>
+            <td><strong>{{ orderData.totalPrice|number_format(2, '.', ' ') }} €</strong></td>
         </tr>
     </table>
 
