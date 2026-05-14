@@ -10,6 +10,11 @@ security:
                 class: App\Entity\User
                 property: email
 
+    role_hierarchy:
+        ROLE_EMPLOYEE: [ROLE_USER]
+        ROLE_ADMIN: [ROLE_EMPLOYEE, ROLE_USER]
+
+
     firewalls:
         dev:
             # Ensure dev tools and static assets are always allowed
@@ -40,6 +45,7 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
         - { path: ^/mon-espace, roles: ROLE_USER }
+        - { path: ^/espace-employe, roles: ROLE_EMPLOYEE }
         - { path: ^/connexion$, roles: PUBLIC_ACCESS }
         - { path: ^/inscription, roles: PUBLIC_ACCESS }
         - { path: ^/mot-de-passe-oublie, roles: PUBLIC_ACCESS }

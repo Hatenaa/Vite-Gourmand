@@ -85,7 +85,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 'deliveryPrice' => 6.77,
                 'discount' => 0.00,
                 'totalPrice' => 119.17,
-                'status' => 'VALIDATED',
+                'status' => 'COMPLETED',
                 'createdAt' => '2026-05-03 09:10:00',
                 'hasBorrowedMaterial' => false,
                 'distanceKm' => 3.00,

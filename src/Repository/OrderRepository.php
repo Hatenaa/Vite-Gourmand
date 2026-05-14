@@ -16,6 +16,27 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function findByFilters(?string $status, ?string $email): array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->leftJoin('o.user', 'u')
+            ->addSelect('u')
+            ->orderBy('o.createdAt', 'DESC');
+
+        if($status){
+            $qb->andWhere('o.status = :status')
+            ->setParameter('status', $status);
+        }
+
+        if($email){
+            $qb->andWhere('u.email = :email')
+            ->setParameter('email', $email);
+        }
+
+        return $qb->getQuery()->getResult();
+        
+    }
+
     //    /**
     //     * @return Order[] Returns an array of Order objects
     //     */

@@ -18,7 +18,7 @@ class OrderStatusHistoryFixtures extends Fixture implements DependentFixtureInte
             [
                 'employeeReference' => UserFixtures::REF_JOSE_MARTINEZ,
                 'orderReference' => OrderFixtures::ORDER_EMMA_DURAND_00001,
-                'status' => 'VALIDATED',
+                'status' => 'COMPLETED',
                 'changedAt' => '2026-05-01 10:52:00',
             ],
             [

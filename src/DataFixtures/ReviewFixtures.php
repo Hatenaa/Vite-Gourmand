@@ -63,7 +63,7 @@ class ReviewFixtures extends Fixture implements DependentFixtureInterface
                 'author' => UserFixtures::REF_SARAH_PETIT,
                 'note' => 4,
                 'comment' => 'Après plusieurs jours d’utilisation, je confirme que le produit est fiable et correspond à mes attentes.',
-                'status' => 'VALIDATED',
+                'status' => 'COMPLETED',
                 'createdAt' => '2026-04-09 10:00:00',
                 'reviewAt' => '2026-04-15 13:45:00'
             ],
