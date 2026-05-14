@@ -18,21 +18,21 @@ use Symfony\Component\Uid\Uuid;
 class ResetPasswordController extends AbstractController
 {
     #[Route('/mot-de-passe-oublie', name: 'forgot_password_request')]
-    public function request(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
+    public function request(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $form = $this->createForm(ResetPasswordRequestType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
-            $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
             if ($user) {
 
                 $token = Uuid::v4()->toRfc4122();
                 $user->setResetToken($token);
                 $user->setResetTokenExpiresAt(new \DateTimeImmutable('+1 hour'));
-                $em->flush();
+                $entityManager->flush();
 
                 $emailMessage = (new TemplatedEmail())
                     ->form('noreply@vite-et-gourmand.fr')
@@ -57,9 +57,9 @@ class ResetPasswordController extends AbstractController
     }
 
     #[Route('/reintiliasier-mot-de-passe/{token}', name: 'reset_password')]
-    public function reset(string $token, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function reset(string $token, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-            $user = $em->getRepository(User::class)->findOneBy(['resetToken' => $token]);
+            $user = $entityManager->getRepository(User::class)->findOneBy(['resetToken' => $token]);
 
             if (!$user || $user->getResetTokenExpiresAt() < new \DateTimeImmutable()) {
                 $this->addFlash('error', 'Le lien de réinitialisation est invalide ou a expiré.');
@@ -75,7 +75,7 @@ class ResetPasswordController extends AbstractController
                 $user->setPassword($hashedPassword);
                 $user->setResetToken(null);
                 $user->setResetTokenExpiresAt(null);
-                $em->flush();
+                $entityManager->flush();
 
                 $this->addFlash('success', 'Votre mot de passe a été réinitialisé avec succès.');
                 return $this->redirectToRoute('login');

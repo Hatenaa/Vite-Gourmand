@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte employé{% endblock %}
+
+{% block body %}
+    <h1>Créer un compte employé</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Créer le compte</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin_account_list') }}">Retour à la liste</a>
+{% endblock %}    

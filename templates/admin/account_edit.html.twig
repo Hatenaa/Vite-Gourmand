@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le compte de {{ employee.firstName }} {{ employee.lastName }}{% endblock %}
+
+{% block body %}
+    <h1>Modifier le compte de {{ employee.firstName }} {{ employee.lastName }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Enregistrer les modifications</button>
+    {{ form_end(form)}}
+
+    <a href="{{ path('admin_account_list') }}">Retour à la liste</a>
+{% endblock %}

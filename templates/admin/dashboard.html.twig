@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace administrateur{% endblock %}
+
+{% block body %}
+
+    <h1>Espace administrateur</h1>
+
+    <nav>
+        <a href="{{ path('admin_account_list') }}">Gérer les comptes employés</a>
+        <a href="{{ path('employee_dashboard') }}">Espace employé</a>
+    </nav>
+
+{% endblock %}

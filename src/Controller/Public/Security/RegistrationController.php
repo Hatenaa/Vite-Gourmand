@@ -19,7 +19,7 @@ final class RegistrationController extends AbstractController
     public function register(
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $em,
+        EntityManagerInterface $entityManager,
         MailerInterface $mailer
     ): Response
     {
@@ -27,7 +27,7 @@ final class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
 
-        // If user came from menu
+        // Si l'utilisateur viens d'un menu...
         $fromMenu = $request->query->get('from_menu');
         
         if ($fromMenu) {
@@ -48,8 +48,8 @@ final class RegistrationController extends AbstractController
             $user->setIsActive(true);
             $user->setCreatedAt(new \DateTimeImmutable());
 
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $email = (new Email())
             ->from('noreply@vite-et-gourmand.fr')
