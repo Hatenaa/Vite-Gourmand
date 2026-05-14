@@ -21,7 +21,7 @@ class MenuImageType extends AbstractType
                 'mapped' => false
             ])
             ->add('alt', TextType::class, [
-                'label' => 'Description du contenu (ex: présentation du Menu de Noël',
+                'label' => 'Description du contenu (ex: présentation du Menu de Noël) ',
                 'required' => false
             ])
             ->add('position', IntegerType::class, [

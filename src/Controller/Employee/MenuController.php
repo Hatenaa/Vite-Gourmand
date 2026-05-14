@@ -175,13 +175,13 @@ class MenuController extends AbstractController
 
         if(!$this->isCsrfTokenValid('delete_menu_image' . $imageId, $request->request->get('_token'))){
             $this->addFlash('error', 'Action non autorisée');
-            return $this->redirectToRoute('employee_menu_images_', ['id' => $id]);
+            return $this->redirectToRoute('employee_menu_images', ['id' => $id]);
         }
 
         $entityManager->remove($menuImage);
         $entityManager->flush();
 
         $this->addFlash('success', 'Image du menu supprimée avec succès.');
-        return $this->redirectToRoute('employee_menu_images_', ['id' => $id]);
+        return $this->redirectToRoute('employee_menu_images', ['id' => $id]);
     }
 }
