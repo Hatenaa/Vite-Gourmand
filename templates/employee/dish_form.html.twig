@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    {% if dish is defined and dish.image %}
+        <div>
+            <p>Image actuelle: </p>
+            <img src="{{ asset('uploads/dishes/' ~ dish.image) }}" alt={{ dish.title }} width="200">
+        </div>
+    {% endif %}
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_widget(form) }}
+        <button type="submit">Enregistrer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('employee_dish_list') }}">Retour à la liste</a>
+{% endblock %}

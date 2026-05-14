@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% set typeLabels = {
+    'STARTER': 'Entrée',
+    'MAIN': 'Plat',
+    'DESSERT': 'Dessert',
+    'SIDE': 'Accompagnement'
+} %}
+
+{% block title %}Liste des plats{% endblock %}
+
+{% block body %}
+    <h1>Liste des plats</h1>
+    <a href="{{ path('employee_dish_create') }}">Ajouter un plat</a>
+
+    {% if dishes is empty %}
+        <p>Aucun plat enregistré.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dish in dishes %}
+                <tr>
+                    <td>{{ dish.title }}</td>
+                    <td>{{ typeLabels[dish.type] ?? dish.type }}</td>
+                    <td>
+                        <a href="{{ path('employee_dish_edit', {id: dish.id}) }}">Modifier</a>
+
+                        <form method="post" action="{{ path('employee_dish_delete', {id: dish.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_dish_' ~ dish.id) }}">
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
