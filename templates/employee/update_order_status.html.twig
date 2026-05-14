@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% set statusLabels = {
+    'PENDING': 'En attente',
+    'ACCEPTED': 'Acceptée',
+    'IN_PREPARATION': 'En préparation',
+    'IN_DELIVERY': 'En cours de livraison',
+    'DELIVERED': 'Livrée',
+    'WAITING_MATERIAL': 'En attente retour matériel',
+    'COMPLETED': 'Terminée',
+    'CANCELLED': 'Annulée'
+} %}
+
+{% block title %}Mettre à jour la commande{% endblock %}
+
+{% block body %}
+
+    <h1>Mettre à jour la commande #{{ order.id }}</h1>
+
+    <p>Client: {{ order.firstName }} {{ order.lastName }}</p>
+    <p>Menu: {{ order.menu.title }}</p>
+    <p>Statut actuel: {{ statusLabels[order.status] ?? order.status }}</p>
+
+    {{ form_start(form) }}
+        {{ form_row(form.status) }}
+        {{ form_row(form.contactMode) }}
+        {{ form_row(form.reason) }}
+        <button type="submit">Mettre à jour</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('employee_dashboard') }}">Annuler</a>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des images {{ menu.title }}{% endblock %}
+
+{% block body %}
+
+    <h1>Images du menu: {{ menu.title }}</h1>
+
+    <h2>Ajouter une image</h2>
+    {{ form_start(form,{'action': path('employee_menu_image_add', {'id': menu.id}) }) }}
+        {{ form_widget(form) }}
+        <button type="submit">Ajouter l'image</button>
+    {{ form_end(form) }}
+
+    <h2>Images existantes</h2>
+    {% if menu.images|length > 0 %}
+        <div>
+            {% for image in menu.images %}
+                <div>
+                    <img src="{{ asset(image.path) }}" alt="{{ image.alt }}" width="300">
+                    <p>Position: {{ image.position }}</p>
+                    <form method="post" action="{{ path('employee_menu_image_delete', {'id': menu.id, 'imageId': image.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_menu_image' ~ image.id) }}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune image pour ce menu.</p>
+    {% endif %}
+
+    <a href="{{ path('employee_menu_list') }}">Retour à la liste des menus</a>
+{% endblock %}

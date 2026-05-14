@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% set statusLabels = {
+    'PENDING': 'En attente',
+    'ACCEPTED': 'Acceptée',
+    'IN_PREPARATION': 'En préparation',
+    'IN_DELIVERY': 'En cours de livraison',
+    'DELIVERED': 'Livrée',
+    'WAITING_MATERIAL': 'En attente retour matériel',
+    'COMPLETED': 'Terminée',
+    'CANCELLED': 'Annulée'
+} %}
+
+
+{% block title %}Espace employé{% endblock %}
+
+{% block body %}
+
+    <h1>Espace employé</h1>
+    <a href="{{ path('employee_review_list') }}">Avis à valider</a>
+    <a href="{{ path('employee_menu_list') }}">Gérer les menus</a>
+    <a href="{{ path('employee_dish_list') }}">Gérer les plats</a>
+    <a href="{{ path('employee_opening_hours_list') }}">Gérer les horaires</a>
+
+    <h2>Filter les commandes</h2>
+    <form method="get">
+        <select name="status">
+            <option value="">Tous les status</option>
+            <option value="PENDING" {% if currentStatus == 'PENDING' %}selected{% endif %}>En attente</option>
+            <option value="ACCEPTED" {% if currentStatus == 'ACCEPTED' %}selected{% endif %}>Acceptée</option>
+            <option value="IN_PREPARATION" {% if currentStatus == 'IN_PREPARATION' %}selected{% endif %}>En préparation</option>
+            <option value="IN_DELIVERY" {% if currentStatus == 'IN_DELIVERY' %}selected{% endif %}>En livraison</option>
+            <option value="COMPLETED" {% if currentStatus == 'COMPLETED' %}selected{% endif %}>Terminée</option>
+            <option value="CANCELLED" {% if currentStatus == 'CANCELLED' %}selected{% endif %}>Annulée</option>
+        </select>
+        <input type="text" name="email" value="{{ currentEmail }}" placeholder="Email client">
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <h2>Commandes</h2>
+    {% if orders is empty %}
+        <p>Aucune commande trouvée.</p>
+    {% else %}
+        {% for order in orders %}
+            <div>
+                <p>{{ order.firstName }} {{ order.lastName }} — {{ order.menu.title }}</p>
+                <p>Livraison: {{ order.deliveryDate|date('d/m/Y') }}</p>
+                <p>Statut: {{ statusLabels[order.status] ?? order.status }}</p>
+                <a href="{{ path('employee_update_order_status', {id: order.id}) }}">Gérer</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

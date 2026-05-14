@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des menus{% endblock %}
+
+{% block body %}
+    <h1>Liste des menus</h1>
+    <a href="{{ path('employee_menu_create') }}">Ajouter un menu</a>
+
+    {% if menus is empty %}
+        <p>Aucun menu enregistré.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Prix</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for menu in menus %}
+                <tr>
+                    <td>{{ menu.title }}</td>
+                    <td>{{ menu.basePrice }}</td>
+                    <td>{{ menu.stock }}</td>
+                    <td>
+                        <a href="{{ path('employee_menu_edit', {id: menu.id}) }}">Modifier</a>
+
+                        <form method="post" action="{{ path('employee_menu_delete', {id: menu.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_menu_' ~ menu.id) }}">
+                            <button type="submit">Supprimer</button>
+                        </form>
+
+                        <a href="{{ path('employee_menu_images', {id: menu.id}) }}">Images</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

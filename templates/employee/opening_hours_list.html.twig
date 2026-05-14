@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des horaires{% endblock %}
+
+{% block body %}
+	<h1>Liste des horaires</h1>
+
+	{% if opening_hours is empty %}
+		<p>Aucun horaire enregistré.</p>
+	{% else %}
+		<table>
+			<thead>
+				<tr>
+					<th>Jour</th>
+					<th>Ouverture</th>
+					<th>Fermeture</th>
+					<th>Statut</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for opening_hour in opening_hours %}
+					<tr>
+						<td>{{ opening_hour.day }}</td>
+						<td>{{ opening_hour.openingTime ? opening_hour.openingTime|date('H:i') : '-' }}</td>
+						<td>{{ opening_hour.closingTime ? opening_hour.closingTime|date('H:i') : '-' }}</td>
+						<td>{{ opening_hour.isClosed ? 'Fermé' : 'Ouvert' }}</td>
+						<td>
+							<a href="{{ path('employee_opening_hours_edit', {id: opening_hour.id}) }}">Modifier</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}
