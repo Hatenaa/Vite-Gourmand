@@ -28,6 +28,8 @@
         <button type="submit">Mettre à jour</button>
     {{ form_end(form) }}
 
-    <a href="{{ path('employee_dashboard') }}">Annuler</a>
+    <a href="{{ path('employee_cancel_order', { id: order.id }) }}">Annuler la commande</a>
+
+    <a href="{{ path('employee_dashboard') }}">Retour</a>
 
 {% endblock %}

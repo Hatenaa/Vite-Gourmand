@@ -22,7 +22,6 @@ class UpdateOrderStatusType extends AbstractType
                     'Livrée' => 'DELIVERED',
                     'En attente retour matériel' => 'WAITING_MATERIAL',
                     'Terminée' => 'COMPLETED',
-                    'Annulée' => 'CANCELLED',
                 ],
             ])
             ->add('contactMode', ChoiceType::class, [

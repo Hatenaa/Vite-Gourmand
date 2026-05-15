@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annuler la commande #{{ order.id }}{% endblock %}
+
+{% block body %}
+
+    <h1>Annuler la commande #{{ order.id }}</h1>
+
+    <p>Client: {{ order.firstName }} {{ order.lastName }}</p>
+    <p>Menu: {{ order.menu.title }}</p>
+
+    <p>Vous devez avoir contacté le client avant de procéder à l'annulation</p>
+
+    {{ form_start(form) }}
+        {{ form_row(form.contactMode) }}
+        {{ form_row(form.reason) }}
+        <button type="submit">Confirmer l'annulation</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('employee_dashboard') }}">Retour</a>
+
+{% endblock %}
