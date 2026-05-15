@@ -52,6 +52,8 @@ class OrderController extends AbstractController
             $entityManager->flush();
 
             if ($newStatus === 'WAITING_MATERIAL') {
+                $order->setHasBorrowedMaterial(true);
+                
                 $email = (new TemplatedEmail())
                     ->from('noreply@vite-et-gourmand.fr')
                     ->to($order->getEmail())
