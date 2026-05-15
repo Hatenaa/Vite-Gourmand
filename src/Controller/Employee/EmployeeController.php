@@ -2,7 +2,6 @@
 
 namespace App\Controller\Employee;
 
-use App\DataFixtures\OrderStatusHistoryFixtures;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +35,12 @@ class EmployeeController extends AbstractController
     }
 
     #[Route('/commande/{id}/statut', name: 'update_order_status', methods: ['GET', 'POST'])]
-    public function updateOrderStatus(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    public function updateOrderStatus(
+        int $id,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
+    ): Response
     {
         $order = $entityManager->getRepository(Order::class)->find($id);
 
@@ -63,6 +67,17 @@ class EmployeeController extends AbstractController
 
             $entityManager->persist($history);
             $entityManager->flush();
+
+            if ($newStatus === 'WAITING_MATERIAL') {
+                $email = (new TemplatedEmail())
+                    ->from('noreply@vite-et-gourmand.fr')
+                    ->to($order->getEmail())
+                    ->subject('Retour de matériel | Vite & Gourmand')
+                    ->htmlTemplate('emails/waiting_material.html.twig')
+                    ->context(['order' => $order]);
+
+                $mailer->send($email);
+            }
 
             $this->addFlash('success', 'Statut mis à jour avec succès.');
             return $this->redirectToRoute('employee_dashboard');
