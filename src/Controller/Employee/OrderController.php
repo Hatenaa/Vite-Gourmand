@@ -62,6 +62,17 @@ class OrderController extends AbstractController
                 $mailer->send($email);
             }
 
+            if ($newStatus === 'COMPLETED') {
+                $email = (new TemplatedEmail())
+                    ->from('noreply@vite-et-gourmand.fr')
+                    ->to($order->getEmail())
+                    ->subject('Votre commande est terminée — Donnez votre avis !')
+                    ->htmlTemplate('emails/order_completed.html.twig')
+                    ->context([ 'order' => $order ]);
+
+                $mailer->send($email);
+            }
+
             $this->addFlash('success', 'Statut mis à jour avec succès.');
             return $this->redirectToRoute('employee_dashboard');
 
