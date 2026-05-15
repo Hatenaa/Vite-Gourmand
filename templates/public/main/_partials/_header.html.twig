@@ -7,8 +7,14 @@
 			<li>
 				<a href="{{ path('menu_index') }}">Tous les menus</a>
 			</li>
+			<li>
+				<a href="{{ path('contact') }}">Nous contacter</a>
+			</li>
 
 			{% if app.user %}
+				<li>
+					<a href="{{ path('user_dashboard') }}">Mon espace</a>
+				</li>
 				<li>
 					<a href="{{ path('logout') }}">Déconnexion</a>
 				</li>
