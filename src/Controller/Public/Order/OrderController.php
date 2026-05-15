@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Entity\Order;
 use App\Entity\Menu;
 use App\Form\OrderType;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -287,7 +287,7 @@ class OrderController extends AbstractController
         $mailer->send($email);
 
         $session->remove('order_data'); // Vu que le tableau ne sert plus à rien après traitement, on le supprime.
-        $this->addFlash('success', 'Commande confirmée avec succès ! Vous recevrez un email de confirmation.');
+        $this->addFlash('success', 'Commande confirmée avec succès ! Vous recevrez un email de récapitulatif de votre achat.');
 
         return $this->redirectToRoute('home');
     }
