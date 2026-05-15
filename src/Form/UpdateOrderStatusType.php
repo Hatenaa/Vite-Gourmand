@@ -30,9 +30,11 @@ class UpdateOrderStatusType extends AbstractType
                     'Appel GSM' => 'GSM',
                     'Email' => 'EMAIL'
                 ],
+                'required' => false
             ])
             ->add('reason', TextareaType::class, [
                 'label' => 'Motif',
+                'required' => false
             ])
         ;
     }
