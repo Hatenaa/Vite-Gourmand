@@ -4,7 +4,7 @@ namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
-#[ODM\Document(collection: 'order_stats')]
+#[ODM\Document(collection: 'order_stats', repositoryClass: \App\Repository\OrderStatRepository::class)]
 class OrderStat
 {
     #[ODM\Id]
