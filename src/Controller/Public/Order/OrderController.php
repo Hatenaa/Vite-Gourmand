@@ -149,9 +149,6 @@ class OrderController extends AbstractController
             $distance = $this->haversineDistance($coords['lat'], $coords['lon'], $bordeauxLat, $bordeauxLon);
             $order->setDistanceKm((string) $distance);
 
-            $menuPrice = (float) $menu->getBasePrice() * $order->getPeopleCount();
-
-
             // Maintenant, calculons les prix...
             $menuPrice = (float) $menu->getBasePrice() * $order->getPeopleCount();
             $cityNormalized = mb_strtolower(trim($order->getCity()));
@@ -257,6 +254,14 @@ class OrderController extends AbstractController
             $this->addFlash('error', 'Le menu est introuvable.');
             return $this->redirectToRoute('order_new');
         }
+
+        if ($menu->getStock() <= 0) {
+            $this->addFlash('error', 'Ce menu n\'est plus disponible, le stock est épuisé.');
+            return $this->redirectToRoute('menus');
+        }
+
+        $menu->setStock($menu->getStock() - 1);
+
         $order->setMenu($menu);
 
         $user = $this->getUser();
