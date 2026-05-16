@@ -3,6 +3,17 @@
 {% block title %}Détail de ma commande{% endblock %}
 
 {% block body %}
+{% set statusLabels = {
+    'PENDING': 'En attente',
+    'ACCEPTED': 'Acceptée',
+    'IN_PREPARATION': 'En préparation',
+    'IN_DELIVERY': 'En cours de livraison',
+    'DELIVERED': 'Livrée',
+    'WAITING_MATERIAL': 'En attente retour matériel',
+    'COMPLETED': 'Terminée',
+    'CANCELLED': 'Annulée'
+} %}
+
     <h1>Commande — {{ order.menu.title}}</h1>
 
     <h2>Informations</h2>
@@ -11,7 +22,7 @@
         <li>Heure: {{ order.deliveryTime|date('H:i') }}</li>
         <li>Adresse: {{ order.address }}, {{ order.city }}</li>
         <li>Nombre de personnes: {{ order.peopleCount }}</li>
-        <li>Statut: {{ order.status }}</li>
+        <li>Statut: {{ statusLabels[order.status] ?? order.status }}</li>
     </ul>
 
     <h2>Prix</h2>
@@ -28,9 +39,7 @@
         <h2>Suivi de la commande</h2>
         <ul>
             {% for history in order.orderStatusHistories %}
-                <li>
-                    {{ history.status }} — {{ history.changedAt|date('d/m/Y à H:i') }}
-                </li>
+               <li>{{ statusLabels[history.status] ?? history.status }} — {{ history.changedAt|date('d/m/Y à H:i') }}</li>
             {% endfor %}
         </ul>
     {% endif %}
