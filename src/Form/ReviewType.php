@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ReviewType extends AbstractType
 {
@@ -20,6 +21,10 @@ class ReviewType extends AbstractType
                     'min' => 1,
                     'max' => 5,
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Range(min: 1, max: 5, notInRangeMessage: 'La note doit être entre 1 et 5.'),
+                ]
             ])
             ->add('comment', TextareaType::class, [
                 'label' => 'Commentaire',
