@@ -15,9 +15,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class OrderController extends AbstractController
 {
+    use TargetPathTrait;
     
     public function __construct(private OrderPricingService $pricingService) {}
 
@@ -33,6 +35,8 @@ class OrderController extends AbstractController
 
         $user = $this->getUser();
         if (!$user) {
+            
+            $this->saveTargetPath($request->getSession(), 'main', $request->getUri());
             $this->addFlash('error', 'Vous devez vous connecter pour commander un menu.');
             return $this->redirectToRoute('login');
         }

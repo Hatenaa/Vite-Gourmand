@@ -31,6 +31,7 @@ security:
                 username_parameter: 'login[email]'
                 password_parameter: 'login[password]'
                 default_target_path: login_success
+                use_referer: true
                 failure_path: login_error
             
             logout:
