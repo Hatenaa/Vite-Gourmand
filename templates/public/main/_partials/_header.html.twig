@@ -20,6 +20,11 @@
 					<li>
 						<a href="{{ path('admin_dashboard') }}">Espace Administrateur</a>
 					</li>
+
+				{#
+				elseif et non deux if séparés : un ROLE_ADMIN hérite de ROLE_EMPLOYEE
+				dans la hiérarchie Symfony, deux if afficheraient les deux liens		
+				#}
 				{% elseif is_granted('ROLE_EMPLOYEE') %}
 					<li>
 						<a href="{{ path('employee_dashboard') }}">Espace Employé</a>

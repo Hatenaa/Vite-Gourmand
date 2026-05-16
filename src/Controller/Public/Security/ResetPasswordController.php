@@ -35,7 +35,7 @@ class ResetPasswordController extends AbstractController
                 $entityManager->flush();
 
                 $emailMessage = (new TemplatedEmail())
-                    ->form('noreply@vite-et-gourmand.fr')
+                    ->from('noreply@vite-et-gourmand.fr')
                     ->to($user->getEmail())
                     ->subject('Réinitialisation de votre mot de passe')
                     ->htmlTemplate('emails/reset_password.html.twig')
@@ -56,7 +56,7 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
-    #[Route('/reintiliasier-mot-de-passe/{token}', name: 'reset_password')]
+    #[Route('/reinitialiser-mot-de-passe/{token}', name: 'reset_password')]
     public function reset(string $token, Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
             $user = $entityManager->getRepository(User::class)->findOneBy(['resetToken' => $token]);

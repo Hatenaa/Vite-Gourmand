@@ -28,6 +28,10 @@
 		    {% block body %}{% endblock %}
         </main>
         
+		{# 
+		render(controller()) : le footer nécessite ses propres données BDD sur chaque page,
+		injecter OpeningHoursRepository dans chaque controller violerait le principe DRY 
+		#}
 		{{ render(controller('App\\Controller\\Public\\Main\\FooterController::index')) }}
 	</body>
 </html>
