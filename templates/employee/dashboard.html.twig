@@ -23,8 +23,8 @@
     <a href="{{ path('employee_opening_hours_list') }}">Gérer les horaires</a>
 
     <h2>Filter les commandes</h2>
-    <form method="get">
-        <select name="status">
+    <form id="filter-form" method="get">
+        <select id="filter-status" name="status">
             <option value="">Tous les status</option>
             <option value="PENDING" {% if currentStatus == 'PENDING' %}selected{% endif %}>En attente</option>
             <option value="ACCEPTED" {% if currentStatus == 'ACCEPTED' %}selected{% endif %}>Acceptée</option>
@@ -33,21 +33,29 @@
             <option value="COMPLETED" {% if currentStatus == 'COMPLETED' %}selected{% endif %}>Terminée</option>
             <option value="CANCELLED" {% if currentStatus == 'CANCELLED' %}selected{% endif %}>Annulée</option>
         </select>
-        <input type="text" name="email" value="{{ currentEmail }}" placeholder="Email client">
+        <input type="text" id="filter-email" name="email" value="{{ currentEmail }}" placeholder="Email client">
         <button type="submit">Filtrer</button>
     </form>
 
     <h2>Commandes</h2>
-    {% if orders is empty %}
-        <p>Aucune commande trouvée.</p>
-    {% else %}
-        {% for order in orders %}
-            <div>
-                <p>{{ order.firstName }} {{ order.lastName }} — {{ order.menu.title }}</p>
-                <p>Livraison: {{ order.deliveryDate|date('d/m/Y') }}</p>
-                <p>Statut: {{ statusLabels[order.status] ?? order.status }}</p>
-                <a href="{{ path('employee_update_order_status', {id: order.id}) }}">Gérer</a>
-            </div>
-        {% endfor %}
-    {% endif %}
+
+    <div id="orders-list">
+        {% if orders is empty %}
+            <p>Aucune commande trouvée.</p>
+        {% else %}
+            {% for order in orders %}
+                <div>
+                    <p>{{ order.firstName }} {{ order.lastName }} — {{ order.menu.title }}</p>
+                    <p>Livraison: {{ order.deliveryDate|date('d/m/Y') }}</p>
+                    <p>Statut: {{ statusLabels[order.status] ?? order.status }}</p>
+                    <a href="{{ path('employee_update_order_status', {id: order.id}) }}">Gérer</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/order-filters.js') }}" defer></script>
 {% endblock %}
