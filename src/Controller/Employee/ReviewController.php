@@ -25,12 +25,17 @@ class ReviewController extends AbstractController
 
     
     #[Route('/{id}/{action}', name: 'action', methods: ['POST'], requirements: ['action' => 'validate|reject'])]
-    public function reviewAction(int $id, string $action, EntityManagerInterface $entityManager): Response
+    public function reviewAction(int $id, string $action, EntityManagerInterface $entityManager, Request $request): Response
     {
         $review = $entityManager->getRepository(Review::class)->find($id);
 
         if (!$review) {
             throw $this->createNotFoundException('Avis introuvable.');
+        }
+
+        if (!$this->isCsrfTokenValid('review_action_' . $id, $request->request->get('_token'))) {
+            $this->addFlash('error', 'Action non autorisée.');
+            return $this->redirectToRoute('employee_review_list');
         }
 
         $review->setStatus($action === 'validate' ? 'VALIDATED' : 'REJECTED');

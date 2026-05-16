@@ -10,17 +10,21 @@
     {% else %}
         {% for review in reviews %}
             <div>
+            
                 <p>Client: {{ review.user.firstName }} {{ review.user.lastName }}</p>
                 <p>Note: {{ review.note }}/5</p>
                 <p>Commentaire: {{ review.comment }}</p>
 
                 <form method="post" action="{{ path('employee_review_action', {id: review.id, action: 'validate'}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
                     <button type="submit">Valider</button>
                 </form>
 
                 <form method="post" action="{{ path('employee_review_action', {id: review.id, action: 'reject'}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
                     <button type="submit">Refuser</button>
                 </form>
+
             </div>
         {% endfor %}
     {% endif %}
