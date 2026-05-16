@@ -12,10 +12,14 @@ use App\Entity\Order;
 use App\Entity\Review;
 use App\Form\EditOrderType;
 use App\Form\ReviewType;
+use App\Service\OrderPricingService;
+use Symfony\Component\Form\FormError;
 
 #[Route('/mon-espace', name: 'user_')]
 class UserController extends AbstractController
 {
+    public function __construct(private OrderPricingService $pricingService) {}
+
     #[Route('', name:'dashboard')]
     public function dashboard(): Response
     {
@@ -87,6 +91,38 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            
+            if ($order->getPeopleCount() < $order->getMenu()->getMinPeople()){
+                $form->get('peopleCount')->addError(
+                    new FormError('Le minimum pour ce menu est ' . $order->getMenu()->getMinPeople() . ' personnes.')
+                );
+                return $this->render('public/user/edit_order.html.twig', [
+                    'form' => $form->createView(),
+                    'order' => $order
+                ]);
+            }
+
+            $prices = $this->pricingService->calculatePrices(
+                $order->getMenu(),
+                $order->getPeopleCount(),
+                $order->getAddress(),
+                $order->getCity()
+            );
+
+            if(!$prices) {
+                $form->addError(new FormError('Adresse introuvable. Veuillez vérifier votre adresse.'));
+                return $this->render('public/user/edit_order.html.twig', [
+                    'form' => $form->createView(),
+                    'order' => $order,
+                ]);
+            }
+
+            $order->setDistanceKm($prices['distanceKm']);
+            $order->setMenuPrice($prices['menuPrice']);
+            $order->setDeliveryPrice($prices['deliveryPrice']);
+            $order->setDiscount($prices['discount']);
+            $order->setTotalPrice($prices['totalPrice']);
+
             $entityManager->flush();
             $this->addFlash('success', 'Commande modifiée avec succès.');
             return $this->redirectToRoute('user_order_detail', ['id' => $id]);

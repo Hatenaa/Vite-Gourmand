@@ -2,6 +2,7 @@
 
 namespace App\Controller\Public\Order;
 
+use App\Service\OrderPricingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,17 +15,18 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OrderController extends AbstractController
 {
+    
+    public function __construct(private OrderPricingService $pricingService) {}
+
     #[Route('/commande/nouvelle/{menuId}', name: 'order_new', requirements: ['menuId' => '\d+'], defaults: ['menuId' => null])]
     public function new(
         ?int $menuId,
         Request $request,
         EntityManagerInterface $entityManager,
         SessionInterface $session,
-        HttpClientInterface $httpClient
     ): Response {
 
         /** @var  \App\Entity\User $user */
@@ -132,44 +134,27 @@ class OrderController extends AbstractController
                 ]);
             }
 
-            // Calculons la distance entre Bordeaux et le point de livraison via OpenStreetMap
-            $coords = $this->geocode($order->getAddress(), $order->getCity(), $httpClient);
-            if (!$coords) {
-                $form->addError(new FormError('Adress introuvable. Veuillez vérifier votre adresse et ville.'));
-                return $this->render('public/order/new.html.twig', [
+            $prices = $this->pricingService->calculatePrices(
+                $menu,
+                $order->getPeopleCount(),
+                $order->getAddress(),
+                $order->getCity()
+            );
 
+            if (!$prices) {
+                $form->addError(new FormError('Adresse introuvable. Veuillez vérifier votre adresse et ville.'));
+                return $this->render('public/order/new.html.twig', [
                     'form' => $form->createView(),
                     'order' => $order,
                     'preSelectedMenu' => $menu
                 ]);
             }
 
-            $bordeauxLat = 44.837789;
-            $bordeauxLon = -0.57918;
-            $distance = $this->haversineDistance($coords['lat'], $coords['lon'], $bordeauxLat, $bordeauxLon);
-            $order->setDistanceKm((string) $distance);
-
-            // Maintenant, calculons les prix...
-            $menuPrice = (float) $menu->getBasePrice() * $order->getPeopleCount();
-            $cityNormalized = mb_strtolower(trim($order->getCity()));
-
-            if ($cityNormalized !== 'bordeaux') {
-                $deliveryPrice = 5 + (0.59 * (float) $order->getDistanceKm());
-            } else {
-                $deliveryPrice = 0; // La livraison à Bordeaux est offerte
-            }
-
-            $discount = 0;
-            if ($order->getPeopleCount() >= $menu->getMinPeople() + 5) {
-                $discount = $menuPrice * 0.10;
-            }
-
-            $totalPrice = $menuPrice - $discount + $deliveryPrice;
-
-            $order->setMenuPrice((string) $menuPrice);
-            $order->setDeliveryPrice((string) $deliveryPrice);
-            $order->setDiscount((string) $discount);
-            $order->setTotalPrice((string) $totalPrice);
+            $order->setDistanceKm($prices['distanceKm']);
+            $order->setMenuPrice($prices['menuPrice']);
+            $order->setDeliveryPrice($prices['deliveryPrice']);
+            $order->setDiscount($prices['discount']);
+            $order->setTotalPrice($prices['totalPrice']);
 
             // Et stockons les informations dans la session
             $orderData = [
@@ -303,45 +288,5 @@ class OrderController extends AbstractController
         $this->addFlash('success', 'Commande confirmée avec succès ! Vous recevrez un email de récapitulatif de votre achat.');
 
         return $this->redirectToRoute('home');
-    }
-
-    private function geocode(string $address, string $city, HttpClientInterface $httpClient): ?array
-    {
-        $query = urlencode($address . ', ' . $city . ', France');
-        $url = "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1";
-
-        try {
-            $response = $httpClient->request('GET', $url, [
-                'headers' => [
-                    'User-Agent' => 'Vite-et-Gourmand/1.0 (contact@vite-et-gourmand.fr)'
-                ]
-            ]);
-
-            $data = $response->toArray();
-            if (empty($data)) {
-                return null;
-            }
-            return [
-                'lat' => (float) $data[0]['lat'],
-                'lon' => (float) $data[0]['lon']
-            ];
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    private function haversineDistance(float $lat1, float $lon1, float $lat2, float $lon2): float
-    {
-        $earthRadius = 6371; // (km)
-
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLon = deg2rad($lon2 - $lon1);
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-        cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-        sin($dLon / 2) * sin($dLon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        return $earthRadius * $c;
-
     }
 }
