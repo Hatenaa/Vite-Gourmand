@@ -58,6 +58,7 @@
 
 
 	<form method="post" action="{{ path('order_finalize') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('order_finalize') }}">
 		<button type="submit">Confirmer ma commande</button>
 		<a href="{{ path('order_new') }}">Modifier ma commande</a>
 	</form>

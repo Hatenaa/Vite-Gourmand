@@ -15,9 +15,8 @@ final class MenuController extends AbstractController
         private MenuRepository $menuRepository,
         private ThemeRepository $themeRepository,
         private RegimeRepository $regimeRepository,
-    ) {
+    ){}
 
-    }
     #[Route('/menus', name: 'menu_index', methods: ['GET'])]
     public function index(): Response
     {

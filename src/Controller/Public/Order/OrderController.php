@@ -59,6 +59,7 @@ class OrderController extends AbstractController
             $order->setDistanceKm($orderData['distanceKm']);
 
             $menu = $entityManager->getRepository(Menu::class)->find($orderData['menuId']);
+
             if ($menu && $menu->isActive()) {
                 $order->setMenu($menu);
                 $preSelectedMenu = $menu;
@@ -66,7 +67,6 @@ class OrderController extends AbstractController
                 $this->addFlash('warning', 'Le menu précédemment choisi n\'est plus disponible. ');
                 $preSelectedMenu = null;
             }
-
 
         } else {
 
@@ -219,19 +219,27 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/commande/finalisation', name: 'order_finalize')]
+    #[Route('/commande/finalisation', name: 'order_finalize', methods: ['POST'])]
     public function finalize(
         SessionInterface $session,
+        Request $request,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer
     ): Response {
+
         $orderData = $session->get('order_data');
         if (!$orderData) {
             $this->addFlash('error', 'Aucune commande n\'est en cours.');
             return $this->redirectToRoute('order_new');
         }
 
+        if (!$this->isCsrfTokenValid('order_finalize', $request->request->get('_token'))) {
+            $this->addFlash('error', 'Action non autorisée.');
+            return $this->redirectToRoute('order_confirm');
+        }
+
         $order = new Order();
+
         $order->setFirstName($orderData['firstName']);
         $order->setLastName($orderData['lastName']);
         $order->setEmail($orderData['email']);
