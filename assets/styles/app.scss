@@ -1,0 +1,13 @@
+$primary: #810000;
+$font-family-base: 'Poppins', sans-serif;
+$body-bg: #EEEBDD;
+$body-color: #1B1717;
+
+@import "bootstrap/scss/bootstrap";
+
+.nav-link {
+    color: $body-color;
+    &:hover {
+        color: $primary;
+    }
+}

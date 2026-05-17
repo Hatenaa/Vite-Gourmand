@@ -1,48 +1,54 @@
-<header>
-	<nav>
-		<ul>
-			<li>
-				<a href="{{ path('home') }}">Accueil</a>
-			</li>
-			<li>
-				<a href="{{ path('menu_index') }}">Menus</a>
-			</li>
-			<li>
-				<a href="{{ path('contact') }}">Contact</a>
-			</li>
-
-			{% if app.user %}
-				<li>
-					<a href="{{ path('user_dashboard') }}">Mon espace</a>
+<div class="container">
+	<header class="d-flex flex-wrap justify-content-center py-3 mt-2 mb-2">
+		<a href="{{ path('home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+			<span class="fs-4">Vite et Gourmand</span>
+		</a>
+		<nav>
+			<ul class="nav nav-pills">
+				<li class="nav-item">
+					<a href="{{ path('home') }}" class="nav-link">Accueil</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{ path('menu_index') }}" class="nav-link">Menus</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{ path('contact') }}" class="nav-link">Contact</a>
 				</li>
 
-				{% if is_granted('ROLE_ADMIN') %}
-					<li>
-						<a href="{{ path('admin_dashboard') }}">Espace Administrateur</a>
+				{% if app.user %}
+					<li class="nav-item">
+						<a href="{{ path('user_dashboard') }}" class="nav-link">Mon espace</a>
 					</li>
 
-				{#
-				elseif et non deux if séparés : un ROLE_ADMIN hérite de ROLE_EMPLOYEE
-				dans la hiérarchie Symfony, deux if afficheraient les deux liens		
-				#}
-				{% elseif is_granted('ROLE_EMPLOYEE') %}
-					<li>
-						<a href="{{ path('employee_dashboard') }}">Espace Employé</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="nav-item">
+							<a href="{{ path('admin_dashboard') }}" class="nav-link">Espace Administrateur</a>
+						</li>
+
+						{#
+						elseif et non deux if séparés : un ROLE_ADMIN hérite de ROLE_EMPLOYEE
+						dans la hiérarchie Symfony, deux if afficheraient les deux liens		
+						#}
+					{% elseif is_granted('ROLE_EMPLOYEE') %}
+						<li class="nav-item">
+							<a href="{{ path('employee_dashboard') }}" class="nav-link">Espace Employé</a>
+						</li>
+					{% endif %}
+
+					<li class="nav-item">
+						<a href="{{ path('logout') }}" class="nav-link">Déconnexion</a>
 					</li>
+				{% else %}
+					<li class="nav-item">
+						<a href="{{ path('registration') }}" class="btn btn-outline-dark rounded px-4">Inscription</a>
+					</li>
+					<li class="nav-item ms-2">
+						<a href="{{ path('order_new') }}" class="btn btn-primary text-white rounded px-4">Commander →</a>
+					</li>
+
 				{% endif %}
 
-				<li>
-					<a href="{{ path('logout') }}">Déconnexion</a>
-				</li>
-			{% else %}
-				<li>
-					<a href="{{ path('login') }}">Connexion</a>
-				</li>
-				<li>
-					<a href="{{ path('registration') }}">Inscription</a>
-				</li>
-			{% endif %}
-
-		</ul>
-	</nav>
-</header>
+			</ul>
+		</nav>
+	</header>
+</div>
