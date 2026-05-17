@@ -8,7 +8,7 @@
 
     {% for label, messages in app.flashes %}
         {% for message in messages %}
-            {{ message }}
+            <div class="{{ label }}">{{ message }}</div>
         {% endfor %}
     {% endfor %}
 
@@ -18,4 +18,5 @@
         {{ form_row(form.message) }}
         <button type="submit">Envoyer</button>
     {{ form_end(form) }}
+
 {% endblock %}

@@ -123,12 +123,17 @@ class AccountController extends AbstractController
 
 
     #[Route('/{id}/toggle', name: 'toggle', methods: ['POST'])]
-    public function employeeToggle(int $id, EntityManagerInterface $entityManager): Response
+    public function employeeToggle(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
 
         if(!$user){
             throw $this->createNotFoundException('Utilisateur indisponible ou inexistant.');
+        }
+
+        if(!$this->isCsrfTokenValid('toggle_employee_' . $id, $request->request->get('_token'))){
+            $this->addFlash('error', 'Action non autorisée.');
+            return $this->redirectToRoute('admin_account_list');
         }
 
         $user->setIsActive(!$user->isActive());

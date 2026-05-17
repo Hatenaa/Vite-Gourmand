@@ -5,10 +5,10 @@
 				<a href="{{ path('home') }}">Accueil</a>
 			</li>
 			<li>
-				<a href="{{ path('menu_index') }}">Tous les menus</a>
+				<a href="{{ path('menu_index') }}">Menus</a>
 			</li>
 			<li>
-				<a href="{{ path('contact') }}">Nous contacter</a>
+				<a href="{{ path('contact') }}">Contact</a>
 			</li>
 
 			{% if app.user %}
@@ -36,10 +36,10 @@
 				</li>
 			{% else %}
 				<li>
-					<a href="{{ path('registration') }}">Inscription</a>
+					<a href="{{ path('login') }}">Connexion</a>
 				</li>
 				<li>
-					<a href="{{ path('login') }}">Connexion</a>
+					<a href="{{ path('registration') }}">Inscription</a>
 				</li>
 			{% endif %}
 

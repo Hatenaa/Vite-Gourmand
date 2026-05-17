@@ -7,7 +7,9 @@
 	{% for message in app.flashes('success') %}
 		<div class="alert alert-success">{{ message }}</div>
 	{% endfor %}
-	<h1>Bienvenue sur Vite & Gourmand</h1>
+
+	<h1>Des menus traiteur  livrés avec soin</h1>
+
 	{% for review in reviews %}
 		{{review.note}}
 		{{review.comment}}
