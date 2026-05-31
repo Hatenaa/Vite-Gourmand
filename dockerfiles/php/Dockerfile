@@ -15,6 +15,8 @@ RUN apk add --no-cache git unzip \
 
 RUN mkdir -p /app/var/cache /app/var/log /app/var/sessions
 
+RUN printf "upload_max_filesize=10M\npost_max_size=10M\n" > /usr/local/etc/php/conf.d/uploads.ini
+
 COPY composer.json composer.lock symfony.lock ./
 COPY bin ./bin
 COPY config ./config
