@@ -1,19 +1,45 @@
-<article>
+<article class="card h-100 border-outline-secondary rounded-4 overflow-hidden">
 
 	{% if menu.images|length > 0 %}
 		{% set mainImage = menu.images|first %}
-		<img src="{{ asset(mainImage.path) }}" alt="{{ mainImage.alt ?? menu.title }}" width="300">
+		<div class="position-relative">
+			<img src="{{ asset(mainImage.path) }}" alt="{{ mainImage.alt ?? menu.title }}" class="card-img-top object-fit-cover" style="height: 220px;">
+			<span class="position-absolute top-0 end-0 m-2 badge bg-dark fw-normal">
+				<i class="bi bi-people-fill"></i>
+				À partir de
+				{{ menu.minPeople }}
+				personnes
+			</span>
+		</div>
 	{% endif %}
 
-	<h3>{{ menu.title }}</h3>
+	<div class="card-body d-flex flex-column p-4">
 
-	<p>À partir de {{ menu.minPeople }} personnes</p>
+		<div class="d-flex align-items-baseline gap-2 mb-3">
+			<h3 class="fw-bold mb-0 h4">{{ menu.title }}</h3>
+			<span class="ms-auto d-flex align-items-baseline gap-1">
+				<span class="text-primary fw-bold fs-2 lh-1">{{ menu.basePrice }}€</span>
+				<small class="text-muted">/ per.</small>
+			</span>
+		</div>
 
-	<p>{{ menu.basePrice }}€</p>
 
-	<p>{{ menu.description }}</p>
+		<p class="text-muted text-justify small flex-grow-1">{{ menu.description }}</p>
 
-	<a href="{{ path('menu_show', {id: menu.id}) }}">Voir en détail</a>
-	<a href="{{ path('order_new', {'menuId': menu.id}) }}">Commander ce menu</a>
-	
+		<div class="d-grid gap-2 mt-3">
+
+			{# Important: le sujet insiste sur la nécessité de vérifier les informations de sa commande.
+			Il est donc préférable de rendre le bouton "détail" du menu bien en évidence plutot que celui pour commander
+			afin d'être sûr que le client comprenne ce qu'il achète. En e-commerce classique on aurait plutôt
+			fait l'inverse. Mais dans ce contexte précis, le détail puis la commande est préférable au schéma opposé. #}
+
+			<a href="{{ path('menu_show', {id: menu.id}) }}" class="btn btn-primary">
+				Voir en détail <i class="bi bi-fork-knife"></i>
+			</a>
+			<a href="{{ path('order_new', {'menuId': menu.id}) }}" class="btn btn-outline-secondary">
+				Commander ce menu 
+			</a>
+		</div>
+
+	</div>
 </article>

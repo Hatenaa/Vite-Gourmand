@@ -4,16 +4,164 @@
 {% endblock %}
 
 {% block body %}
-	{% for message in app.flashes('success') %}
-		<div class="alert alert-success">{{ message }}</div>
-	{% endfor %}
+	<main
+		class="container">
 
-	<h1>Des menus traiteur  livrés avec soin</h1>
+		<!-- Image et texte d'accueil -->
+		<section class="row flex-lg-row-reverse align-items-center g-3 g-lg-5 py-3 py-lg-5">
+			<div class="col-12 col-lg-6 px-3">
+				<img src="{{ asset('images/main/home.jpg') }}" class="d-block mx-lg-auto img-fluid hero-img" alt="Vite et Gourmand - Traiteur professionnel" width="700" height="500" loading="lazy">
+			</div>
+			<div class="col-lg-6 mt-4 mt-lg-0 px-3">
+				<h1 class="display-4 fw-bold lh-1 mb-3 text-dark">Des
+					<span class="text-primary">menus traiteur</span>
+					livrés avec soin</h1>
+				<p class="lead text-justify hero-text">Julie et José mettent leur expertise au service de vos événements. Commande en ligne, menus personnalisés et clients satisfaits.</p>
 
-	{% for review in reviews %}
-		{{review.note}}
-		{{review.comment}}
-		{{review.user.firstName}},
-		{{ review.user.lastName|slice(0,1)}}.
-	{% endfor %}
+				<div class="d-grid d-lg-flex gap-3 mt-4 justify-content-lg-start">
+
+					<a href="{{ path('menu_index') }}" class="btn btn-primary">Voir les menus</a>
+					<a href="{{ path('contact') }}" class="btn btn-outline-secondary">Contacter l'équipe</a>
+
+				</div>
+
+			</div>
+		</section>
+
+		<!-- Nos menus -->
+		<section class="container px-4 py-5">
+			<h2 class="text-center">Nos menus</h2>
+			<p class="text-center">traiteur pensés pour tous vos événements, du plus classique au plus festif.</p>
+
+			<!-- Tabs thèmes -->
+			<ul class="nav justify-content-center my-4" id="menuTabs">
+				<li class="nav-item">
+					<a class="nav-link active link--flash" href="#" data-theme-id="">Populaire</a>
+				</li>
+				{% for theme in themes %}
+					<li class="nav-item">
+						<a class="nav-link" href="#" data-theme-id="{{ theme.id }}">{{ theme.label }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+
+			<!-- Cards générées par JS -->
+			<div class="row row-cols-1 row-cols-lg-3 g-4" id="menuCards" style="min-height: 350px;">
+				<div class="text-center py-5 w-100">
+					<div class="spinner-border text-primary" role="status"></div>
+				</div>
+			</div>
+		</section>
+
+
+		<!-- Partie expertise -->
+		<section class="px-4 py-5">
+			<div class="text-center mb-5">
+				<div class="d-inline-block text-start">
+					<h2 class="h1 mb-1">
+						<span class="text-primary">25 ans</span>
+						d'exigence
+					</h2>
+					<p class="text-muted mb-0">au service de vos événements</p>
+				</div>
+			</div>
+
+			{# === VERSION MOBILE : 2 colonnes verticales façon pellicule === #}
+			<div class="d-md-none">
+				<div
+					class="row g-3">
+					{# Colonne gauche #}
+					<div class="col-6 d-flex flex-column gap-3">
+						<img src="{{ asset('images/main/4.jpg') }}" class="rounded-4 object-fit-cover w-100" style="height:220px;" alt="">
+						<img src="{{ asset('images/main/2.jpg') }}" class="rounded-4 object-fit-cover w-100" style="height:260px;" alt="">
+						<img src="{{ asset('images/main/3.jpg') }}" class="rounded-4 object-fit-cover w-100" style="height:180px; object-position: top;" alt="">
+					</div>
+					{# Colonne droite (décalée vers le bas) #}
+					<div class="col-6 d-flex flex-column gap-3" style="margin-top: 60px;">
+						<img src="{{ asset('images/main/5.jpg') }}" class="rounded-4 object-fit-cover w-100" style="height:100px;" alt="">
+						<img src="{{ asset('images/main/1.jpg') }}" class="rounded-4 object-fit-cover w-100" style="height:240px;" alt="">
+						<img src="{{ asset('images/main/6.jpg') }}" class="rounded-4 object-fit-cover w-100" style="height:200px; object-position: top;" alt="">
+					</div>
+				</div>
+			</div>
+
+			{# === VERSION DESKTOP === #}
+			<div class="d-none d-md-flex align-items-end justify-content-center gap-3">
+
+				<img src="{{ asset('images/main/1.jpg') }}" class="rounded-4 object-fit-cover gallery-img w-100" style="height:150px" alt="">
+
+				<div class="d-flex flex-column gap-2">
+					<img src="{{ asset('images/main/2.jpg') }}" class="rounded-4 object-fit-cover gallery-img" style="height:150px" alt="">
+					<img src="{{ asset('images/main/3.jpg') }}" class="rounded-4 object-fit-cover gallery-img" style="height:100px; object-position: top;" alt="">
+				</div>
+
+				<img src="{{ asset('images/main/4.jpg') }}" class="rounded-4 object-fit-cover gallery-img w-100" style="height:320px;" alt="">
+
+				<img src="{{ asset('images/main/5.jpg') }}" class="rounded-4 object-fit-cover gallery-img w-100" style="height:190px;" alt="">
+
+				<img src="{{ asset('images/main/6.jpg') }}" class="rounded-4 object-fit-cover gallery-img w-100" style="height:120px; object-position: top;" alt="">
+
+			</div>
+
+		</section>
+
+
+		<!-- Affichage des avis -->
+		<section class="container px-4 py-5">
+
+			<div class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center gap-3">
+				<div class="w-title">
+					<h2 class="h3 text-nowrap">Ce que disent
+						<span class="text-primary">nos clients</span>
+					</h2>
+					<p class="text-justify">Des avis 100 % vérifiés par notre équipe, pour garantir transparence et confiance.</p>
+				</div>
+
+				<div class="d-grid d-lg-flex gap-3">
+					<a href="{{ path('menu_index') }}" class="btn btn-primary px-4 fw-bold">
+						Voir les menus
+						<i class="bi bi-arrow-right"></i>
+					</a>
+					<a href="{{ path('user_dashboard') }}" class="btn btn-outline-secondary px-4">
+						Laisser un avis
+					</a>
+				</div>
+			</div>
+
+
+			<!-- Carroussel d'avis -->
+			{% if reviews is not empty %}
+				<div id="custom-cards" class="position-relative">
+					<div class="overflow-hidden">
+						<div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5 flex-nowrap" id="reviewsTrack" style="transition: transform 0.4s ease;">
+							{% for review in reviews %}
+								<div class="col">
+									<div class="card card-cover h-100 overflow-hidden rounded-4">
+										<div class="d-flex flex-column h-100 p-5">
+											<div class="mb-3">
+												{% for i in 1..5 %}
+													<i class="bi bi-star{% if i <= review.note %}-fill{% endif %} text-primary"></i>
+												{% endfor %}
+											</div>
+											<p class="fst-italic text-justify">"{{ review.comment }}"</p>
+											<span class="h3 mt-auto">
+												{{ review.user.firstName }}
+												{{ review.user.lastName }}
+											</span>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<button class="btn btn-primary rounded-circle position-absolute top-50 end-0 translate-middle-y" id="reviewsNavBtn">
+						<i class="bi bi-arrow-right" id="reviewsNavIcon"></i>
+					</button>
+				</div>
+			{% endif %}
+		</section>
+	</main>
+
+	{{parent()}}{{encore_entry_script_tags('home')}}
+	{% block javascripts %}{% endblock %}
 {% endblock %}
