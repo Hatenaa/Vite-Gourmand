@@ -1,34 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Statistiques{% endblock %}
+{% block title %}Statistiques
+{% endblock %}
 
 {% block body %}
-    <h1>Statistiques des commandes</h1>
+	<h1>Statistiques des commandes</h1>
 
-    <div>
-        <p>Menus à comparer: </p>
-            {% for menu in menus %}
-				<label>
-					<input type="checkbox" class="menuCheckbox" value="{{ menu.title }}" checked>
-					{{ menu.title }}
-				</label>
-            {% endfor %}
-        <label for="fromFilter">Du :</label>
-        <input type="month" id="fromFilter" value="2026-01">
+	<div>
+		<p>Menus à comparer:
+		</p>
+		{% for menu in menus %}
+			<label>
+				<input type="checkbox" class="menuCheckbox" value="{{ menu.title }}" checked>
+				{{ menu.title }}
+			</label>
+		{% endfor %}
+		<label for="fromFilter">Du :</label>
+		<input type="month" id="fromFilter" value="2026-01">
 
-        <label for="toFilter">Au :</label>
-        <input type="month" id="toFilter" value="2026-04">
+		<label for="toFilter">Au :</label>
+		<input type="month" id="toFilter" value="2026-04">
 
-        <button id="applyFilters">Appliquer</button>
-    </div>
+		<button id="applyFilters">Appliquer</button>
+	</div>
 
-    <div>
-        <button id="showOrders">Commandes</button>
-        <button id="showRevenue">Chiffre d'affaires (€)</button>
-    </div>
+	<div>
+		<button id="showOrders">Commandes</button>
+		<button id="showRevenue">Chiffre d'affaires (€)</button>
+	</div>
 
-    <canvas id="statsChart" style="max-width: 600px; max-height: 300px;"></canvas>
+	<canvas id="statsChart" style="max-width: 600px; max-height: 300px;"></canvas>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('assets/js/stats-chart.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('stats') }}
 {% endblock %}
