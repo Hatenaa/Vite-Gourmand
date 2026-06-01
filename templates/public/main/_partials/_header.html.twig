@@ -1,54 +1,60 @@
-<div class="container">
-	<header class="d-flex flex-wrap justify-content-center py-3 mt-2 mb-2">
-		<a href="{{ path('home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-			<span class="fs-4">Vite et Gourmand</span>
-		</a>
-		<nav>
-			<ul class="nav nav-pills">
-				<li class="nav-item">
-					<a href="{{ path('home') }}" class="nav-link">Accueil</a>
-				</li>
-				<li class="nav-item">
-					<a href="{{ path('menu_index') }}" class="nav-link">Menus</a>
-				</li>
-				<li class="nav-item">
-					<a href="{{ path('contact') }}" class="nav-link">Contact</a>
-				</li>
+<div class="sticky-top bg-body">
+	<div class="container">
+		<header class="navbar navbar-expand-md py-3 mt-2 mb-2">
+			<a href="{{ path('home') }}" class="navbar-brand text-dark text-decoration-none">
+				<span class="fs-4 fw-bold">Vite et
+					<span class="text-primary">Gourmand</span>
+				</span>
+			</a>
 
-				{% if app.user %}
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarMain">
+				<ul class="navbar-nav ms-auto align-items-center">
 					<li class="nav-item">
-						<a href="{{ path('user_dashboard') }}" class="nav-link">Mon espace</a>
+						<a href="{{ path('home') }}" class="nav-link">Accueil</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{ path('menu_index') }}" class="nav-link">Menus</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{ path('contact') }}" class="nav-link">Contact</a>
 					</li>
 
-					{% if is_granted('ROLE_ADMIN') %}
+					{% if app.user %}
 						<li class="nav-item">
-							<a href="{{ path('admin_dashboard') }}" class="nav-link">Espace Administrateur</a>
+							<a href="{{ path('user_dashboard') }}" class="nav-link">Mon espace</a>
 						</li>
-
-						{#
-						elseif et non deux if séparés : un ROLE_ADMIN hérite de ROLE_EMPLOYEE
-						dans la hiérarchie Symfony, deux if afficheraient les deux liens		
-						#}
-					{% elseif is_granted('ROLE_EMPLOYEE') %}
+						{% if is_granted('ROLE_ADMIN') %}
+							<li class="nav-item">
+								<a href="{{ path('admin_dashboard') }}" class="nav-link">Espace Administrateur</a>
+							</li>
+						{% elseif is_granted('ROLE_EMPLOYEE') %}
+							<li class="nav-item">
+								<a href="{{ path('employee_dashboard') }}" class="nav-link">Espace Employé</a>
+							</li>
+						{% endif %}
 						<li class="nav-item">
-							<a href="{{ path('employee_dashboard') }}" class="nav-link">Espace Employé</a>
+							<a href="{{ path('logout') }}" class="nav-link">Déconnexion</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a href="{{ path('login') }}" class="nav-link">Connexion</a>
+						</li>
+						<li class="nav-item ms-2">
+							<a href="{{ path('registration') }}" class="btn btn-outline-secondary px-4">Inscription</a>
+						</li>
+						<li class="nav-item ms-2">
+							<a href="{{ path('order_new') }}" class="btn btn-primary px-4">
+								Commander
+								<i class="bi bi-arrow-right"></i>
+							</a>
 						</li>
 					{% endif %}
-
-					<li class="nav-item">
-						<a href="{{ path('logout') }}" class="nav-link">Déconnexion</a>
-					</li>
-				{% else %}
-					<li class="nav-item">
-						<a href="{{ path('registration') }}" class="btn btn-outline-dark rounded px-4">Inscription</a>
-					</li>
-					<li class="nav-item ms-2">
-						<a href="{{ path('order_new') }}" class="btn btn-primary text-white rounded px-4">Commander →</a>
-					</li>
-
-				{% endif %}
-
-			</ul>
-		</nav>
-	</header>
+				</ul>
+			</div>
+		</header>
+	</div>
 </div>
