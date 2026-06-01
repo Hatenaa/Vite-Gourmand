@@ -14,7 +14,8 @@ final class ApiMenuController extends AbstractController
 
     public function __construct(
         private MenuRepository $menuRepository
-    ) {}
+    ) {
+    }
 
     #[Route('/api/menus', name: 'api_menus', methods: ['GET'])]
     public function index(Request $request): JsonResponse
@@ -59,6 +60,11 @@ final class ApiMenuController extends AbstractController
             'basePrice' => $menu->getBasePrice(),
             'stock' => $menu->getStock(),
             'image' => $mainImage,
+            'theme' => $menu->getTheme() ? [
+                'id' => $menu->getTheme()->getId(),
+                'label' => $menu->getTheme()->getLabel(),
+            ] : null,
         ];
+
     }
 }

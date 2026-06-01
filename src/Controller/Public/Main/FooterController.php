@@ -12,7 +12,7 @@ class FooterController extends AbstractController
     #[Route('/_footer', name: 'footer')]
     public function index(OpeningHoursRepository $openingHoursRepository): Response
     {
-        
+
         $daysOrder = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
         $allHours = $openingHoursRepository->findAll();
@@ -27,9 +27,25 @@ class FooterController extends AbstractController
             $orderedHours[] = $hoursByDay[$day] ?? null;
         }
 
+        // Pour éviter de se répéter, on va grouper les jours qui on les mêmes horaires dans le footer
+        $groups = [];
+        $lastKey = null;
+
+        foreach ($orderedHours as $i => $hours) {
+            $key = ($hours && !$hours->isClosed())
+                ? $hours->getOpeningTime()->format('H:i') . '-' . $hours->getClosingTime()->format('H:i')
+                : 'closed';
+
+            if ($lastKey === $key && !empty($groups)) {
+                $groups[array_key_last($groups)]['days'][] = $daysOrder[$i];
+            } else {
+                $groups[] = ['days' => [$daysOrder[$i]], 'hours' => $hours, 'key' => $key];
+                $lastKey = $key;
+            }
+        }
+
         return $this->render('public/main/_partials/_footer.html.twig', [
-            'openingHours' => $orderedHours,
-            'days' => $daysOrder
+            'groups' => $groups
         ]);
     }
 }
