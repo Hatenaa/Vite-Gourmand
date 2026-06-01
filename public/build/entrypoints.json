@@ -1,12 +1,34 @@
 {
   "entrypoints": {
     "app": {
-      "js": [
-        "/build/runtime.js",
-        "/build/app.js"
-      ],
       "css": [
         "/build/app.css"
+      ],
+      "js": [
+        "/build/app.js"
+      ]
+    },
+    "home": {
+      "js": [
+        "/build/home.js"
+      ]
+    },
+    "stats": {
+      "js": [
+        "/build/stats.js"
+      ]
+    },
+    "menu-filters": {
+      "css": [
+        "/build/menu-filters.css"
+      ],
+      "js": [
+        "/build/menu-filters.js"
+      ]
+    },
+    "order-filters": {
+      "js": [
+        "/build/order-filters.js"
       ]
     }
   }

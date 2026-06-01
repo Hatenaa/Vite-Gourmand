@@ -1,5 +1,11 @@
 {
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
-  "build/runtime.js": "/build/runtime.js"
+  "build/home.js": "/build/home.js",
+  "build/stats.js": "/build/stats.js",
+  "build/menu-filters.css": "/build/menu-filters.css",
+  "build/menu-filters.js": "/build/menu-filters.js",
+  "build/order-filters.js": "/build/order-filters.js",
+  "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.1295669c.woff",
+  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.92ea18a8.woff2"
 }
