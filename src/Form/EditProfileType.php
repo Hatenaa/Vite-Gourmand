@@ -25,7 +25,6 @@ class EditProfileType extends AbstractType
             ])
             ->add('phone', TextType::class, [
                 'label' => 'Téléphone',
-                'required' => false
             ])
             ->add('address', TextType::class, [
                 'label' => 'Adresse',

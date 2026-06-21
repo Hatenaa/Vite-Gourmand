@@ -83,8 +83,8 @@ class UserController extends AbstractController
         }
 
         if($order->getStatus() !== 'PENDING'){
-            $this->addFlash('error', 'Cette commande ne peut plus être modifiée.');
-            return $this->redirectToRoute('user_order_detail', ['id' => $id]);
+            $this->addFlash('danger', 'Cette commande ne peut plus être modifiée.');
+            return $this->redirectToRoute('user_dashboard');
         }
 
         $form = $this->createForm(EditOrderType::class, $order);
@@ -125,7 +125,7 @@ class UserController extends AbstractController
 
             $entityManager->flush();
             $this->addFlash('success', 'Commande modifiée avec succès.');
-            return $this->redirectToRoute('user_order_detail', ['id' => $id]);
+            return $this->redirectToRoute('user_dashboard');
         }
 
         return $this->render('public/user/edit_order.html.twig', [

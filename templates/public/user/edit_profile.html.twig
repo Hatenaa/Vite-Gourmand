@@ -1,19 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon profil{% endblock %}
+{% block title %}Mon profil
+{% endblock %}
+
+{% block header %}{% endblock %}
 
 {% block body %}
-    <h1>Modifier mon profil</h1>
 
-    {{ form_start(form) }}
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.phone) }}
-        {{ form_row(form.address) }}
-        {{ form_row(form.city) }}
-        <button type="submit">Enregistrer</button>
-    {{ form_end(form) }}
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/catering-tables.jpg" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
 
-    <a href="{{ path('user_dashboard') }}">Retour à mon espace</a>
+		<div class="position-relative z-1 d-flex justify-content-between align-items-center py-4 px-3 container">
+			{% include 'public/user/_partials/_nav.html.twig' %}
+		</div>
+
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">Modifier mon profil</h1>
+				<p class="lead text-white mb-0">Veuillez renseigner vos nouvelles informations ci-dessous.</p>
+			</div>
+			<div class="d-grid d-md-block">
+				<a href="{{ path('user_dashboard') }}" class="btn btn-outline-light">
+					<i class="bi bi-fork-knife"></i>
+					Afficher mes commandes
+				</a>
+			</div>
+		</div>
+	</section>
+
+	{% include 'public/user/_partials/_offcanvas.html.twig' %}
+
+	<div class="container py-5">
+
+		{{ form_start(form) }}
+		{{ form_errors(form) }}
+
+		<div class="row justify-content-center">
+			<div class="">
+
+				<h4 class="mb-3">Informations personnelles</h4>
+
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						{{ form_label(form.firstName, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Jean', 'data-validate': 'firstName'}}) }}
+						<div class="invalid-feedback">Le prénom est obligatoire.</div>
+						{{ form_errors(form.firstName) }}
+					</div>
+					<div class="col-md-6 mb-3">
+						{{ form_label(form.lastName, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Dupont', 'data-validate': 'lastName'}}) }}
+						<div class="invalid-feedback">Le nom est obligatoire.</div>
+						{{ form_errors(form.lastName) }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-8 mb-3">
+						{{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'jean.dupont@email.com', 'data-validate': 'email'}}) }}
+						<div class="invalid-feedback">L'adresse email est obligatoire.</div>
+						{{ form_errors(form.email) }}
+					</div>
+					<div class="col-md-4 mb-3">
+						{{ form_label(form.phone, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.phone, {'attr': {'class': 'form-control', 'placeholder': '06 00 00 00 00', 'data-validate': 'phone'}}) }}
+						<div class="invalid-feedback">Le numéro de téléphone est obligatoire.</div>
+						{{ form_errors(form.phone) }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-8 mb-3">
+						{{ form_label(form.address, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.address, {'attr': {'class': 'form-control', 'placeholder': '12 rue de la Paix', 'data-validate': 'address'}}) }}
+						{{ form_errors(form.address) }}
+					</div>
+					<div class="col-md-4 mb-3">
+						{{ form_label(form.city, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.city, {'attr': {'class': 'form-control', 'placeholder': 'Bordeaux', 'data-validate': 'city'}}) }}
+						{{ form_errors(form.city) }}
+					</div>
+				</div>
+
+				<div class="row mt-2">
+					<div class="col-12 col-md-3">
+						<button type="submit" class="btn btn-primary w-100" data-spinner-btn>
+							<span class="btn-label">Enregistrer les modifications</span>
+							<span class="btn-spinner p-1 d-none justify-content-center">
+								<span class="spinner-border spinner-border-sm" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</span>
+							</span>
+						</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		{{ form_end(form) }}
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('edit-profile') }}
 {% endblock %}
