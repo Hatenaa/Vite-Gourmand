@@ -16,12 +16,16 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use App\Document\OrderStat;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 class OrderController extends AbstractController
 {
     use TargetPathTrait;
-    
-    public function __construct(private OrderPricingService $pricingService) {}
+
+    public function __construct(private OrderPricingService $pricingService, private DocumentManager $documentManager)
+    {
+    }
 
     #[Route('/commande/nouvelle/{menuId}', name: 'order_new', requirements: ['menuId' => '\d+'], defaults: ['menuId' => null])]
     public function new(
@@ -35,9 +39,9 @@ class OrderController extends AbstractController
 
         $user = $this->getUser();
         if (!$user) {
-            
+
             $this->saveTargetPath($request->getSession(), 'main', $request->getUri());
-            $this->addFlash('error', 'Vous devez vous connecter pour commander un menu.');
+            $this->addFlash('danger', 'Vous devez vous connecter pour commander un menu.');
             return $this->redirectToRoute('login');
         }
 
@@ -88,7 +92,7 @@ class OrderController extends AbstractController
                 if (!$menu || !$menu->isActive()) {
 
                     $this->addFlash('error', 'Menu indisponible.');
-                    return $this->redirectToRoute('menus');
+                    return $this->redirectToRoute('menu_index');
                 }
                 $order->setMenu($menu);
                 $preSelectedMenu = $menu;
@@ -113,7 +117,7 @@ class OrderController extends AbstractController
                     $order->setMenu($menu);
                 } else {
                     $this->addFlash('error', 'Menu indisponible.');
-                    return $this->redirectToRoute('menus');
+                    return $this->redirectToRoute('menu_index');
                 }
             }
 
@@ -246,24 +250,30 @@ class OrderController extends AbstractController
 
         $menu = $entityManager->getRepository(Menu::class)->find($orderData['menuId']);
 
-        // On vas reverifié si le menu existe par précaution.
+        // On va revérifier si le menu existe par précaution.
         if (!$menu) {
-            $this->addFlash('error', 'Le menu est introuvable.');
+            $this->addFlash('danger', 'Le menu est introuvable.');
             return $this->redirectToRoute('order_new');
         }
 
-        if ($menu->getStock() <= 0) {
-            $this->addFlash('error', 'Ce menu n\'est plus disponible, le stock est épuisé.');
-            return $this->redirectToRoute('menus');
+        $availableStock = $menu->getStock();
+
+        if ($availableStock < $orderData['peopleCount']) {
+            $this->addFlash('danger', sprintf(
+                'Stock insuffisant pour ce menu. Il reste %d %s.',
+                $availableStock,
+                $availableStock > 1 ? 'portions disponibles' : 'portion disponible'
+            ));
+            return $this->redirectToRoute('menu_index');
         }
 
-        $menu->setStock($menu->getStock() - 1);
+        $menu->setStock($availableStock - $orderData['peopleCount']);
 
         $order->setMenu($menu);
 
         $user = $this->getUser();
         if (!$user) {
-            $this->addFlash('error', 'Vous devez être connecté.');
+            $this->addFlash('danger', 'Vous devez être connecté.');
             return $this->redirectToRoute('login');
         }
 
@@ -275,6 +285,29 @@ class OrderController extends AbstractController
 
         $entityManager->persist($order);
         $entityManager->flush();
+
+        $month = new \DateTimeImmutable($order->getDeliveryDate()->format('Y-m') . '-01');
+
+        $stat = $this->documentManager
+            ->getRepository(OrderStat::class)
+            ->findOneBy(['menuTitle' => $menu->getTitle(), 'month' => $month]);
+
+        if ($stat) {
+            $stat->setOrderCount($stat->getOrderCount() + $order->getPeopleCount());
+            $stat->setTotalRevenue($stat->getTotalRevenue() + $order->getMenuPrice());
+        } else {
+
+            $stat = new OrderStat();
+            $stat->setMenuTitle($menu->getTitle());
+            $stat->setMonth($month);
+            $stat->setOrderCount($order->getPeopleCount());
+            $stat->setTotalRevenue($order->getMenuPrice());
+            $this->documentManager->persist($stat);
+        }
+
+        $this->documentManager->flush();
+
+        // Maintenant, mettons à jour nos statistiques MongoDB...
 
         $email = (new TemplatedEmail())
             ->from('noreply@vite-et-gourmand.fr')
@@ -289,7 +322,7 @@ class OrderController extends AbstractController
         $mailer->send($email);
 
         $session->remove('order_data'); // Vu que le tableau ne sert plus à rien après traitement, on le supprime.
-        $this->addFlash('success', 'Commande confirmée avec succès ! Vous recevrez un email de récapitulatif de votre achat.');
+        $this->addFlash('success', 'Commande confirmée avec succès ! Vous recevrez un email récapitulatif de votre achat.');
 
         return $this->redirectToRoute('home');
     }

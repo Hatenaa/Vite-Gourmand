@@ -55,6 +55,16 @@ class OrderType extends AbstractType
             ->add('menu', EntityType::class, [
                 'class' => Menu::class,
                 'choice_label' => 'title',
+                'choice_attr' => function(Menu $menu) {
+                    $image = $menu->getImages()->first();
+                    return [
+                        'data-title' => $menu->getTitle(),
+                        'data-min-people' => $menu->getMinPeople(),
+                        'data-base-price' => $menu->getBasePrice(),
+                        'data-image' => $image ? '/' . $image->getPath() : '',
+                        'data-alt' => $image ? ($image->getAlt() ?? $menu->getTitle()) : '',
+                    ];
+                },
                 'constraints' => [
                     new Assert\NotNull(message: 'Veuillez sélectionner un menu.'),
                 ],
