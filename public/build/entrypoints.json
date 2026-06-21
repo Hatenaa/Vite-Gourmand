@@ -8,6 +8,11 @@
         "/build/app.js"
       ]
     },
+    "add-employee": {
+      "js": [
+        "/build/add-employee.js"
+      ]
+    },
     "home": {
       "js": [
         "/build/home.js"
@@ -39,6 +44,31 @@
     "signin": {
       "js": [
         "/build/signin.js"
+      ]
+    },
+    "order-map": {
+      "js": [
+        "/build/order-map.js"
+      ]
+    },
+    "order-form": {
+      "js": [
+        "/build/order-form.js"
+      ]
+    },
+    "edit-profile": {
+      "js": [
+        "/build/edit-profile.js"
+      ]
+    },
+    "edit-order": {
+      "js": [
+        "/build/edit-order.js"
+      ]
+    },
+    "edit-employee": {
+      "js": [
+        "/build/edit-employee.js"
       ]
     }
   }

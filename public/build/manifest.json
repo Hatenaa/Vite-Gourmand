@@ -1,6 +1,7 @@
 {
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
+  "build/add-employee.js": "/build/add-employee.js",
   "build/home.js": "/build/home.js",
   "build/stats.js": "/build/stats.js",
   "build/menu-filters.css": "/build/menu-filters.css",
@@ -8,6 +9,11 @@
   "build/order-filters.js": "/build/order-filters.js",
   "build/signup.js": "/build/signup.js",
   "build/signin.js": "/build/signin.js",
+  "build/order-map.js": "/build/order-map.js",
+  "build/order-form.js": "/build/order-form.js",
+  "build/edit-profile.js": "/build/edit-profile.js",
+  "build/edit-order.js": "/build/edit-order.js",
+  "build/edit-employee.js": "/build/edit-employee.js",
   "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.1295669c.woff",
   "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.92ea18a8.woff2"
 }

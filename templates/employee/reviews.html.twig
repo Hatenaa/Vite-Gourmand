@@ -1,33 +1,151 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Avis à valider{% endblock %}
+{% block header %}{% endblock %}
 
 {% block body %}
-    <h1>Avis en attente de validation</h1>
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/saipano-glass.jpg" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
 
-    {% if reviews is empty %}
-        <p>Aucun avis en attente.</p>
-    {% else %}
-        {% for review in reviews %}
-            <div>
-            
-                <p>Client: {{ review.user.firstName }} {{ review.user.lastName }}</p>
-                <p>Note: {{ review.note }}/5</p>
-                <p>Commentaire: {{ review.comment }}</p>
+		<div class="position-relative z-1 d-flex justify-content-between align-items-center py-4 px-3 container">
+			{% include 'admin/_partials/_nav.html.twig' %}
+		</div>
 
-                <form method="post" action="{{ path('employee_review_action', {id: review.id, action: 'validate'}) }}">
-                    <input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
-                    <button type="submit">Valider</button>
-                </form>
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">Avis en attente de validation</h1>
+				<p class="lead text-white mb-0">Les notes sont évaluées sur cinq.</p>
+			</div>
 
-                <form method="post" action="{{ path('employee_review_action', {id: review.id, action: 'reject'}) }}">
-                    <input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
-                    <button type="submit">Refuser</button>
-                </form>
+			<div
+				class="d-grid d-md-block">
 
-            </div>
-        {% endfor %}
-    {% endif %}
+				{# Boutton de filtrage #}
+				<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
+					<i class="bi bi-person-workspace"></i>
+					Espace employé
+				</a>
 
-    <a href="{{ path('employee_dashboard') }}">Retour au dashboard</a>
+			</div>
+		</div>
+
+	</section>
+
+	{#% include 'employee/_partials/_offcanvas.html.twig' %#}
+
+	<main class="container">
+		{% if reviews is empty %}
+			<p class="text-muted">Aucun avis en attente.</p>
+		{% else %}
+			<div class="d-flex flex-column gap-3 pt-4">
+				{% for review in reviews %}
+					<div class="card shadow-sm">
+						<div class="card-body p-3 p-md-4">
+
+							<div class="d-flex align-items-center gap-3">
+
+								<div class="rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center flex-shrink-0" style="width:55px;height:55px;">
+									<i class="bi bi-person fs-4 text-secondary"></i>
+								</div>
+
+								<div class="flex-grow-1 min-w-0">
+									<h6 class="mb-1 fw-bold">{{ review.user.firstName }}
+										{{ review.user.lastName }}</h6>
+									<span class="badge bg-dark">{{ review.note }}
+										<i class="bi bi-star-fill"></i>
+									</span>
+									<p class="mb-0 mt-2">{{ review.comment }}</p>
+								</div>
+
+								{# Desktop #}
+								<div class="d-none d-lg-flex align-items-center gap-2 flex-shrink-0">
+
+									<input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
+									<button type="submit" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#validateModal{{ review.id }}">Valider</button>
+
+
+									<input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
+									<button type="submit" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ review.id }}">Refuser</button>
+
+								</div>
+
+							</div>
+
+							{# Mobile #}
+							<div class="d-flex d-lg-none flex-column gap-2 mt-3 pt-3 border-top">
+								<div class="d-flex gap-2">
+
+									<input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
+									<button type="submit" class="btn btn-outline-secondary w-100" data-bs-toggle="modal" data-bs-target="#validateModal{{ review.id }}">Valider</button>
+
+
+									<input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
+									<button type="submit" class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#rejectModal{{ review.id }}">Refuser</button>
+
+								</div>
+							</div>
+
+
+							{# Modal de validation #}
+							<div class="modal fade" id="validateModal{{ review.id }}" tabindex="-1" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content rounded-4 border-0 shadow">
+										<div class="modal-header border-0 pb-0">
+											<h5 class="modal-title fw-bold">Valider cet avis</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+										</div>
+										<div class="modal-body">
+											<p>Êtes-vous sûr de vouloir valider l'avis de
+												<strong>{{ review.user.firstName }}
+													{{ review.user.lastName }}</strong>
+												? Cet avis sera publié et visible sur le site.</p>
+										</div>
+										<div class="modal-footer border-0 pt-0">
+											<div class="d-flex gap-2 w-100">
+												<button type="button" class="btn btn-outline-danger flex-fill" data-bs-dismiss="modal">Annuler</button>
+												<form method="post" action="{{ path('employee_review_action', {id: review.id, action: 'validate'}) }}" class="flex-fill">
+													<input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
+													<button type="submit" class="btn btn-outline-secondary w-100">Valider</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{# Modal de refus #}
+							<div class="modal fade" id="rejectModal{{ review.id }}" tabindex="-1" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered">
+									<div class="modal-content rounded-4 border-0 shadow">
+										<div class="modal-header border-0 pb-0">
+											<h5 class="modal-title fw-bold">Refuser cet avis</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+										</div>
+										<div class="modal-body">
+											<p>Êtes-vous sûr de vouloir refuser l'avis de
+												<strong>{{ review.user.firstName }}
+													{{ review.user.lastName }}</strong>
+												? Cet avis ne sera pas publié.</p>
+										</div>
+										<div class="modal-footer border-0 pt-0">
+											<div class="d-flex gap-2 w-100">
+												<button type="button" class="btn btn-outline-danger flex-fill" data-bs-dismiss="modal">Annuler</button>
+												<form method="post" action="{{ path('employee_review_action', {id: review.id, action: 'reject'}) }}" class="flex-fill">
+													<input type="hidden" name="_token" value="{{ csrf_token('review_action_' ~ review.id) }}">
+													<button type="submit" class="btn btn-outline-secondary w-100">Refuser</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</main>
+
 {% endblock %}
