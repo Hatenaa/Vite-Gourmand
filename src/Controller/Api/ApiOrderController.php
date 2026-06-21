@@ -31,6 +31,19 @@ class ApiOrderController extends AbstractController
 
     private function formatOrder(Order $order): array
     {
+
+        $menu = $order->getMenu();
+        $menuImages = [];
+
+        if ($menu && $menu->getImages()){
+            foreach ($menu->getImages() as $image) {
+                $menuImages[] = [
+                    'path' => $image->getPath(),
+                    'alt' => $image->getAlt() ?? $menu->getTitle(),
+                ];
+            }
+        }
+
         return [
             'id' => $order->getId(),
             'firstName' => $order->getFirstName(),
@@ -39,6 +52,9 @@ class ApiOrderController extends AbstractController
             'status' => $order->getStatus(),
             'deliveryDate' => $order->getDeliveryDate()?->format('d/m/Y'),
             'menuTitle' => $order->getMenu()?->getTitle(),
+            'menuImages' => $menuImages,
+            'peopleCount' => $order->getPeopleCount(),
+            'totalPrice' => $order->getTotalPrice(),
             'manageUrl' => $this->generateUrl('employee_update_order_status', [
                 'id' => $order->getId()
             ]),
