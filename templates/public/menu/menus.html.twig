@@ -13,18 +13,17 @@
 	<main>
 
 		{# Hero full-width #}
-		<section class="position-relative overflow-hidden d-flex align-items-end justify-content-center text-center" style="min-height: 480px;">
-			<img src="{{ asset('images/main/restaurant.jpg') }}" alt="Nos menus - Vite et Gourmand" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover">
-			<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
-			<div class="position-relative z-1 py-5 px-3">
-				<h1 class="display-4 fw-bold text-white">Nos menus</h1>
+		<section class="position-relative overflow-hidden d-flex align-items-end justify-content-start" style="min-height: 480px;">
+			<img src="{{ asset('images/main/restaurant.jpg') }}" alt="Nos menus - Vite et Gourmand" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+			<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+			<div class="position-relative z-1 py-5 px-3 container">
+				<h1 class="fw-bold text-white">Nos menus</h1>
 				<p class="lead text-white">Choisissez un menu selon votre événement,<br class="d-none d-md-inline">
 					votre budget et le nombre de personnes.</p>
 			</div>
 		</section>
 
-		<div
-			class="container py-5">
+		<div class="container py-5">
 
 			{# Bouton déclencheur offcanvas #}
 			<div class="d-flex justify-content-end mb-4">
@@ -96,7 +95,12 @@
 							</div>
 						</div>
 
-						<button type="submit" class="btn btn-primary w-100">Filtrer les menus</button>
+						<div class="d-flex flex-column gap-1">
+							<button type="button" class="btn btn-outline-dark" id="reset-menu-filters">
+								<i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+							</button>
+						</div>
+
 					</form>
 
 				</div>
@@ -119,4 +123,5 @@
 {% block javascripts %}
 	{{ parent() }}
 	{{ encore_entry_script_tags('menu-filters') }}
+	{{ encore_entry_script_tags('order-form') }}
 {% endblock %}{% endblock %}

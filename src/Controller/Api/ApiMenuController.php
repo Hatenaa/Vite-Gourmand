@@ -26,6 +26,7 @@ final class ApiMenuController extends AbstractController
             'theme' => $request->query->get('theme'),
             'regime' => $request->query->get('regime'),
             'minPeople' => $request->query->get('minPeople'),
+            'maxPeople' => $request->query->get('maxPeople'),
         ];
 
         $menus = $this->menuRepository->findFilteredMenus($filters);

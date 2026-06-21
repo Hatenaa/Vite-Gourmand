@@ -72,6 +72,11 @@ class MenuRepository extends ServiceEntityRepository
             ->setParameter('minPeople', $filters['minPeople']);
         }
 
+        if (isset($filters['maxPeople']) && $filters['maxPeople'] !== ''){
+            $qb->andWhere('m.minPeople <= :maxPeople')
+            ->setParameter('maxPeople', $filters['maxPeople']);
+        }
+
         return $qb->getQuery()->getResult();
     }
 
