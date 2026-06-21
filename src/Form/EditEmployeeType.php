@@ -20,7 +20,7 @@ class EditEmployeeType extends AbstractType
             ->add('lastName', TextType::class, ['label' => 'Nom'])
             ->add('email', EmailType::class, ['label' => 'Adresse email'])
             ->add('plainPassword', PasswordType::class, [
-                'label' => 'Nouveau mot de passe (laisser vide pour ne pas changer)',
+                'label' => 'Nouveau mot de passe',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

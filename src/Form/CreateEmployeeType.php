@@ -18,7 +18,7 @@ class CreateEmployeeType extends AbstractType
         $builder
             ->add('firstName', TextType::class, ['label' => 'Prénom'])
             ->add('lastName', TextType::class, ['label' => 'Nom'])
-            ->add('email', EmailType::class, ['label' => 'Adresse email (identifiant employé)'])
+            ->add('email', EmailType::class, ['label' => 'Adresse email'])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'mapped' => false,
