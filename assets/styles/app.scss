@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: $font-weight-bold;
 }
 
+.text-white {
+  color: $body-bg;
+}
+
 .form-select, .form-control {
   border-radius: 9px !important;
 }
@@ -122,6 +126,12 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.link--flash-light {
+    &::before, &::after {
+        background: white;
+    }
+}
+
 
 .w-title {
   display: inline-grid;
@@ -174,7 +184,81 @@ h1, h2, h3, h4, h5, h6 {
   color: $primary;
 }
 
+.marker-caterer, .marker-delivery {
+    font-size: 2rem;
+    color: $dark;
+    line-height: 1;
+}
+
 [data-bs-toggle="collapse"]:not(.collapsed) .filter-chevron {
     transform: rotate(180deg);
 }
 
+// Pour l'animation des bordures si on a une remise.
+.livraison-row {
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  transition: border-bottom-left-radius 0.3s ease, border-bottom-right-radius 0.3s ease;
+
+  &.squared {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+// Ajout d'un scaling de la carte quand on arrive sur la page de commande
+.map-zoom-wrapper {
+    transform: scale(0.85);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform-origin: center top;
+
+    &.map-visible {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#discount-row {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &.discount-visible {
+        opacity: 1;
+    }
+}
+
+.btn-price {
+    display: inline-block;
+    vertical-align: text-bottom;
+    max-width: 0;
+    opacity: 0;
+    transform: translateX(12px);
+    overflow: hidden;
+    white-space: nowrap;
+    transition: max-width 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+
+    &.visible {
+        max-width: 150px;
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+#menu-preview-image-wrap,
+#menu-preview-info {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  &.preview-visible {
+    opacity: 1;
+  }
+}
+
+#menu-preview-empty {
+  transition: opacity 0.3s ease;
+
+  &.preview-hiding {
+    opacity: 0;
+  }
+}

@@ -1,42 +1,221 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Commander un menu{% endblock %}
+{% block title %}Commander un menu
+{% endblock %}
 
 {% block body %}
-    <h2>Vos informations</h2>
+	<section class="position-relative overflow-hidden d-flex align-items-end justify-content-start" style="min-height: 420px;">
+		<img src="/images/main/glass-kitchen.jpg" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+		<div class="position-relative z-1 py-5 px-3 container">
+			<h1 class="fw-bold text-white">
+				Passer commande
+			</h1>
+			<p class="lead text-white">Renseignez les informations de votre livraison ci-dessous.</p>
+		</div>
+	</section>
 
-    {{ form_errors(form) }}
+	<div class="container py-5">
 
-    <ul>
-        <li>Nom: {{ order.lastName }}</li>
-        <li>Prénom: {{ order.firstName }}</li>
-        <li>Email: {{ order.email }}</li>
-        <li>Téléphone: {{ order.phone}}</li>
-    </ul>
+		{{ form_start(form) }}
+		{{ form_errors(form) }}
 
-    {{ form_start(form) }}
+		<div
+			class="row g-4 pt-4">
 
-    {{ form_row(form.address) }}
-    {{ form_row(form.city) }}
-    {{ form_row(form.deliveryDate) }}
-    {{ form_row(form.deliveryTime) }}
+			{# Colonne 1 — Vos informations + carte #}
+			<div class="col-md-3">
 
-    {% if preSelectedMenu %}
+				<h4 class="mb-3">Vos informations</h4>
 
-        <div>   
-            <label>Menu choisi</label>
-            <input type="text" value="{{ preSelectedMenu.title }}" disabled>
-            <input type="hidden" name="selected_menu_id" value="{{ preSelectedMenu.id }}">
-            {{ form_widget(form.menu, { 'attr': {'hidden': 'hidden'} }) }}
-        </div>
+				<ul
+					class="list-group mb-4">
 
-    {% else %}
-        {{ form_row(form.menu) }}
-    {% endif %}
+					<!-- Carte avec point de départ et d'arrivée -->
+					<div class="map-zoom-wrapper">
+						<div id="delivery-map" class="rounded-top" style="height: 220px;" data-address-id="{{ form.address.vars.id }}" data-city-id="{{ form.city.vars.id }}"></div>
+					</div>
 
-    {{ form_row(form.peopleCount) }}
+					<li class="p-3 list-group-item">
+						<h6 class="my-0">Nom</h6>
+						<small class="text-muted">{{ order.lastName }}</small>
+					</li>
+					<li class="p-3 list-group-item">
+						<h6 class="my-0">Prénom</h6>
+						<small class="text-muted">{{ order.firstName }}</small>
+					</li>
+					<li class="p-3 list-group-item">
+						<h6 class="my-0">Email</h6>
+						<small>{{ order.email }}</small>
+					</li>
+					<li class="p-3 list-group-item">
+						<h6 class="my-0">Téléphone</h6>
+						<small class="text-muted">{{ order.phone }}</small>
+					</li>
+				</ul>
 
-    <button type="submit">Valider la commande</button>
+			</div>
 
-    {{ form_end(form) }}
+			{# Colonne 2 — Formulaire #}
+			<div class="col-md-6 px-5">
+				<h4 class="mb-3">Détails de la livraison</h4>
+
+				<div class="row">
+					<div class="col-md-8 mb-3">
+						{{ form_label(form.address, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.address, { 'attr': {'class': 'form-control', 'placeholder': '12 rue de la Paix', 'data-validate': 'address'} }) }}
+						<div class="invalid-feedback">L'adresse est obligatoire.</div>
+						{{ form_errors(form.address) }}
+					</div>
+					<div class="col-md-4 mb-3">
+						{{ form_label(form.city, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.city, { 'attr': {'class': 'form-control', 'placeholder': 'Bordeaux', 'data-validate': 'city'} }) }}
+						<div class="invalid-feedback">La ville est obligatoire.</div>
+						{{ form_errors(form.city) }}
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						{{ form_label(form.deliveryDate, 'Date de livraison', {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.deliveryDate, { 'attr': {'class': 'form-control', 'data-validate': 'date'} }) }}
+						<div class="invalid-feedback">La date doit être aujourd'hui ou dans le futur.</div>
+						{{ form_errors(form.deliveryDate) }}
+					</div>
+					<div class="col-md-6 mb-3">
+						{{ form_label(form.deliveryTime, 'Heure de livraison', {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.deliveryTime, { 'attr': {'class': 'form-control', 'data-validate': 'time'} }) }}
+						<div class="invalid-feedback">L'heure de livraison est obligatoire.</div>
+						{{ form_errors(form.deliveryTime) }}
+					</div>
+				</div>
+
+				<div class="mb-3">
+					{% if preSelectedMenu %}
+						<label class="col-form-label">Menu choisi</label>
+						<input type="text" class="form-control bg-body" value="{{ preSelectedMenu.title }}" disabled>
+						<input type="hidden" name="selected_menu_id" value="{{ preSelectedMenu.id }}">
+						{{ form_widget(form.menu, { 'attr': {'hidden': 'hidden'} }) }}
+					{% else %}
+						{{ form_label(form.menu, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.menu, { 'attr': {'class': 'form-select', 'data-validate': 'menu'} }) }}
+						{{ form_errors(form.menu) }}
+					{% endif %}
+				</div>
+
+				<div class="mb-4">
+					{{ form_label(form.peopleCount, null, {'label_attr': {'class': 'form-label'}}) }}
+
+					{{ form_widget(form.peopleCount, { 'attr': {
+						'class': 'form-control',
+						'min': '1',
+						'data-validate': 'people',
+						'data-min-people': preSelectedMenu ? preSelectedMenu.minPeople : 1
+					} }) }}
+					<div id="people-feedback" class="invalid-feedback">
+						Minimum
+						{{ preSelectedMenu ? preSelectedMenu.minPeople : 1 }}
+						{{ (preSelectedMenu ? preSelectedMenu.minPeople : 1) > 1 ? 'personnes requises' : 'personne requise' }}
+						pour ce menu.
+					</div>
+
+
+					{{ form_errors(form.peopleCount) }}
+				</div>
+
+				<button id="order-submit" class="btn btn-primary w-100" type="submit" data-spinner-btn {% if preSelectedMenu %} data-base-price="{{ preSelectedMenu.basePrice }}" {% endif %}>
+					<span class="btn-label">
+						Valider et voir le récapitulatif
+						<span id="btn-price" class="btn-price"></span>
+					</span>
+
+					<span class="btn-spinner p-1 d-none justify-content-center">
+						<span class="spinner-border spinner-border-sm" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</span>
+					</span>
+				</button>
+			</div>
+
+			{# Colonne 3 — Votre commande (statique) #}
+			<div class="col-md-3">
+				<h4 class="mb-3">Votre commande</h4>
+				<ul class="list-group list-unstyled">
+					{% if preSelectedMenu %}
+						<li class="d-flex justify-content-between lh-condensed">
+							{% if preSelectedMenu.images|length > 0 %}
+								{% set mainImage = preSelectedMenu.images|first %}
+								<img src="{{ asset(mainImage.path) }}" alt="{{ mainImage.alt ?? preSelectedMenu.title }}" class="img-fluid rounded-top w-100 h-100 object-fit-cover">
+							{% endif %}
+						</li>
+						<li class="p-3 list-group-item d-flex justify-content-between lh-condensed">
+							<div>
+								<h6 class="my-0">{{ preSelectedMenu.title }}</h6>
+								<small class="text-muted">Min.
+									{{ preSelectedMenu.minPeople }}
+									pers.</small>
+							</div>
+							<span class="text-muted">{{ preSelectedMenu.basePrice }}
+								€/pers.</span>
+						</li>
+					{% else %}
+
+						<li id="menu-preview-image-wrap" class="list-group-item border-0 p-0 lh-condensed d-none">
+							<img id="menu-preview-img" src="" alt="" class="img-fluid rounded-top w-100 h-100 object-fit-cover"> 
+						</li>
+						<li id="menu-preview-info" class="p-3 list-group-item d-flex justify-content-between lh-condensed d-none">
+							<div>
+								<h6 id="menu-preview-title" class="my-0"></h6>
+								<small id="menu-preview-min" class="text-muted"></small>
+							</div>
+							<span id="menu-preview-price" class="text-muted"></span>
+						</li>
+						<li id="menu-preview-empty" class="p-3 border border-top rounded-top list-group-item text-muted">
+							<small>Sélectionnez un menu dans le formulaire.</small>
+						</li>
+					{% endif %}
+
+					<li id="livraison-row" class="p-3 livraison-row list-group-item d-flex justify-content-between lh-condensed">
+						<div>
+							<h6 class="my-0">Livraison</h6>
+							<small class="text-muted">5 € + 0,59 €/km hors Bordeaux</small>
+						</div>
+					</li>
+
+					<li id="discount-row" class="p-3 list-group-item d-flex justify-content-between d-none">
+						<div>
+
+							<div class="d-flex align-items-center gap-2">
+								<h6 class="my-0">Réduction automatique</h6>
+								<span id="discount-badge" class="badge bg-dark"></span>
+							</div>
+
+
+							<small>−10 % dès 5 pers. au-delà du minimum</small>
+
+						</div>
+
+					</li>
+
+				</ul>
+			</div>
+
+		</div>
+
+		{{ form_end(form) }}
+
+	</div>
+
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	{{ encore_entry_script_tags('order-map') }}
+	{{ encore_entry_script_tags('order-form') }}
 {% endblock %}

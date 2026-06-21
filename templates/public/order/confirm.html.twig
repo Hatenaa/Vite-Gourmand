@@ -5,62 +5,147 @@
 
 {% block body %}
 
-	<h2>Récapitulatif de votre commande</h2>
-	<p>Nous vous prions de bien vérifier les informations communiqués avant de confirmer.</p>
+	<section class="position-relative overflow-hidden d-flex align-items-end justify-content-start" style="min-height: 420px;">
+		<img src="/images/main/front-restaurant.jpg" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+		<div class="position-relative z-1 py-5 px-3 container">
+			<h1 class="fw-bold text-white">Récapitulatif de votre commande</h1>
+			<p class="lead text-white">Veuillez vérifier les informations avant de confirmer.</p>
+		</div>
+	</section>
 
-    <h3>Vos informations</h3>
-	<ul>
-		<li>Prénom: {{ orderData.firstName }}</li>
-		<li>Nom: {{ orderData.lastName }}</li>
-		<li>Email: {{ orderData.email }}</li>
-		<li>Téléphone: {{ orderData.phone }}</li>
-	</ul>
+	<div class="container py-5">
+		<div
+			class="row g-4">
 
-	<h3>Détails de la prestation</h3>
-	<ul>
-		<li>Adresse: {{ orderData.address }}</li>
-		<li>Ville: {{ orderData.city }}</li>
-		<li>Date: {{ orderData.deliveryDate }}</li>
-		<li>Heure: {{ orderData.deliveryTime }}</li>
-		<li>
-            Distance:
-            {% if orderData.distanceKm < 1 %}
-                {{ (orderData.distanceKm * 1000)|round }} m
-            {% else %}
-                {{ orderData.distanceKm|number_format(2, '.', ' ') }} km
-            {% endif %}
-        </li>
-	</ul>
+			{# Colonne gauche — infos #}
+			<div class="col-md-8 pe-5">
 
-    <h3>Prix</h3>
-    <table>
-        <tr>
-            <td>Prix du menu ({{ orderData.peopleCount }} pers.)</td>
-            <td>{{ orderData.menuPrice|number_format(2, '.',' ') }} €</td>
-        </tr>
-        <tr>
-            <td>Livraison</td>
-            <td>{{ orderData.deliveryPrice|number_format(2, '.', ' ') }} €</td>
-        </tr>
+				<h4 class="mb-3">Vos informations</h4>
 
-        {% if orderData.discount > 0 %}
-            <tr>
-                <td>Remise (10%)</td>
-                <td>-{{ orderData.discount|number_format(2, '.', ' ')}} €</td>
-            </tr>
-        {% endif %}
+				<ul class="list-group mb-4">
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Nom complet</span>
+						<strong>{{ orderData.firstName }}
+							{{ orderData.lastName }}</strong>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Email</span>
+						<span>{{ orderData.email }}</span>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Téléphone</span>
+						<span>{{ orderData.phone }}</span>
+					</li>
+				</ul>
 
-        <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>{{ orderData.totalPrice|number_format(2, '.', ' ') }} €</strong></td>
-        </tr>
-    </table>
+				<h4 class="mb-3">Détails de la prestation</h4>
+				<ul class="list-group">
 
 
-	<form method="post" action="{{ path('order_finalize') }}">
-        <input type="hidden" name="_token" value="{{ csrf_token('order_finalize') }}">
-		<button type="submit">Confirmer ma commande</button>
-		<a href="{{ path('order_new') }}">Modifier ma commande</a>
-	</form>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Menu</span>
+						<strong>{{ orderData.menuTitle }}</strong>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Nombre de personnes</span>
+						<span>{{ orderData.peopleCount }}</span>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Adresse</span>
+						<span>{{ orderData.address }},
+							{{ orderData.city|capitalize }}</span>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Date</span>
+						<span>{{ orderData.deliveryDate|date('d/m/Y') }}</span>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Heure</span>
+						<span>{{ orderData.deliveryTime }}</span>
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<span class="text-muted">Distance</span>
+						<span>
+							{% if orderData.distanceKm < 1 %}
+								{{ (orderData.distanceKm * 1000)|round }}
+								m
+							{% else %}
+								{{ orderData.distanceKm|number_format(2, '.', ' ') }}
+								km
+							{% endif %}
+						</span>
+					</li>
+				</ul>
+
+			</div>
+
+			{# Colonne droite — récapitulatif prix + actions #}
+			<div class="col-md-4">
+
+				<h4 class="mb-3">Votre commande</h4>
+				<ul class="list-group mb-4">
+                
+					<li class="p-3 list-group-item d-flex justify-content-between lh-condensed">
+						<div>
+							<h6 class="my-0">{{ orderData.menuTitle }}</h6>
+							<small class="text-muted">{{ orderData.peopleCount }}
+								personnes</small>
+						</div>
+						<span class="text-muted {{ orderData.discount > 0 ? 'text-decoration-line-through' : '' }}">
+							{{ orderData.menuPrice|number_format(2, '.', ' ') }}
+							€
+						</span>
+
+					</li>
+					<li class="p-3 list-group-item d-flex justify-content-between lh-condensed">
+						<div>
+							<h6 class="my-0">Livraison</h6>
+						</div>
+						<span class="text-muted">{{ orderData.deliveryPrice|number_format(2, '.', ' ') }}
+							€</span>
+					</li>
+					{% if orderData.discount > 0 %}
+						<li class="p-3 list-group-item d-flex justify-content-between lh-condensed">
+							<div class="text-success">
+								<h6 class="my-0">Réduction (−10%)</h6>
+							</div>
+							<span class="badge bg-dark">−{{ orderData.discount|number_format(2, '.', ' ') }}
+								€</span>
+						</li>
+					{% endif %}
+					<li class="p-3 list-group-item d-flex justify-content-between">
+						<strong>Total</strong>
+						<strong class="text-primary fs-5">{{ orderData.totalPrice|number_format(2, '.', ' ') }}
+							€</strong>
+					</li>
+				</ul>
+
+				<form method="post" action="{{ path('order_finalize') }}">
+					<input type="hidden" name="_token" value="{{ csrf_token('order_finalize') }}">
+					<div class="d-grid gap-2">
+						<button type="submit" class="btn btn-primary" data-spinner-btn>
+							<span class="btn-label">Confirmer ma commande</span>
+							<span class="btn-spinner p-1 d-none justify-content-center">
+								<span class="spinner-border spinner-border-sm" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</span>
+							</span>
+						</button>
+						<a href="{{ path('order_new') }}" class="btn btn-outline-secondary" data-spinner-btn>
+							<span class="btn-label">Modifier ma commande</span>
+							<span class="btn-spinner p-1 d-none justify-content-center">
+								<span class="spinner-border spinner-border-sm" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</span>
+							</span>
+						</a>
+					</div>
+				</form>
+
+			</div>
+
+		</div>
+	</div>
 
 {% endblock %}

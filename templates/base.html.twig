@@ -24,13 +24,15 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 	</head>
-	<body>
-		{% include 'public/main/_partials/_header.html.twig' %}
+	<body class="d-flex flex-column min-vh-100">
+		{% block header %}
+			{% include 'public/main/_partials/_header.html.twig' %}
+		{% endblock %}
 
 
 		{% for label, messages in app.flashes %}
 			{% for message in messages %}
-				<div class="container">
+				<div class="pt-3 container">
 					<div class="alert alert-{{ label }}">{{ message }}</div>
 				</div>
 			{% endfor %}
@@ -42,7 +44,13 @@
 			render(controller()) : le footer nécessite ses propres données BDD sur chaque page,
 			injecter OpeningHoursRepository dans chaque controller violerait le principe DRY 
 		#}
-		{{ render(controller('App\\Controller\\Public\\Main\\FooterController::index')) }}
+		
+		{% block footer %}
+			<div class="mt-auto">
+				{{ render(controller('App\\Controller\\Public\\Main\\FooterController::index')) }}
+			</div>
+		{% endblock %}
+
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}

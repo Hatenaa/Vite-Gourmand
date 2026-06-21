@@ -1,20 +1,106 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Inscription
+{% endblock %}
 
 {% block body %}
-<h1>Créer votre compte dès maintenant</h1>
 
-{{ form_start(registrationForm) }}
-    {{ form_errors(registrationForm) }}
-    {{ form_row(registrationForm.firstName) }}
-    {{ form_row(registrationForm.lastName) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.address) }}
-    {{ form_row(registrationForm.phone) }}
-    {{ form_row(registrationForm.city) }}
-    {{ form_row(registrationForm.plainPassword) }}
-    <button type="submit" class="btn btn-primary">S'inscrire</button>
-{{ form_end(registrationForm) }}
+	<section class="position-relative overflow-hidden d-flex align-items-end justify-content-center text-center" style="min-height: 320px;">
+		<img src="/images/main/table-restaurant.jpg" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+		<div class="position-relative z-1 py-5 px-3">
+			<h1 class="display-4 fw-bold text-white">Créez votre compte dès maintenant</h1>
+		</div>
+	</section>
 
+	<div class="container pt-5">
+
+		<div class="d-flex justify-content-center pb-5">
+			<div class="card col-sm-8">
+				<div class="p-5 card-body">
+
+					{{ form_start(registrationForm) }}
+					{{ form_errors(registrationForm) }}
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="mb-3">
+								{{ form_label(registrationForm.firstName, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(registrationForm.firstName, {'attr': {'class': 'form-control', 'data-validate': 'firstname'}}) }}
+								<div class="invalid-feedback">Le prénom doit contenir au moins 2 caractères.</div>
+								{{ form_errors(registrationForm.firstName) }}
+							</div>
+							<div class="mb-3">
+								{{ form_label(registrationForm.lastName, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(registrationForm.lastName, {'attr': {'class': 'form-control', 'data-validate': 'lastname'}}) }}
+								<div class="invalid-feedback">Le nom doit contenir au moins 2 caractères.</div>
+								{{ form_errors(registrationForm.lastName) }}
+							</div>
+							<div class="mb-3">
+								{{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'data-validate': 'email'}}) }}
+								<div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
+								{{ form_errors(registrationForm.email) }}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="mb-3">
+								{{ form_label(registrationForm.address, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'data-validate': 'address'}}) }}
+								<div class="invalid-feedback">L'adresse doit contenir au moins 5 caractères.</div>
+								{{ form_errors(registrationForm.address) }}
+							</div>
+							<div class="mb-3">
+								{{ form_label(registrationForm.phone, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'data-validate': 'phone'}}) }}
+								<div class="invalid-feedback">Le numéro doit être composé uniquement de chiffres et en contenir 10.</div>
+								{{ form_errors(registrationForm.phone) }}
+							</div>
+							<div class="mb-3">
+								{{ form_label(registrationForm.city, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(registrationForm.city, {'attr': {'class': 'form-control', 'data-validate': 'city'}}) }}
+								<div class="invalid-feedback">La ville ne doit pas contenir de chiffres.</div>
+								{{ form_errors(registrationForm.city) }}
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						{{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'data-validate': 'password'}}) }}
+						<div class="invalid-feedback">
+							Le mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.
+						</div>
+
+						{{ form_errors(registrationForm.plainPassword) }}
+					</div>
+
+
+					<button type="submit" id="submitBtn" class="mt-4 btn btn-primary w-100" disabled data-spinner-btn>
+						<span class="btn-label">S'inscrire</span>
+						<span class="btn-spinner p-1 d-none justify-content-center">
+							<span class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</span>
+						</span>
+					</button>
+
+
+					<p class="mt-3">
+						J'ai déjà un compte et j'aimerais
+						<a href="{{ path('login') }}" class="text-decoration-none link--flash">me connecter ici</a>.
+					</p>
+
+					{{ form_end(registrationForm) }}
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('signup') }}
 {% endblock %}

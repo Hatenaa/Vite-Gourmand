@@ -13,46 +13,26 @@
 
 			<div class="collapse navbar-collapse" id="navbarMain">
 				<ul class="navbar-nav ms-auto align-items-center">
-					<li class="nav-item">
-						<a href="{{ path('home') }}" class="nav-link">Accueil</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{ path('menu_index') }}" class="nav-link">Menus</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{ path('contact') }}" class="nav-link">Contact</a>
-					</li>
+					{% for link in nav_links('public') %}
+						{% set variant = link.variant|default('link') %}
 
-					{% if app.user %}
-						<li class="nav-item">
-							<a href="{{ path('user_dashboard') }}" class="nav-link">Mon espace</a>
-						</li>
-						{% if is_granted('ROLE_ADMIN') %}
-							<li class="nav-item">
-								<a href="{{ path('admin_dashboard') }}" class="nav-link">Espace Administrateur</a>
+						{% if variant == 'button-primary' %}
+							<li class="nav-item ms-2">
+								<a href="{{ path(link.route) }}" class="btn btn-primary px-4">
+									{{ link.label }}
+									{% if link.icon is defined %}<i class="bi {{ link.icon }}"></i>{% endif %}
+								</a>
 							</li>
-						{% elseif is_granted('ROLE_EMPLOYEE') %}
-							<li class="nav-item">
-								<a href="{{ path('employee_dashboard') }}" class="nav-link">Espace Employé</a>
+						{% elseif variant == 'button-outline' %}
+							<li class="nav-item ms-2">
+								<a href="{{ path(link.route) }}" class="btn btn-outline-secondary px-4">{{ link.label }}</a>
+							</li>
+						{% else %}
+							<li class="nav-items">
+								<a href="{{ path(link.route) }}" class="nav-link">{{ link.label }}</a>
 							</li>
 						{% endif %}
-						<li class="nav-item">
-							<a href="{{ path('logout') }}" class="nav-link">Déconnexion</a>
-						</li>
-					{% else %}
-						<li class="nav-item">
-							<a href="{{ path('login') }}" class="nav-link">Connexion</a>
-						</li>
-						<li class="nav-item ms-2">
-							<a href="{{ path('registration') }}" class="btn btn-outline-secondary px-4">Inscription</a>
-						</li>
-						<li class="nav-item ms-2">
-							<a href="{{ path('order_new') }}" class="btn btn-primary px-4">
-								Commander
-								<i class="bi bi-arrow-right"></i>
-							</a>
-						</li>
-					{% endif %}
+					{% endfor %}
 				</ul>
 			</div>
 		</header>

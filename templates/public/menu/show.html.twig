@@ -50,14 +50,24 @@
 
 					<div class="d-grid gap-2 w-100">
 
-						
+
 						{% if app.user %}
+						
 							<!-- Bouton de commande -->
-							<a href="{{ path('order_new', {'id': menu.id}) }}" class="btn btn-primary">
-								Commander ce menu ·
-								{{ menu.basePrice }}
-								€
+							<a href="{{ path('order_new', {'menuId': menu.id}) }}" class="btn btn-primary" id="btn-commander" data-spinner-btn>
+								<span class="btn-label">
+									Commander ce menu ·
+									{{ menu.basePrice }}
+									€
+								</span>
+								<span class="btn-spinner p-1 d-none justify-content-center">
+									<span class="spinner-border spinner-border-sm" role="status">
+										<span class="visually-hidden">Loading...</span>
+									</span>
+								</span>
 							</a>
+
+
 						{% else %}
 							<p class="ms-3">Pour commander, vous devez
 								<a class="text-decoration-none link--flash" href="{{ path('login', {'_target_path': app.request.uri}) }}">vous connecter</a>
@@ -157,10 +167,10 @@
 										<p class="mb-0">
 											Passé ce délai, et conformément à nos
 											<a href="{{ path('legal_cgv') }}" class="link--flash text-decoration-none class">conditions générales de vente</a>,
-																																																																								        des frais de
+																																																																																																        des frais de
 											<strong>six cents euros</strong>
 											seront appliqués.
-																																																																		        Pour organiser le retour du matériel, il vous suffit de
+																																																																																								        Pour organiser le retour du matériel, il vous suffit de
 											<strong>nous contacter directement</strong>
 											en réponse à l'e-mail reçu.
 										</p>

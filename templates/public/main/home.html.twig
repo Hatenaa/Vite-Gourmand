@@ -8,7 +8,7 @@
 		class="container">
 
 		<!-- Image et texte d'accueil -->
-		<section class="row flex-lg-row-reverse align-items-center g-3 g-lg-5 py-3 py-lg-5">
+		<section class="row flex-lg-row-reverse align-items-center g-3 py-3 py-lg-5">
 			<div class="col-12 col-lg-6 px-3">
 				<img src="{{ asset('images/main/home.jpg') }}" class="d-block mx-lg-auto img-fluid hero-img" alt="Vite et Gourmand - Traiteur professionnel" width="700" height="500" loading="lazy">
 			</div>
@@ -163,5 +163,10 @@
 	</main>
 
 	{{parent()}}{{encore_entry_script_tags('home')}}
-	{% block javascripts %}{% endblock %}
+	
+	{% block javascripts %}
+		{{ parent() }}
+		{{ encore_entry_script_tags('home') }}
+	{% endblock %}
+
 {% endblock %}

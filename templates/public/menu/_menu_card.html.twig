@@ -26,19 +26,35 @@
 
 		<p class="text-muted text-justify small flex-grow-1">{{ menu.description }}</p>
 
-		<div class="d-grid gap-2 mt-3">
+		<div
+			class="d-grid gap-2 mt-3">
 
 			{# Important: le sujet insiste sur la nécessité de vérifier les informations de sa commande.
-			Il est donc préférable de rendre le bouton "détail" du menu bien en évidence plutot que celui pour commander
-			afin d'être sûr que le client comprenne ce qu'il achète. En e-commerce classique on aurait plutôt
-			fait l'inverse. Mais dans ce contexte précis, le détail puis la commande est préférable au schéma opposé. #}
+									Il est donc préférable de rendre le bouton "détail" du menu bien en évidence plutot que celui pour commander
+									afin d'être sûr que le client comprenne ce qu'il achète. En e-commerce classique on aurait plutôt
+									fait l'inverse. Mais dans ce contexte précis, le détail puis la commande est préférable au schéma opposé. #}
 
-			<a href="{{ path('menu_show', {id: menu.id}) }}" class="btn btn-primary">
-				Voir en détail <i class="bi bi-fork-knife"></i>
+			<a href="{{ path('menu_show', {id: menu.id}) }}" class="btn btn-primary" data-spinner-btn>
+				<span class="btn-label">
+					Voir en détail
+					<i class="bi bi-fork-knife"></i>
+				</span>
+				<span class="btn-spinner p-1 d-none justify-content-center">
+					<span class="spinner-border spinner-border-sm" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</span>
+				</span>
 			</a>
-			<a href="{{ path('order_new', {'menuId': menu.id}) }}" class="btn btn-outline-secondary">
-				Commander ce menu 
+
+			<a href="{{ path('order_new', {'menuId': menu.id}) }}" class="btn btn-outline-secondary" data-spinner-btn>
+				<span class="btn-label">Commander ce menu</span>
+				<span class="btn-spinner p-1 d-none justify-content-center">
+					<span class="spinner-border spinner-border-sm" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</span>
+				</span>
 			</a>
+
 		</div>
 
 	</div>

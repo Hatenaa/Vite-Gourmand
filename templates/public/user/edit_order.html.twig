@@ -1,19 +1,271 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier ma commande{% endblock %}
+{% block title %}Modifier ma commande
+{% endblock %}
+
+{% block header %}{% endblock %}
 
 {% block body %}
-    <h1>Modifier ma commande</h1>
-    <p>Menu: {{ order.menu.title }}</p>
 
-        {{ form_start(form) }}
-            {{ form_row(form.address) }}
-            {{ form_row(form.city) }}
-            {{ form_row(form.deliveryDate) }}
-            {{ form_row(form.deliveryTime) }}
-            {{ form_row(form.peopleCount) }}
-            <button type="submit">Enregistrer les modifications</button>
-        {{ form_end(form) }}
+	{% set statusLabels = {
+    'PENDING': 'En attente',
+    'ACCEPTED': 'Acceptée',
+    'IN_PREPARATION': 'En préparation',
+    'IN_DELIVERY': 'En cours de livraison',
+    'DELIVERED': 'Livrée',
+    'WAITING_MATERIAL': 'En attente retour matériel',
+    'COMPLETED': 'Terminée',
+    'CANCELLED': 'Annulée'
+} %}
 
-        <a href="{{ path('user_order_detail', {id: order.id}) }}">Annuler</a>
+	{% set statusColors = {
+    'PENDING': 'dark',
+    'ACCEPTED': 'info',
+    'IN_PREPARATION': 'primary',
+    'IN_DELIVERY': 'primary',
+    'DELIVERED': 'success',
+    'WAITING_MATERIAL': 'secondary',
+    'COMPLETED': 'success',
+    'CANCELLED': 'primary'
+} %}
+
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/front-restaurant.jpg" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
+		<div class="position-relative z-1 d-flex justify-content-between align-items-center py-4 px-3 container">
+			{% include 'public/user/_partials/_nav.html.twig' %}
+		</div>
+
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">Modifier ma commande</h1>
+				<p class="lead text-white mb-0">Menu
+					{{ order.menu.title|lower }}</p>
+			</div>
+			<div class="d-grid d-md-block">
+				<a href="{{ path('user_dashboard') }}" class="btn btn-outline-light">
+					<i class="bi bi-arrow-left me-1"></i>
+					Retour
+				</a>
+			</div>
+		</div>
+	</section>
+
+	{% include 'public/user/_partials/_offcanvas.html.twig' %}
+
+	<div class="container py-5">
+		<div
+			class="row g-5">
+
+			{# Colonne formulaire #}
+			<div class="col-lg-7">
+				<h2 class="mb-4">Modifier les informations</h2>
+
+				{{ form_start(form) }}
+				{{ form_errors(form) }}
+
+				<div class="row g-3">
+					<div class="col-md-8">
+						{{ form_label(form.address, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.address, {'attr': {'class': 'form-control', 'data-validate': 'address'}}) }}
+						<div class="invalid-feedback">L'adresse est obligatoire.</div>
+						{{ form_errors(form.address) }}
+					</div>
+					<div class="col-md-4">
+						{{ form_label(form.city, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.city, {'attr': {'class': 'form-control', 'data-validate': 'city'}}) }}
+						<div class="invalid-feedback">La ville est obligatoire.</div>
+						{{ form_errors(form.city) }}
+					</div>
+					<div class="col-md-6">
+						{{ form_label(form.deliveryDate, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.deliveryDate, {'attr': {'class': 'form-control', 'data-validate': 'date'}}) }}
+						<div class="invalid-feedback">La date doit être aujourd'hui ou dans le futur.</div>
+						{{ form_errors(form.deliveryDate) }}
+					</div>
+					<div class="col-md-6">
+						{{ form_label(form.deliveryTime, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.deliveryTime, {'attr': {'class': 'form-control', 'data-validate': 'time'}}) }}
+						<div class="invalid-feedback">L'heure est obligatoire.</div>
+						{{ form_errors(form.deliveryTime) }}
+					</div>
+					<div class="col-12">
+						{{ form_label(form.peopleCount, null, {'label_attr': {'class': 'form-label'}}) }}
+						{{ form_widget(form.peopleCount, {'attr': {
+							'class': 'form-control',
+							'min': order.menu.minPeople,
+							'data-validate': 'people',
+							'data-min-people': order.menu.minPeople
+						}}) }}
+						<div class="invalid-feedback">Minimum
+							{{ order.menu.minPeople }}
+							personne(s) pour ce menu.</div>
+						{{ form_errors(form.peopleCount) }}
+					</div>
+				</div>
+
+				<div class="d-grid d-sm-flex gap-2 mt-4">
+					<button type="submit" class="btn btn-primary flex-sm-fill" data-spinner-btn>
+						<span class="btn-label">Enregistrer les modifications</span>
+						<span class="btn-spinner p-1 d-none justify-content-center">
+							<span class="spinner-border spinner-border-sm" role="status">
+								<span class="visually-hidden">Loading...</span>
+							</span>
+						</span>
+					</button>
+				</div>
+
+
+				{{ form_end(form) }}
+			</div>
+
+			{# Colonne résumé #}
+			<div class="col-lg-5">
+				<h2 class="mb-4">Commande actuelle</h2>
+				<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+					{% if order.menu.images|length > 0 %}
+						{% set menuImage = order.menu.images|first %}
+						<div class="position-relative">
+							<img src="{{ asset(menuImage.path) }}" alt="{{ menuImage.alt ?? order.menu.title }}" class="w-100 object-fit-cover" style="height: 180px;">
+							<span class="position-absolute top-0 end-0 m-2 badge bg-{{ statusColors[order.status] ?? 'secondary' }}">
+								{{ statusLabels[order.status] ?? order.status }}
+							</span>
+						</div>
+					{% endif %}
+					<div class="card-body p-4">
+						<h5 class="fw-bold mb-1">{{ order.menu.title }}</h5>
+						<p class="text-muted small mb-3">{{ order.menu.description }}</p>
+						<ul class="list-unstyled mb-0">
+							<li class="d-flex justify-content-between py-2 border-bottom">
+								<span class="text-muted">Date</span>
+								<span>{{ order.deliveryDate|date('d/m/Y') }}</span>
+							</li>
+							<li class="d-flex justify-content-between py-2 border-bottom">
+								<span class="text-muted">Heure</span>
+								<span>{{ order.deliveryTime|date('H:i') }}</span>
+							</li>
+							<li class="d-flex justify-content-between py-2 border-bottom">
+								<span class="text-muted">Adresse</span>
+								<span class="text-end">{{ order.address }},
+									{{ order.city }}</span>
+							</li>
+							<li class="d-flex justify-content-between py-2 border-bottom">
+								<span class="text-muted">Personnes</span>
+								<span>{{ order.peopleCount }}</span>
+							</li>
+							<li class="d-flex justify-content-between py-2">
+								<span class="fw-bold">Total actuel</span>
+								<span class="fw-bold text-primary">{{ order.totalPrice|number_format(2, '.', ' ') }}
+									€</span>
+							</li>
+						</ul>
+						<button type="button" class="btn btn-outline-secondary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#orderDetailModal">
+							<i class="bi bi-receipt me-1"></i>
+							Détail complet des tarifs
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	{# Modal détail commande #}
+	<div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content rounded-4 overflow-hidden border-0 shadow" style="max-height: 70vh;">
+
+				{% if order.menu.images|length > 0 %}
+					{% set menuImage = order.menu.images|first %}
+					<div class="position-relative">
+						<img src="{{ asset(menuImage.path) }}" alt="{{ menuImage.alt ?? order.menu.title }}" class="w-100 object-fit-cover" style="height: 200px;">
+						<span class="position-absolute top-0 end-0 m-2 badge bg-{{ statusColors[order.status] ?? 'secondary' }} fw-normal">
+							{{ statusLabels[order.status] ?? order.status }}
+						</span>
+					</div>
+				{% endif %}
+
+				<div class="modal-body p-4">
+					<h4 class="fw-bold mb-2">{{ order.menu.title }}</h4>
+					<p class="text-muted small mb-4">{{ order.menu.description }}</p>
+
+					<p class="fw-bold ps-0 pt-3 text-uppercase small mb-2">Livraison</p>
+					<table class="table table-sm mb-4">
+						<tbody>
+							<tr>
+								<td class="text-muted ps-0">Date</td>
+								<td class="text-end text-muted">{{ order.deliveryDate|date('d/m/Y') }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Heure</td>
+								<td class="text-end text-muted">{{ order.deliveryTime|date('H:i') }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Adresse</td>
+								<td class="text-end text-muted">{{ order.address }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Ville</td>
+								<td class="text-end text-muted">{{ order.city }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Personnes</td>
+								<td class="text-end text-muted">{{ order.peopleCount }}</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Matériel</td>
+								<td class="text-end text-muted">{{ order.hasBorrowedMaterial ? 'Oui' : 'Non' }}</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<p class="fw-bold ps-0 pt-3 text-uppercase small mb-2">Tarifs</p>
+					<table class="table table-sm mb-0">
+						<tbody>
+							<tr>
+								<td class="text-muted ps-0">Menu / pers.</td>
+								<td class="text-end text-muted">{{ order.menu.basePrice }}
+									€</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Sous-total (×{{ order.peopleCount }})</td>
+								<td class="text-end text-muted">{{ order.menuPrice|number_format(2, '.', ' ') }}
+									€</td>
+							</tr>
+							<tr>
+								<td class="text-muted ps-0">Livraison</td>
+								<td class="text-end text-muted">{{ order.deliveryPrice|number_format(2, '.', ' ') }}
+									€</td>
+							</tr>
+							{% if order.discount > 0 %}
+								<tr>
+									<td class="ps-0">Remise</td>
+									<td class="text-end text-success">−{{ order.discount|number_format(2, '.', ' ') }}
+										€</td>
+								</tr>
+							{% endif %}
+							<tr class="border-top">
+								<td class="fw-bold ps-0 pt-3">Total</td>
+								<td class="text-end fw-bold text-primary fs-5 pt-3">
+									{{ order.totalPrice|number_format(2, '.', ' ') }}
+									€
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="modal-footer border-0 pt-0 px-4 pb-4">
+					<button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('edit-order') }}
 {% endblock %}
