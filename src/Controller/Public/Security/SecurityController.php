@@ -34,7 +34,7 @@ class SecurityController extends AbstractController
     #[Route('/connexion/erreur', name: 'login_error')]
     public function loginError(): Response
     {
-        $this->addFlash('error', 'Identifiants invalides. Veuillez réessayer.');
+        $this->addFlash('danger', 'Identifiants invalides. Veuillez réessayer.');
         return $this->redirectToRoute('login');
     }
 

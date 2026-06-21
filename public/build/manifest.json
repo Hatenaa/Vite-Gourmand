@@ -6,6 +6,8 @@
   "build/menu-filters.css": "/build/menu-filters.css",
   "build/menu-filters.js": "/build/menu-filters.js",
   "build/order-filters.js": "/build/order-filters.js",
+  "build/signup.js": "/build/signup.js",
+  "build/signin.js": "/build/signin.js",
   "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.1295669c.woff",
   "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.92ea18a8.woff2"
 }

@@ -7,10 +7,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OrderPricingService
 {
-    public function __construct(private HttpClientInterface $httpClient)
-    {
-
-    }
+    public function __construct(private HttpClientInterface $httpClient) {}
 
     public function geocode(string $address, string $city): ?array
     {

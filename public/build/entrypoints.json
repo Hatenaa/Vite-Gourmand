@@ -30,6 +30,16 @@
       "js": [
         "/build/order-filters.js"
       ]
+    },
+    "signup": {
+      "js": [
+        "/build/signup.js"
+      ]
+    },
+    "signin": {
+      "js": [
+        "/build/signin.js"
+      ]
     }
   }
 }
