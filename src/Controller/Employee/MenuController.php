@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Menu;
+use App\Entity\Dish;
 use App\Form\MenuType;
 use App\Entity\MenuImage;
 use App\Form\MenuImageType;
@@ -43,12 +44,16 @@ class MenuController extends AbstractController
             return $this->redirectToRoute('employee_menu_list');
         }
 
+        $dishes = $entityManager->getRepository(Dish::class)->findAll();
+
         return $this->render('employee/menu_form.html.twig', [
             'form' => $form->createView(),
-            'title' => 'Créer un menu'
+            'title' => 'Créer un menu',
+            'description' => 'Remplissez les informations de votre menu et sélectionnez les plats à inclure.',
+            'dishes' => $dishes,
         ]);
-    }
 
+    }
 
     #[Route('/{id}/modifier', name: 'edit')]
     public function menuEdit(int $id, Request $request, EntityManagerInterface $entityManager): Response
@@ -69,10 +74,14 @@ class MenuController extends AbstractController
             return $this->redirectToRoute('employee_menu_list');
         }
 
+        $dishes = $entityManager->getRepository(Dish::class)->findAll();
+
         return $this->render('employee/menu_form.html.twig', [
             'form' => $form->createView(),
-            'title' => 'Modifier un menu',
+            'title' => 'Modifier le menu ' . $menu->getTitle(),
+            'description' => 'Personnalisez votre menu et gardez vos informations toujours à jour.',
             'menu' => $menu,
+            'dishes' => $dishes,
         ]);
     }
 
@@ -103,7 +112,7 @@ class MenuController extends AbstractController
     {
         $menu = $entityManager->getRepository(Menu::class)->find($id);
 
-        if(!$menu){
+        if (!$menu) {
             throw $this->createNotFoundException('Menu introuvable.');
         }
 
@@ -117,13 +126,13 @@ class MenuController extends AbstractController
 
     }
 
-    
+
     #[Route('/{id}/images/ajouter', name: 'image_add', methods: ['POST'])]
     public function imageAdd(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $menu = $entityManager->getRepository(Menu::class)->find($id);
 
-        if(!$menu){
+        if (!$menu) {
             throw $this->createNotFoundException('Menu introuvable.');
         }
 
@@ -131,7 +140,7 @@ class MenuController extends AbstractController
         $form = $this->createForm(MenuImageType::class, $menuImage);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $imageFile = $form->get('imageFile')->getData();
             $newFilename = uniqid() . '.' . $imageFile->guessExtension();
@@ -159,21 +168,21 @@ class MenuController extends AbstractController
     {
         $menu = $entityManager->getRepository(Menu::class)->find($id);
 
-        if(!$menu){
+        if (!$menu) {
             throw $this->createNotFoundException('Menu introuvable');
         }
 
         $menuImage = $entityManager->getRepository(MenuImage::class)->find($imageId);
 
-        if(!$menuImage){
+        if (!$menuImage) {
             throw $this->createNotFoundException('Image du menu introuvable.');
         }
 
-        if($menuImage->getMenu() !== $menu){
+        if ($menuImage->getMenu() !== $menu) {
             throw $this->createNotFoundException('Image non associé à ce menu.');
         }
 
-        if(!$this->isCsrfTokenValid('delete_menu_image' . $imageId, $request->request->get('_token'))){
+        if (!$this->isCsrfTokenValid('delete_menu_image' . $imageId, $request->request->get('_token'))) {
             $this->addFlash('error', 'Action non autorisée');
             return $this->redirectToRoute('employee_menu_images', ['id' => $id]);
         }

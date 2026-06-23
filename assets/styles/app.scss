@@ -65,6 +65,17 @@ h1, h2, h3, h4, h5, h6 {
     color: $body-bg;
 }
 
+.btn-group {
+  .btn-check + .btn {
+    color: $dark;
+  }
+
+  .btn-check:checked + .btn {
+    color: $body-bg;
+  }
+}
+
+
 .btn-outline-secondary {
     border-color: #C0BDB1;
     color: $body-color;

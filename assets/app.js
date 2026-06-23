@@ -31,3 +31,24 @@ if (heroImg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         heroImg.style.transform = `translateY(${window.scrollY * 0.3}px)`;
     }, { passive: true });
 }
+
+
+// S'occupe du texte pour activer ou désactiver un menu dans la page de modification
+(function initToggle() {
+  const toggle = document.getElementById('menu_isActive');
+  const label = document.getElementById('isActiveLabel');
+  
+  if (toggle && label) {
+    function updateLabel() {
+      if (toggle.checked) {
+        label.innerHTML = 'Désactiver le menu';
+      } else {
+        label.innerHTML = 'Activer le menu';
+      }
+    }
+    
+    updateLabel();
+    toggle.addEventListener('change', updateLabel);
+  }
+})();
+

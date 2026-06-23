@@ -14,6 +14,7 @@
   "build/edit-profile.js": "/build/edit-profile.js",
   "build/edit-order.js": "/build/edit-order.js",
   "build/edit-employee.js": "/build/edit-employee.js",
+  "build/manage-menu.js": "/build/manage-menu.js",
   "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.1295669c.woff",
   "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.92ea18a8.woff2"
 }

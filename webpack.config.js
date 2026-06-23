@@ -16,6 +16,7 @@ Encore
     .addEntry('edit-profile', './assets/js/edit-profile.js')
     .addEntry('edit-order', './assets/js/edit-order.js')
     .addEntry('edit-employee', './assets/js/edit-employee.js')
+    .addEntry('manage-menu', './assets/js/menu-form.js')
     .enableSassLoader()
     .disableSingleRuntimeChunk()
     

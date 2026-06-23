@@ -42,7 +42,7 @@ class MenuType extends AbstractType
                 'required' => true // Les conditions du menu sont obligatoires.
             ])
             ->add('isActive', CheckboxType::class, [
-                'label' => 'Menu actif',
+                'label' => ' ',
                 'required' => false,
             ])
             ->add('theme', EntityType::class, [
