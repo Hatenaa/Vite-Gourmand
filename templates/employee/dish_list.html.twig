@@ -7,39 +7,123 @@
     'SIDE': 'Accompagnement'
 } %}
 
-{% block title %}Liste des plats{% endblock %}
+{% block header %}{% endblock %}
 
 {% block body %}
-    <h1>Liste des plats</h1>
-    <a href="{{ path('employee_dish_create') }}">Ajouter un plat</a>
+<section class="position-relative overflow-hidden d-flex flex-column justify-content-between"
+	style="min-height: 380px;">
+	<img src="/images/main/front-restaurant-deux.jpg" alt="Restaurant"
+		class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+	<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
 
-    {% if dishes is empty %}
-        <p>Aucun plat enregistré.</p>
-    {% else %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for dish in dishes %}
-                <tr>
-                    <td>{{ dish.title }}</td>
-                    <td>{{ typeLabels[dish.type] ?? dish.type }}</td>
-                    <td>
-                        <a href="{{ path('employee_dish_edit', {id: dish.id}) }}">Modifier</a>
+	<div class="position-relative z-1 d-flex justify-content-between align-items-center py-4 px-3 container">
+		{% include 'admin/_partials/_nav.html.twig' %}
+	</div>
 
-                        <form method="post" action="{{ path('employee_dish_delete', {id: dish.id}) }}">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete_dish_' ~ dish.id) }}">
-                            <button type="submit">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+	<div
+		class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+		<div>
+			<h1 class="fw-bold text-white">Liste des plats</h1>
+			<p class="lead text-white mb-0">Tous vos plats, centralisés et modifiables à tout moment.</p>
+		</div>
+
+		<div class="d-grid gap-2 d-md-flex">
+
+			<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
+				<i class="bi bi-person-workspace"></i>
+				Espace employé
+			</a>
+			<a href="{{ path('employee_dish_create') }}" class="btn btn-outline-light">
+				<i class="bi bi-plus-lg"></i>
+				Ajouter un plat
+			</a>
+
+		</div>
+	</div>
+
+</section>
+
+<main class="container">
+
+	{% if dishes is empty %}
+	<p class="text-muted pt-4">Aucun plat enregistré.</p>
+	{% else %}
+	<div class="d-flex flex-column gap-3 pt-4">
+		{% for dish in dishes %}
+		<div class="card shadow-sm">
+			<div class="card-body p-3 p-md-4">
+
+				<div class="d-flex align-items-start gap-3 justify-content-between">
+
+					{% if dish.image %}
+					<img src="{{ asset('uploads/dishes/' ~ dish.image) }}" alt="{{ dish.title }}"
+						class="rounded flex-shrink-0 object-fit-cover" style="width: 55px; height: 55px;">
+					{% endif %}
+
+					<div class="flex-grow-1 min-w-0">
+						<h6 class="mb-1 fw-bold text-truncate">{{ dish.title }}</h6>
+						<small class="text-muted">
+							<span class="badge bg-dark">
+								{{ typeLabels[dish.type] ?? dish.type }}
+							</span>
+						</small>
+					</div>
+
+					{# Desktop #}
+					<div class="d-none d-lg-flex align-items-center gap-2 flex-shrink-0">
+						<a href="{{ path('employee_dish_edit', {id: dish.id}) }}"
+							class="btn btn-outline-secondary">Modifier</a>
+						<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+							data-bs-target="#deleteModal{{ dish.id }}">Supprimer</button>
+					</div>
+
+				</div>
+
+				{# Mobile #}
+				<div class="d-flex d-lg-none flex-column gap-2 mt-3 pt-3 border-top">
+					<div class="d-flex gap-2 flex-wrap">
+						<a href="{{ path('employee_dish_edit', {id: dish.id}) }}"
+							class="btn btn-outline-secondary flex-fill">Modifier</a>
+						<button type="button" class="btn btn-outline-danger flex-fill" data-bs-toggle="modal"
+							data-bs-target="#deleteModal{{ dish.id }}">Supprimer</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		{# Modal de suppression #}
+		<div class="modal fade" id="deleteModal{{ dish.id }}" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content rounded-4 border-0 shadow">
+					<div class="modal-header border-0 pb-0">
+						<h5 class="modal-title fw-bold">Supprimer le plat</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<p>Êtes-vous sûr de vouloir supprimer le plat <strong>{{ dish.title }}</strong> ?
+							Cette action est irréversible.</p>
+					</div>
+					<div class="modal-footer border-0 pt-0">
+						<div class="d-flex gap-2 w-100">
+							<button type="button" class="btn btn-danger flex-fill"
+								data-bs-dismiss="modal">Annuler</button>
+							<form method="post" action="{{ path('employee_dish_delete', {id: dish.id}) }}"
+								class="flex-fill">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete_dish_' ~ dish.id) }}">
+								<button type="submit" class="btn btn-outline-secondary w-100">Supprimer le plat</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		{% endfor %}
+	</div>
+	{% endif %}
+
+</main>
+
 {% endblock %}
