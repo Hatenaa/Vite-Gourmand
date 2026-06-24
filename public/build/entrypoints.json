@@ -80,6 +80,11 @@
       "js": [
         "/build/manage-menu.js"
       ]
+    },
+    "manage-dish": {
+      "js": [
+        "/build/manage-dish.js"
+      ]
     }
   }
 }
