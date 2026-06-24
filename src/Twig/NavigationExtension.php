@@ -32,6 +32,7 @@ final class NavigationExtension extends AbstractExtension
 
             if ($this->security->isGranted('ROLE_ADMIN')) {
                 $links[] = ['route' => 'admin_dashboard', 'label' => 'Espace administrateur'];
+                $links[] = ['route' => 'employee_dashboard', 'label' => 'Espace employée'];
 
             } elseif ($this->security->isGranted('ROLE_EMPLOYE')) {
                 $links[] = ['route' => 'employee_dashboard', 'label' => 'Espace employée'];
