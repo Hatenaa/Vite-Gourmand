@@ -143,7 +143,14 @@ class MenuController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $imageFile = $form->get('imageFile')->getData();
+
+            if (!$imageFile) {
+                $this->addFlash('danger', 'Veuillez sélectionner une image valide.');
+                return $this->redirectToRoute('employee_menu_images', ['id' => $id]);
+            }
+
             $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+
             $imageFile->move(
                 $this->getParameter('kernel.project_dir') . '/public/uploads/menus',
                 $newFilename

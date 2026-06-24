@@ -8,6 +8,7 @@ Encore
     .addEntry('home', './assets/js/home-menus.js')
     .addEntry('stats', './assets/js/stats-chart.js')
     .addEntry('menu-filters', './assets/js/menu-filters.js')
+    .addEntry('menu-images', './assets/js/menu-images.js')
     .addEntry('order-filters', './assets/js/order-filters.js')
     .addEntry('signup', './assets/js/signup.js')
     .addEntry('signin', './assets/js/signin.js')

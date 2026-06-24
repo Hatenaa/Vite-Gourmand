@@ -20204,6 +20204,23 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   font-weight: 600;
 }
 
+input[type=file]::file-selector-button {
+  background-color: #2C1A1A;
+  color: #EEEBDD;
+  border: 1px solid #2C1A1A;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 9px 0 0 9px;
+  transition: all 0.3s ease;
+}
+
+input[type=file]:hover::file-selector-button {
+  background-color: #EEEBDD !important;
+  color: #2C1A1A;
+  border-color: #2C1A1A;
+}
+
 .text-white {
   color: #EEEBDD;
 }

@@ -1,19 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    const titleInput = document.getElementById('menu_title');
-    const basePriceInput = document.getElementById('menu_basePrice');
-    const minPeopleInput = document.getElementById('menu_minPeople');
-    const stockInput = document.getElementById('menu_stock');
-    const conditionsInput = document.getElementById('menu_conditions');
-    const themeSelect = document.getElementById('menu_theme');
-    const regimeSelect = document.getElementById('menu_regime');
+    const fileInput = document.querySelector('input[name*="[imageFile]"]');
+    const positionInput = document.querySelector('input[name*="[position]"]');
     const submitBtn = document.querySelector('button[type="submit"]');
 
-    const allInputs = [titleInput, basePriceInput, minPeopleInput, stockInput, conditionsInput, themeSelect, regimeSelect].filter(Boolean);
+    const allInputs = [fileInput, positionInput].filter(Boolean);
     let hasStartedEditing = false;
 
     allInputs.forEach(input => {
         input.classList.remove('is-valid', 'is-invalid');
+    });
+
+    allInputs.forEach(input => {
         input.addEventListener('input', () => {
             hasStartedEditing = true;
             validateAll();
@@ -26,32 +23,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function validateAll() {
         if (!hasStartedEditing) return;
-
-        validateRequired(titleInput, 45);
-        validatePrice(basePriceInput);
-        validatePositiveNumber(minPeopleInput);
-        validatePositiveNumber(stockInput);
-        validateRequired(conditionsInput);
-        validateRequired(themeSelect);
-        validateRequired(regimeSelect);
+        
+        validateImageFile(fileInput);
+        validatePosition(positionInput);
         checkFormValidity();
     }
 
-    function validateRequired(input, maxLength = null) {
+    function validateImageFile(input) {
         if (!input) return;
-        const val = input.value.trim();
-        const valid = val.length > 0 && (!maxLength || val.length <= maxLength);
+        const valid = input.files && input.files.length > 0;
         valid ? setValid(input) : setInvalid(input);
     }
 
-    function validatePrice(input) {
-        if (!input) return;
-        const val = parseFloat(input.value);
-        const valid = !isNaN(val) && val > 0;
-        valid ? setValid(input) : setInvalid(input);
-    }
-
-    function validatePositiveNumber(input) {
+    function validatePosition(input) {
         if (!input) return;
         const val = parseInt(input.value);
         const valid = !isNaN(val) && val >= 0;

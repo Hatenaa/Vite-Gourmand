@@ -17,6 +17,25 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: $font-weight-bold;
 }
 
+input[type="file"]::file-selector-button {
+    background-color: $dark;
+    color: $body-bg;
+    border: 1px solid $dark;
+    padding: 0.375rem 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 9px 0 0 9px;
+    transition: all 0.3s ease;
+    
+}
+
+input[type="file"]:hover::file-selector-button {
+    background-color: $body-bg !important;
+    color: $dark;
+    border-color: $dark;
+}
+
+
 .text-white {
   color: $body-bg;
 }
@@ -204,6 +223,7 @@ h1, h2, h3, h4, h5, h6 {
 [data-bs-toggle="collapse"]:not(.collapsed) .filter-chevron {
     transform: rotate(180deg);
 }
+
 
 // Pour l'animation des bordures si on a une remise.
 .livraison-row {
