@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function validatePositiveNumber(input) {
         if (!input) return;
         const val = parseInt(input.value);
-        const valid = !isNaN(val) && val > 0;
+        const valid = !isNaN(val) && val >= 0;
         valid ? setValid(input) : setInvalid(input);
     }
 
