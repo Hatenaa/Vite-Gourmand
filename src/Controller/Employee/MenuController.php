@@ -79,7 +79,7 @@ class MenuController extends AbstractController
         return $this->render('employee/menu_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier le menu ' . $menu->getTitle(),
-            'description' => 'Personnalisez votre menu et gardez vos informations toujours à jour.',
+            'description' => 'Personnalisez votre menu et gardez vos informations.',
             'menu' => $menu,
             'dishes' => $dishes,
         ]);
