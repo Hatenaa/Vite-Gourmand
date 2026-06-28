@@ -80,7 +80,7 @@ class OrderController extends AbstractController
 
         }
 
-        return $this->render('employee/update_order_status.html.twig', [
+        return $this->render('employee/order/update_order_status.html.twig', [
             'form' => $form->createView(),
             'order' => $order,
         ]);
@@ -127,7 +127,7 @@ class OrderController extends AbstractController
 
         }
 
-        return $this->render('employee/cancel_order.html.twig', [
+        return $this->render('employee/order/cancel_order.html.twig', [
             'form' => $form->createView(),
             'order' => $order
         ]);

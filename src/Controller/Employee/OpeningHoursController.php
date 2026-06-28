@@ -18,7 +18,7 @@ class OpeningHoursController extends AbstractController
     {
         $openingHours = $entityManager->getRepository(OpeningHours::class)->findAll();
 
-        return $this->render('employee/opening_hours_list.html.twig', [
+        return $this->render('employee/hours/opening_hours_list.html.twig', [
             'opening_hours' => $openingHours
         ]);
     }
@@ -44,7 +44,7 @@ class OpeningHoursController extends AbstractController
             return $this->redirectToRoute('employee_opening_hours_list');
         }
 
-        return $this->render('employee/opening_hours_form.html.twig', [
+        return $this->render('employee/hours/opening_hours_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier une horaire'
         ]);

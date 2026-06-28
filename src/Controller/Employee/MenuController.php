@@ -21,7 +21,7 @@ class MenuController extends AbstractController
     {
         $menus = $entityManager->getRepository(Menu::class)->findAll();
 
-        return $this->render('employee/menu_list.html.twig', [
+        return $this->render('employee/menu/menu_list.html.twig', [
             'menus' => $menus
         ]);
     }
@@ -46,7 +46,7 @@ class MenuController extends AbstractController
 
         $dishes = $entityManager->getRepository(Dish::class)->findAll();
 
-        return $this->render('employee/menu_form.html.twig', [
+        return $this->render('employee/menu/menu_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Créer un menu',
             'description' => 'Remplissez les informations de votre menu et sélectionnez les plats à inclure.',
@@ -76,7 +76,7 @@ class MenuController extends AbstractController
 
         $dishes = $entityManager->getRepository(Dish::class)->findAll();
 
-        return $this->render('employee/menu_form.html.twig', [
+        return $this->render('employee/menu/menu_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier le menu ' . $menu->getTitle(),
             'description' => 'Personnalisez votre menu et gardez vos informations.',
@@ -119,7 +119,7 @@ class MenuController extends AbstractController
         $form = $this->createForm(MenuImageType::class);
         $form->handleRequest($request);
 
-        return $this->render('employee/menu_images.html.twig', [
+        return $this->render('employee/menu/menu_images.html.twig', [
             'menu' => $menu,
             'form' => $form->createView(),
         ]);

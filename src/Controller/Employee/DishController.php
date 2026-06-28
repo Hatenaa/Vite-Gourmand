@@ -18,7 +18,7 @@ class DishController extends AbstractController
     {
         $dishes = $entityManager->getRepository(Dish::class)->findAll();
 
-        return $this->render('employee/dish_list.html.twig', [
+        return $this->render('employee/dish/dish_list.html.twig', [
             'dishes' => $dishes
         ]);
     }
@@ -52,7 +52,7 @@ class DishController extends AbstractController
             return $this->redirectToRoute('employee_dish_list');
         }
 
-        return $this->render('employee/dish_form.html.twig', [
+        return $this->render('employee/dish/dish_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Créer un plat',
         ]);
@@ -91,7 +91,7 @@ class DishController extends AbstractController
             return $this->redirectToRoute('employee_dish_list');
         }
 
-        return $this->render('employee/dish_form.html.twig', [
+        return $this->render('employee/dish/dish_form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Modifier un plat',
             'dish' => $dish,
