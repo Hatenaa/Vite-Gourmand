@@ -2,6 +2,7 @@
   "build/app.css": "/build/app.css",
   "build/app.js": "/build/app.js",
   "build/add-employee.js": "/build/add-employee.js",
+  "build/cancel-order.js": "/build/cancel-order.js",
   "build/home.js": "/build/home.js",
   "build/stats.js": "/build/stats.js",
   "build/menu-filters.css": "/build/menu-filters.css",

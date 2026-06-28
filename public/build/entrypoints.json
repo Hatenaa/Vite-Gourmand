@@ -13,6 +13,11 @@
         "/build/add-employee.js"
       ]
     },
+    "cancel-order": {
+      "js": [
+        "/build/cancel-order.js"
+      ]
+    },
     "home": {
       "js": [
         "/build/home.js"

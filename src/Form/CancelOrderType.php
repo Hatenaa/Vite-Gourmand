@@ -17,9 +17,11 @@ class CancelOrderType extends AbstractType
             ->add('contactMode', ChoiceType::class, [
                 'label' => 'Mode de contact utilisé',
                 'choices' => [
-                    'Appel GSM' => 'GSM',
                     'Email' => 'EMAIL',
+                    'Appel GSM' => 'GSM',
                 ],
+                'data' => 'EMAIL',
+                'placeholder' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez indiquer le mode de contact.'

@@ -5,6 +5,7 @@ Encore
     .setPublicPath('/build')
     .addEntry('app', './assets/app.js')
     .addEntry('add-employee', './assets/js/add-employee.js')
+    .addEntry('cancel-order', './assets/js/cancel-order.js')
     .addEntry('home', './assets/js/home-menus.js')
     .addEntry('stats', './assets/js/stats-chart.js')
     .addEntry('menu-filters', './assets/js/menu-filters.js')
