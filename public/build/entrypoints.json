@@ -86,6 +86,11 @@
         "/build/manage-dish.js"
       ]
     },
+    "update-order": {
+      "js": [
+        "/build/update-order.js"
+      ]
+    },
     "opening-hours-form": {
       "js": [
         "/build/opening-hours-form.js"

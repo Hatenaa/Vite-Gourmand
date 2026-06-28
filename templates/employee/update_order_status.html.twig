@@ -30,7 +30,9 @@
 			<div>
 				<h1 class="fw-bold text-white">Mettre à jour cette commande</h1>
 				<p class="lead text-white mb-0">
-					effectuée par {{ order.firstName }} {{ order.lastName }}
+					effectuée par
+					{{ order.firstName }}
+					{{ order.lastName }}
 				</p>
 			</div>
 
@@ -39,25 +41,94 @@
 					<i class="bi bi-person-workspace"></i>
 					Espace employé
 				</a>
+				<a href="{{ path('employee_cancel_order', {id: order.id}) }}" class="btn btn-outline-light">
+					Annuler cette commande
+				</a>
 			</div>
 
 		</div>
 
 	</section>
 
-	<p>Client:
-		{{ order.firstName }}
-		{{ order.lastName }}</p>
-	<p>Menu:
-		{{ order.menu.title }}</p>
-	<p>Statut actuel:
-		{{ statusLabels[order.status] ?? order.status }}</p>
+	<main class="container py-4">
+		<h2>Détails de la commande</h2>
 
-	{{ form_start(form) }}
-	{{ form_row(form.status) }}
-	{{ form_row(form.contactMode) }}
-	{{ form_row(form.reason) }}
-	<button type="submit">Mettre à jour</button>
-	{{ form_end(form) }}
+		<div class="py-3">
+			<span class="badge bg-dark">Menu
+				{{ order.menu.title }}</span>
+			<span class="badge bg-primary">{{ statusLabels[order.status] ?? order.status }}</span>
+		</div>
 
+		{{ form_start(form) }}
+
+		<div class="row g-3">
+			<div class="col-12 col-md-6">
+				{{ form_label(form.status, 'Nouveau statut', {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.status, 
+                        { 
+                            'attr': {
+                                'class': 'form-select',
+                                'data-validate': 'status',
+                            }
+                        }
+                    ) 
+                }}
+                <div class="invalid-feedback" data-feedback="status">
+                    Veuillez sélectionner un statut.
+                </div>
+			</div>
+			<div class="col-12 col-md-6">
+				{{ form_label(form.contactMode, 'Mode de contact', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.contactMode,
+                        {
+                            'attr': {
+                                'class': 'form-select',
+                                'data-validate': 'contactMode',
+                            }
+                        }
+                    ) 
+                }}
+                <div class="invalid-feedback" data-feedback="contactMode">
+                    Veuillez sélectionner un mode de contact.
+                </div>
+			</div>
+		</div>
+
+		<div class="row g-3 mt-2">
+			<div class="col-12">
+				{{ form_label(form.reason, 'Motif', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.reason, 
+                        {
+                            'attr': {
+                                'class': 'form-control',
+                                'rows': 3,
+                                'data-validate': 'reason'
+                            }
+                        }
+                    ) 
+                }}
+			</div>
+		</div>
+
+		<div class="row g-3 mt-2">
+			<div class="col-12 col-md-3">
+				<button class="btn btn-primary w-100" type="submit" data-spinner-btn>
+					<span class="btn-label">Mettre à jour</span>
+					<span class="btn-spinner p-1 d-none justify-content-center">
+						<span class="spinner-border spinner-border-sm" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</span>
+					</span>
+				</button>
+			</div>
+		</div>
+
+		{{ form_end(form) }}
+	</main>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('update-order') }}
 {% endblock %}

@@ -11,7 +11,7 @@ const statusLabels = {
 
 const statusColors = {
     'PENDING': 'dark',
-    'ACCEPTED': 'info',
+    'ACCEPTED': 'primary',
     'IN_PREPARATION': 'primary',
     'IN_DELIVERY': 'primary',
     'DELIVERED': 'success',

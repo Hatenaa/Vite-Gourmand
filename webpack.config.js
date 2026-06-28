@@ -19,10 +19,10 @@ Encore
     .addEntry('edit-employee', './assets/js/edit-employee.js')
     .addEntry('manage-menu', './assets/js/menu-form.js')
     .addEntry('manage-dish', './assets/js/dish-form.js')
+    .addEntry('update-order', './assets/js/update-order.js')
     .addEntry('opening-hours-form', '/assets/js/opening-hours-form.js')
     .enableSassLoader()
     .disableSingleRuntimeChunk()
-    
 ;
 
 module.exports = Encore.getWebpackConfig();

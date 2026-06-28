@@ -27,9 +27,10 @@ class UpdateOrderStatusType extends AbstractType
             ->add('contactMode', ChoiceType::class, [
                 'label' => 'Mode de contact',
                 'choices' => [
+                    'Email' => 'EMAIL',
                     'Appel GSM' => 'GSM',
-                    'Email' => 'EMAIL'
                 ],
+                'placeholder' => false,
                 'required' => false
             ])
             ->add('reason', TextareaType::class, [
