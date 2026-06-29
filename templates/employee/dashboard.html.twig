@@ -45,8 +45,7 @@
 				</p>
 			</div>
 
-			<div
-				class="d-grid d-md-block">
+			<div class="d-grid d-md-block">
 
 				{# Boutton de filtrage #}
 				<button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas">
@@ -98,34 +97,20 @@
 
 	</section>
 
-	{% include 'admin/_partials/_offcanvas.html.twig' %}
+	{% if is_granted('ROLE_ADMIN') %}
 
-	<div class="container py-5">
-		<div class="mb-5">
-			<div class="row g-3">
-				<div class="col-12 col-md-3">
-					<a href="{{ path('employee_review_list') }}" class="btn btn-outline-secondary w-100">
-						<i class="bi bi-chat-left-text me-1"></i>Avis à valider
-					</a>
-				</div>
-				<div class="col-12 col-md-3">
-					<a href="{{ path('employee_menu_list') }}" class="btn btn-outline-secondary w-100">
-						<i class="bi bi-list-ul me-1"></i>Gérer les menus
-					</a>
-				</div>
-				<div class="col-12 col-md-3">
-					<a href="{{ path('employee_dish_list') }}" class="btn btn-outline-secondary w-100">
-						<i class="bi bi-cup-straw me-1"></i>Gérer les plats
-					</a>
-				</div>
-				<div class="col-12 col-md-3">
-					<a href="{{ path('employee_opening_hours_list') }}" class="btn btn-outline-secondary w-100">
-						<i class="bi bi-clock me-1"></i>Gérer les horaires
-					</a>
-				</div>
-			</div>
-		</div>
+		{% include 'admin/_partials/_offcanvas.html.twig' %}
 
+	{% else %}
+
+
+
+	{% endif %}
+	
+
+	<main class="container">
+		
+		{% include 'employee/_partials/_items.html.twig' %}
 
 		<h2 class="mb-4">Commandes</h2>
 
@@ -194,7 +179,7 @@
 			</div>
 		{% endif %}
 
-	</div>
+	</main>
 
 {% endblock %}
 

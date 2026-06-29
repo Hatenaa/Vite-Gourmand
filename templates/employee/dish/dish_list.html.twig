@@ -42,6 +42,8 @@
 
 	<main class="container">
 
+		{% include 'employee/_partials/_items.html.twig' %}
+
 		{% if dishes is empty %}
 			<p class="text-muted pt-4">Aucun plat enregistré.</p>
 		{% else %}

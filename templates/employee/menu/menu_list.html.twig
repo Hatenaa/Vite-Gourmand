@@ -21,22 +21,18 @@
 		</div>
 
 		<div class="d-grid gap-2 d-md-flex">
-
 			<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
 				<i class="bi bi-person-workspace"></i>
 				Espace employé
 			</a>
-			<a href="{{ path('employee_menu_create') }}" class="btn btn-outline-light">
-				<i class="bi bi-plus-lg"></i>
-				Créer un menu
-			</a>
-
 		</div>
 	</div>
 
 </section>
 
 <main class="container">
+
+	{% include 'employee/_partials/_items.html.twig' %}
 
 	{% if menus is empty %}
 	<p class="text-muted pt-4">Aucun menu enregistré.</p>

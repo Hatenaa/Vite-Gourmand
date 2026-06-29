@@ -26,16 +26,18 @@
 		</div>
 
 		<div class="d-grid gap-2 d-md-flex">
-			<a href="{{ path('employee_menu_list') }}" class="btn btn-outline-light">
-				<i class="bi bi-arrow-left"></i>
-				Retour aux menus
+			<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
+				<i class="bi bi-person-workspace"></i>
+				Espace employé
 			</a>
 		</div>
 
 	</div>
 
 </section>
-<main class="container py-5">
+<main class="container">
+
+	{% include 'employee/_partials/_items.html.twig' %}
 
 	<div class="mb-5">
 		<h2 class="pb-2 mb-4">Ajouter une image</h2>

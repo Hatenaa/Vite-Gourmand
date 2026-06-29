@@ -31,6 +31,8 @@
 
 	<main class="container">
 
+		{% include 'employee/_partials/_items.html.twig' %}
+
 		{% if opening_hours is empty %}
 			<p class="text-muted pt-4">Aucun horaire enregistré.</p>
 		{% else %}

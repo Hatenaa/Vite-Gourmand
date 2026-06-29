@@ -19,10 +19,6 @@
 		</div>
 
 		<div class="d-grid gap-2 d-md-flex">
-			<a href="{{ path('employee_opening_hours_list') }}" class="btn btn-outline-light">
-				<i class="bi bi-arrow-left"></i>
-				Retour aux horaires
-			</a>
 			<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
 				<i class="bi bi-person-workspace"></i>
 				Espace employé
@@ -34,6 +30,9 @@
 </section>
 
 <main class="container">
+
+	{% include 'employee/_partials/_items.html.twig' %}
+
 	<div class="d-flex justify-content-center pb-5 pt-5">
 		<div class="card col-sm-6">
 			<div class="p-4 card-body">

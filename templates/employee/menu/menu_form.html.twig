@@ -25,12 +25,6 @@
 					<i class="bi bi-person-workspace"></i>
 					Espace employé
 				</a>
-				<div class="d-grid gap-2 d-md-flex">
-					<a href="{{ path('employee_menu_list') }}" class="btn btn-outline-light">
-						<i class="bi bi-arrow-left"></i>
-						Retour aux menus
-					</a>
-				</div>
 				{% if menu is defined %}
 					<a href="{{ path('employee_menu_images', {id: menu.id}) }}" class="btn btn-outline-light">
 						<i class="bi bi-image"></i>
@@ -45,6 +39,9 @@
 	</section>
 
 	<main class="container">
+
+		{% include 'employee/_partials/_items.html.twig' %}
+
 		<div class="container py-5">
 
 			{{ form_start(form) }}
