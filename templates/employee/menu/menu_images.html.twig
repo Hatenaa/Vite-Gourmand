@@ -43,7 +43,7 @@
 			<div class="row g-3">
 				<div class="col-12">
 					{{ form_label(form.imageFile, null, {'label_attr': {'class': 'form-label'}}) }}
-					{{ form_widget(form.imageFile, {'attr': {'class': 'form-control', 'accept': 'image/*'}}) }}
+					{{ form_widget(form.imageFile, {'attr': {'class': 'form-control', 'accept': 'image/*', 'data-validate': 'menuImageFile'}}) }}
 					<div class="invalid-feedback">Veuillez sélectionner une image</div>
 					{{ form_errors(form.imageFile) }}
 				</div>
@@ -57,7 +57,16 @@
 
 				<div class="col-md-6">
 					{{ form_label(form.position, null, {'label_attr': {'class': 'form-label'}}) }}
-					{{ form_widget(form.position, {'attr': {'class': 'form-control', 'type': 'number', 'min': '0'}}) }}
+					{{ form_widget(form.position, 
+						{'attr': 
+							{
+								'class': 'form-control', 
+								'type': 'number', 
+								'min': '0', 
+								'data-validate': 'menuImagePosition',
+							}
+						}) 
+					}}
 					<div class="invalid-feedback">Doit être un nombre positif</div>
 					{{ form_errors(form.position) }}
 				</div>

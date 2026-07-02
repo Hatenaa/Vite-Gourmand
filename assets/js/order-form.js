@@ -1,3 +1,5 @@
+import { setValid, setInvalid, validateRequired, validateDate, checkFormValidity } from "./validators";
+
 const addressInput = document.querySelector('[data-validate="address"]');
 const cityInput = document.querySelector('[data-validate="city"]');
 const dateInput = document.querySelector('[data-validate="date"]');
@@ -82,21 +84,22 @@ if (submitBtn) {
     if (allFilled) validateForm();
 
     function validateForm() {
+
         validateRequired(addressInput);
         validateRequired(cityInput);
         validateDate(dateInput);
         validateRequired(timeInput);
         validatePeopleCount(peopleInput);
         updateButtonPrice();
-        checkFormValidity();
+        checkFormValidity([addressInput, cityInput, dateInput, timeInput, peopleInput], submitBtn);
     }
 
     // Pour afficher dynamiquement 
     // le prix du menu.
-
     let hideDiscountTimer = null;
 
     function updateButtonPrice() {
+
         const basePrice = parseFloat(submitBtn.dataset.basePrice);
         const count = parseInt(peopleInput?.value);
         const discountRow = document.getElementById('discount-row');
@@ -140,38 +143,6 @@ if (submitBtn) {
             clearTimeout(hideDiscountTimer);
             hideDiscountTimer = setTimeout(() => discountRow?.classList.add('d-none'), 300);
         }
-    }
-
-
-    function checkFormValidity() {
-        const allValid = [addressInput, cityInput, dateInput, timeInput, peopleInput]
-            .filter(Boolean)
-            .every(i => i.classList.contains('is-valid'));
-        if (submitBtn) submitBtn.disabled = !allValid;
-    }
-
-    function setValid(input) {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
-    }
-
-    function setInvalid(input) {
-        input.classList.remove('is-valid');
-        input.classList.add('is-invalid');
-    }
-
-    function validateRequired(input) {
-        if (!input) return;
-        input.value.trim() !== '' ? setValid(input) : setInvalid(input);
-    }
-
-    function validateDate(input) {
-        if (!input) return;
-        if (!input.value) { setInvalid(input); return; }
-        const selected = new Date(input.value);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        selected >= today ? setValid(input) : setInvalid(input);
     }
 
     function validatePeopleCount(input) {

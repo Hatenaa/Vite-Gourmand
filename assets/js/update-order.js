@@ -1,3 +1,5 @@
+import { validateSelectRequired, validateRequired, setupFormValidation } from './validators';
+
 const statusInput = document.querySelector('[data-validate="status"]');
 const contactModeInput = document.querySelector('[data-validate="contactMode"]');
 const reasonInput = document.querySelector('[data-validate="reason"]');
@@ -5,65 +7,14 @@ const submitBtn = document.querySelector('button[type="submit"]');
 
 const allInputs = [statusInput, contactModeInput, reasonInput].filter(Boolean);
 
-allInputs.forEach(input => {
-    input.addEventListener('input', validateAll);
-    input.addEventListener('change', validateAll);
+const validators = [
+    { field: statusInput, validateFn: validateSelectRequired },
+    { field: contactModeInput, validateFn: validateSelectRequired },
+    { field: reasonInput, validateFn: validateRequired, params: [10] }
+];
+
+setupFormValidation({
+    inputs: allInputs,
+    submitBtn: submitBtn,
+    validators: validators
 });
-
-validateAll();
-
-function validateAll() {
-
-    validateSelectRequired(statusInput);
-    validateSelectRequired(contactModeInput);
-    validateReason(reasonInput);
-    checkFormValidaty();
-}
-
-function checkFormValidity() {
-
-    const hasInvalid = allInputs.some(input => input.classList.contains('is-invalid'));
-
-    if (submitBtn) {
-        submitBtn.disabled = hasInvalid;
-    }
-
-}
-
-function setValid(input) {
-    input.classList.add('is-valid');
-    input.classList.remove('is-invalid');
-}
-
-function setInvalid(input) {
-    input.classList.add('is-invalid');
-    input.classList.remove('is-valid');
-}
-
-function setNeutral(input) {
-    input.classList.remove('is-valid', 'is-invalid');
-}
-
-function validateSelectRequired(input) {
-
-    if (!input) return;
-    const value = input.value;
-
-    if (value && value.trim() !== '') {
-        setValid(input)
-    } else {
-        setInvalid(input);
-    }
-}
-
-function validateReason(input) {
-    
-    if (!input) return;
-    const value = input.value.trim();
-
-    if (value.length >= 10) {
-        setValid(input);
-    } else {
-        setInvalid(input);
-    }
-}

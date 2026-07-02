@@ -53,29 +53,26 @@
 					<div class="row">
 						<div class="col-md-6 mb-3">
 							{{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Menu spécial'}})
-													}}
+							{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Menu spécial', 'data-validate': 'menuTitle'}}) }}
 							<div class="invalid-feedback">Ce champ est requis</div>
 							{{ form_errors(form.title) }}
 						</div>
 						<div class="col-md-6 mb-3">
 							{{ form_label(form.basePrice, null, {'label_attr': {'class': 'form-label'}}) }}
-							<div class="input-group">
-								{{ form_widget(form.basePrice, {'attr': {'class': 'form-control', 'placeholder': '45.00'}}) }}
-								<div class="invalid-feedback">Doit être un nombre supérieur à 0</div>
-							</div>
+							{{ form_widget(form.basePrice, {'attr': {'class': 'form-control', 'placeholder': '45.00', 'data-validate': 'menuBasePrice' }}) }}
+							<div class="invalid-feedback">Doit être un nombre supérieur à 0</div>
 							{{ form_errors(form.basePrice) }}
 						</div>
 
 						<div class="col-md-6 mb-3">
 							{{ form_label(form.minPeople, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.minPeople, {'attr': {'class': 'form-control', 'placeholder': '2'}}) }}
+							{{ form_widget(form.minPeople, {'attr': {'class': 'form-control', 'placeholder': '2', 'data-validate': 'menuMinPeople' }}) }}
 							<div class="invalid-feedback">Doit être un nombre positif</div>
 							{{ form_errors(form.minPeople) }}
 						</div>
 						<div class="col-md-6 mb-3">
 							{{ form_label(form.stock, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder': '10'}}) }}
+							{{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder': '10', 'data-validate': 'menuStock' }}) }}
 							<div class="invalid-feedback">Doit être un nombre positif</div>
 							{{ form_errors(form.stock) }}
 						</div>
@@ -84,13 +81,13 @@
 					<div class="row">
 						<div class="col-md-6 mb-3">
 							{{ form_label(form.theme, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.theme, {'attr': {'class': 'form-select'}}) }}
+							{{ form_widget(form.theme, {'attr': {'class': 'form-select', 'data-validate': 'menuTheme' }}) }}
 							<div class="invalid-feedback">Veuillez sélectionner un thème</div>
 							{{ form_errors(form.theme) }}
 						</div>
 						<div class="col-md-6 mb-3">
 							{{ form_label(form.regime, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.regime, {'attr': {'class': 'form-select'}}) }}
+							{{ form_widget(form.regime, {'attr': {'class': 'form-select', 'data-validate': 'menuRegime' }}) }}
 							<div class="invalid-feedback">Veuillez sélectionner un régime</div>
 							{{ form_errors(form.regime) }}
 						</div>
@@ -99,8 +96,7 @@
 					<div class="row mb-3">
 						<div class="col-12">
 							{{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '3', 'placeholder':
-						'Décrivez votre menu...'}}) }}
+							{{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '3', 'placeholder': 'Décrivez votre menu...'}}) }}
 							{{ form_errors(form.description) }}
 						</div>
 					</div>
@@ -108,8 +104,7 @@
 					<div class="row mb-3">
 						<div class="col-12">
 							{{ form_label(form.conditions, null, {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.conditions, {'attr': {'class': 'form-control', 'rows': '3', 'placeholder':
-						'Conditions de vente, restrictions...'}}) }}
+							{{ form_widget(form.conditions, {'attr': {'class': 'form-control', 'rows': '3', 'placeholder': 'Conditions de vente, restrictions...', 'data-validate': 'menuConditions'}}) }}
 							<div class="invalid-feedback">Le champ sur les conditions est requis</div>
 							{{ form_errors(form.conditions) }}
 						</div>

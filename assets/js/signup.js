@@ -1,4 +1,4 @@
-// Implémentation du js de la page d'inscription
+import { setValid, setInvalid, validateEmail, validatePhone, validateRequired, validatePassword } from './validators.js';
 
 const inputName = document.querySelector('[data-validate="firstname"]');
 const inputLastName = document.querySelector('[data-validate="lastname"]');
@@ -14,10 +14,11 @@ const submitBtn = document.getElementById('submitBtn');
 });
 
 function validateForm() {
-    validateMinLength(inputName, 2);
-    validateMinLength(inputLastName, 2);
+
+    validateRequired(inputName, 2);
+    validateRequired(inputLastName, 2);
     validateEmail(inputMail);
-    validateMinLength(inputAddress, 5);
+    validateRequired(inputAddress, 5);
     validatePhone(inputPhone);
     validateCity(inputCity);
     validatePassword(inputPassword);
@@ -25,6 +26,7 @@ function validateForm() {
 }
 
 function checkFormValidity() {
+
     const required = [inputName, inputLastName, inputMail, inputCity, inputPassword];
     const optional = [inputAddress, inputPhone];
 
@@ -39,51 +41,15 @@ function checkFormValidity() {
     submitBtn.disabled = !(allRequiredValid && allOptionalValid);
 }
 
-function setValid(input) {
-    input.classList.add("is-valid");
-    input.classList.remove("is-invalid");
-}
-
-function setInvalid(input) {
-    input.classList.remove("is-valid");
-    input.classList.add("is-invalid");
-}
-
-function validateMinLength(input, min) {
-    if (!input) return;
-    input.value.length >= min ? setValid(input) : setInvalid(input);
-}
-
-function validateEmail(input) {
-    if (!input) return;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    emailRegex.test(input.value) ? setValid(input) : setInvalid(input);
-}
-
-function validatePhone(input) {
-    if (!input) return;
-    const phoneRegex = /^[0-9]{10}$/;
-    phoneRegex.test(input.value.replace(/\s/g, '')) ? setValid(input) : setInvalid(input);
-}
-
 function validateCity(input) {
+
     if (!input) return;
     const cityRegex = /^[a-zA-ZÀ-ÿ\s\-']{2,}$/;
     cityRegex.test(input.value) ? setValid(input) : setInvalid(input);
 }
 
-function validatePassword(input) {
-    if (!input) return;
-    const v = input.value;
-    const valid = v.length >= 10
-        && /[A-Z]/.test(v)
-        && /[a-z]/.test(v)
-        && /[0-9]/.test(v)
-        && /[\W_]/.test(v);
-    valid ? setValid(input) : setInvalid(input);
-}
-
 function validateOptional(input, validatorFn) {
+    
     if (!input) return;
     if (input.value === '') {
         input.classList.remove('is-valid', 'is-invalid');

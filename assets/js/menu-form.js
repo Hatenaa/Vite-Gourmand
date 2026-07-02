@@ -1,80 +1,28 @@
-document.addEventListener('DOMContentLoaded', function() {
+import { validateRequired, validatePrice, validatePositiveNumber, setupFormValidation } from './validators';
 
-    const titleInput = document.getElementById('menu_title');
-    const basePriceInput = document.getElementById('menu_basePrice');
-    const minPeopleInput = document.getElementById('menu_minPeople');
-    const stockInput = document.getElementById('menu_stock');
-    const conditionsInput = document.getElementById('menu_conditions');
-    const themeSelect = document.getElementById('menu_theme');
-    const regimeSelect = document.getElementById('menu_regime');
-    const submitBtn = document.querySelector('button[type="submit"]');
+const titleInput = document.querySelector('[data-validate="menuTitle"]');
+const basePriceInput = document.querySelector('[data-validate="menuBasePrice"]');
+const minPeopleInput = document.querySelector('[data-validate="menuMinPeople"]');
+const stockInput = document.querySelector('[data-validate="menuStock"]');
+const conditionsInput = document.querySelector('[data-validate="menuConditions"]');
+const themeSelect = document.querySelector('[data-validate="menuTheme"]');
+const regimeSelect = document.querySelector('[data-validate="menuRegime"]');
+const submitBtn = document.querySelector('button[type="submit"]');
 
-    const allInputs = [titleInput, basePriceInput, minPeopleInput, stockInput, conditionsInput, themeSelect, regimeSelect].filter(Boolean);
-    let hasStartedEditing = false;
+const allInputs = [ titleInput, basePriceInput, minPeopleInput, stockInput, conditionsInput, themeSelect, regimeSelect ].filter(Boolean);
 
-    allInputs.forEach(input => {
-        input.classList.remove('is-valid', 'is-invalid');
-        input.addEventListener('input', () => {
-            hasStartedEditing = true;
-            validateAll();
-        });
-        input.addEventListener('change', () => {
-            hasStartedEditing = true;
-            validateAll();
-        });
-    });
+const validators = [
+    { field: titleInput, validateFn: validateRequired, params: [0, 45] },
+    { field: basePriceInput, validateFn: validatePrice },
+    { field: minPeopleInput, validateFn: validatePositiveNumber },
+    { field: stockInput, validateFn: validatePositiveNumber },
+    { field: conditionsInput, validateFn: validateRequired },
+    { field: themeSelect, validateFn: validateRequired },
+    { field: regimeSelect, validateFn: validateRequired }
+];
 
-    function validateAll() {
-        if (!hasStartedEditing) return;
-
-        validateRequired(titleInput, 45);
-        validatePrice(basePriceInput);
-        validatePositiveNumber(minPeopleInput);
-        validatePositiveNumber(stockInput);
-        validateRequired(conditionsInput);
-        validateRequired(themeSelect);
-        validateRequired(regimeSelect);
-        checkFormValidity();
-    }
-
-    function validateRequired(input, maxLength = null) {
-        if (!input) return;
-        const val = input.value.trim();
-        const valid = val.length > 0 && (!maxLength || val.length <= maxLength);
-        valid ? setValid(input) : setInvalid(input);
-    }
-
-    function validatePrice(input) {
-        if (!input) return;
-        const val = parseFloat(input.value);
-        const valid = !isNaN(val) && val > 0;
-        valid ? setValid(input) : setInvalid(input);
-    }
-
-    function validatePositiveNumber(input) {
-        if (!input) return;
-        const val = parseInt(input.value);
-        const valid = !isNaN(val) && val >= 0;
-        valid ? setValid(input) : setInvalid(input);
-    }
-
-    function checkFormValidity() {
-        if (allInputs.length === 0) {
-            if (submitBtn) submitBtn.disabled = true;
-            return;
-        }
-
-        const allValid = allInputs.every(i => i.classList.contains('is-valid'));
-        if (submitBtn) submitBtn.disabled = !allValid;
-    }
-
-    function setValid(input) {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
-    }
-
-    function setInvalid(input) {
-        input.classList.add('is-invalid');
-        input.classList.remove('is-valid');
-    }
+setupFormValidation({
+    inputs: allInputs,
+    submitBtn: submitBtn,
+    validators: validators
 });

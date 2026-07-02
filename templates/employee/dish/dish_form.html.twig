@@ -53,7 +53,7 @@
 				<div class="row mb-3">
 					<div class="col-12">
 						{{ form_label(form.imageFile, null, {'label_attr': {'class': 'form-label'}}) }}
-						{{ form_widget(form.imageFile, {'attr': {'class': 'form-control', 'accept': 'image/*'}}) }}
+						{{ form_widget(form.imageFile, {'attr': {'class': 'form-control', 'accept': 'image/*', 'data-validate': 'dishImageFile'}}) }}
 						<div class="invalid-feedback">Veuillez sélectionner une image</div>
 						{{ form_errors(form.imageFile) }}
 					</div>
@@ -63,13 +63,13 @@
 				<div class="row">
 					<div class="col-md-6 mb-3">
 						{{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
-						{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Côte de boeuf'}}) }}
+						{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Côte de boeuf', 'data-validate': 'dishTitle'}}) }}
 						<div class="invalid-feedback">Le nom du plat est requis</div>
 						{{ form_errors(form.title) }}
 					</div>
 					<div class="col-md-6 mb-3">
 						{{ form_label(form.type, null, {'label_attr': {'class': 'form-label'}}) }}
-						{{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+						{{ form_widget(form.type, {'attr': {'class': 'form-select', 'data-validate': 'dishType'}}) }}
 						<div class="invalid-feedback">Veuillez sélectionner un type</div>
 						{{ form_errors(form.type) }}
 					</div>
@@ -78,7 +78,7 @@
 				<div class="row mb-3">
 					<div class="col-12">
 						{{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
-						{{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Décrivez votre plat...'}}) }}
+						{{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Décrivez votre plat...', 'data-validate': 'dishDescription' }}) }}
 						{{ form_errors(form.description) }}
 					</div>
 				</div>
