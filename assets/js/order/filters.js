@@ -21,11 +21,11 @@ const statusColors = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const filterForm = document.getElementById('filter-form');
     const filterStatus = document.getElementById('filter-status');
     const filterEmail = document.getElementById('filter-email');
     const ordersList = document.getElementById('orders-list');
-    
 
     if (!filterForm || !ordersList) return;
 

@@ -1,4 +1,4 @@
-import { validateRequired, validateEmail, validatePhone, setupFormValidation,  } from "./validators";
+import { validateRequired, validateEmail, validatePhone, setupFormValidation,  } from "../shared/validators";
 
 const firstNameInput = document.querySelector('[data-validate="firstName"]');
 const lastNameInput = document.querySelector('[data-validate="lastName"]');

@@ -4,24 +4,37 @@ Encore
     .setOutputPath('public/build/')
     .setPublicPath('/build')
     .addEntry('app', './assets/app.js')
-    .addEntry('add-employee', './assets/js/add-employee.js')
-    .addEntry('cancel-order', './assets/js/cancel-order.js')
-    .addEntry('home', './assets/js/home-menus.js')
-    .addEntry('stats', './assets/js/stats-chart.js')
-    .addEntry('menu-filters', './assets/js/menu-filters.js')
-    .addEntry('menu-images', './assets/js/menu-images.js')
-    .addEntry('order-filters', './assets/js/order-filters.js')
-    .addEntry('signup', './assets/js/signup.js')
-    .addEntry('signin', './assets/js/signin.js')
-    .addEntry('order-map', './assets/js/order-map.js')
-    .addEntry('order-form', './assets/js/order-form.js')
-    .addEntry('edit-profile', './assets/js/edit-profile.js')
-    .addEntry('edit-order', './assets/js/edit-order.js')
-    .addEntry('edit-employee', './assets/js/edit-employee.js')
-    .addEntry('manage-menu', './assets/js/menu-form.js')
-    .addEntry('manage-dish', './assets/js/dish-form.js')
-    .addEntry('update-order', './assets/js/update-order.js')
-    .addEntry('opening-hours-form', '/assets/js/opening-hours-form.js')
+    
+    // Auth
+    .addEntry('signin', './assets/js/auth/signin.js')
+    .addEntry('signup', './assets/js/auth/signup.js')
+    
+    // Employee
+    .addEntry('add-employee', './assets/js/employee/add.js')
+    .addEntry('edit-employee', './assets/js/employee/edit.js')
+    .addEntry('edit-profile', './assets/js/employee/profile.js')
+    
+    // Menu
+    .addEntry('manage-menu', './assets/js/menu/form.js')
+    .addEntry('menu-images', './assets/js/menu/images.js')
+    .addEntry('menu-filters', './assets/js/menu/filters.js')
+    .addEntry('home', './assets/js/menu/home.js')
+    
+    // Order
+    .addEntry('order-form', './assets/js/order/form.js')
+    .addEntry('order-map', './assets/js/order/map.js')
+    .addEntry('order-filters', './assets/js/order/filters.js')
+    .addEntry('edit-order', './assets/js/order/edit.js')
+    .addEntry('cancel-order', './assets/js/order/cancel.js')
+    .addEntry('update-order', './assets/js/order/update.js')
+    
+    // Forms (misc)
+    .addEntry('manage-dish', './assets/js/forms/dish.js')
+    .addEntry('opening-hours-form', './assets/js/forms/opening-hours.js')
+    
+    // Utils
+    .addEntry('stats', './assets/js/stats/chart.js')
+    
     .enableSassLoader()
     .disableSingleRuntimeChunk()
 ;

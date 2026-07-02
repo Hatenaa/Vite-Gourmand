@@ -1,4 +1,4 @@
-import { setValid, setInvalid, validateEmail, validatePhone, validateRequired, validatePassword } from './validators.js';
+import { setValid, setInvalid, validateEmail, validatePhone, validateRequired, validatePassword } from '../shared/validators.js';
 
 const inputName = document.querySelector('[data-validate="firstname"]');
 const inputLastName = document.querySelector('[data-validate="lastname"]');
@@ -49,7 +49,7 @@ function validateCity(input) {
 }
 
 function validateOptional(input, validatorFn) {
-    
+
     if (!input) return;
     if (input.value === '') {
         input.classList.remove('is-valid', 'is-invalid');
