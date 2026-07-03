@@ -6,9 +6,11 @@ const email = document.querySelector('[data-validate="email"]');
 const password = document.querySelector('[data-validate="plainPassword"]');
 const submitBtn = document.querySelector('button[type="submit"]');
 
+const allInputs = [firstName, lastName, email, password];
+
 const validators = [
-    { field: firstName, validateFn: validateRequired },
-    { field: lastName, validateFn: validateRequired },
+    { field: firstName, validateFn: validateRequired, params: [2] },
+    { field: lastName, validateFn: validateRequired, params: [2] },
     { field: email, validateFn: validateEmail },
     { field: password, validateFn: validatePassword },
 ];
