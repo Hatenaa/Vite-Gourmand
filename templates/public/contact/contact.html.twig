@@ -1,22 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}Contact
+{% endblock %}
 
 {% block body %}
 
-    <h1>Contactez-nous</h1>
+	{# Hero full-width #}
+	<section class="position-relative overflow-hidden d-flex align-items-end justify-content-start" style="min-height: 380px;">
+		<img src="{{ asset('images/main/catering-tables.jpg') }}" alt="contact" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+		<div class="position-relative z-1 py-5 px-3 container">
+			<h1 class="fw-bold text-white">Contactez-nous</h1>
+			<p class="lead text-white">
+				Nous vous répondrons sous 24 heures ouvrées.
+			</p>
+		</div>
+	</section>
 
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="{{ label }}">{{ message }}</div>
-        {% endfor %}
-    {% endfor %}
+	<main class="container mt-4">
 
-    {{ form_start(form) }}
-        {{ form_row(form.title) }}
-        {{ form_row(form.email) }}
-        {{ form_row(form.message) }}
-        <button type="submit">Envoyer</button>
-    {{ form_end(form) }}
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="{{ label }}">{{ message }}</div>
+			{% endfor %}
+		{% endfor %}
 
+		{{ form_start(form) }}
+
+
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				{{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.title, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'John MIRABELLE', 'data-validate': 'contactTitle' }}) }}
+				<div class="invalid-feedback">Votre nom doit être valide.</div>
+				{{ form_errors(form.title) }}
+			</div>
+			<div class="col-md-6 mb-3">
+				{{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.email, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'example@email.com', 'data-validate': 'contactEmail' }}) }}
+				<div class="invalid-feedback">Votre email doit être valide.</div>
+				{{ form_errors(form.email) }}
+			</div>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col-12">
+				{{ form_label(form.message, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Votre message ici...', 'data-validate': 'contactMessage' }}) }}
+				<div class="invalid-feedback">Le message que vous essayez d'envoyer doit être valide.</div>
+				{{ form_errors(form.message) }}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-md-3">
+				<button class="btn btn-primary w-100" type="submit">Envoyer le mail</button>
+			</div>
+		</div>
+
+		{{ form_end(form) }}
+
+	</main>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('contact') }}
 {% endblock %}

@@ -1,4 +1,4 @@
-import { validateRequired, validatePrice, validatePositiveNumber, setupFormValidation } from './validators';
+import { validateRequired, validatePrice, validatePositiveNumber, setupFormValidation } from '../shared/validators.js';
 
 const titleInput = document.querySelector('[data-validate="menuTitle"]');
 const basePriceInput = document.querySelector('[data-validate="menuBasePrice"]');

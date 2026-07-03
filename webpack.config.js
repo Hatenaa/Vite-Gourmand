@@ -12,7 +12,6 @@ Encore
     // Employee
     .addEntry('add-employee', './assets/js/employee/add.js')
     .addEntry('edit-employee', './assets/js/employee/edit.js')
-    .addEntry('edit-profile', './assets/js/employee/profile.js')
     
     // Menu
     .addEntry('manage-menu', './assets/js/menu/form.js')
@@ -29,6 +28,8 @@ Encore
     .addEntry('update-order', './assets/js/order/update.js')
     
     // Forms (misc)
+    .addEntry('contact', './assets/js/forms/contact.js')
+    .addEntry('edit-profile', './assets/js/forms/profile.js')
     .addEntry('manage-dish', './assets/js/forms/dish.js')
     .addEntry('opening-hours-form', './assets/js/forms/opening-hours.js')
     

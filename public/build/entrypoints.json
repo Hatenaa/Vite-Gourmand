@@ -8,42 +8,9 @@
         "/build/app.js"
       ]
     },
-    "add-employee": {
+    "signin": {
       "js": [
-        "/build/add-employee.js"
-      ]
-    },
-    "cancel-order": {
-      "js": [
-        "/build/cancel-order.js"
-      ]
-    },
-    "home": {
-      "js": [
-        "/build/home.js"
-      ]
-    },
-    "stats": {
-      "js": [
-        "/build/stats.js"
-      ]
-    },
-    "menu-filters": {
-      "css": [
-        "/build/menu-filters.css"
-      ],
-      "js": [
-        "/build/menu-filters.js"
-      ]
-    },
-    "menu-images": {
-      "js": [
-        "/build/menu-images.js"
-      ]
-    },
-    "order-filters": {
-      "js": [
-        "/build/order-filters.js"
+        "/build/signin.js"
       ]
     },
     "signup": {
@@ -51,29 +18,9 @@
         "/build/signup.js"
       ]
     },
-    "signin": {
+    "add-employee": {
       "js": [
-        "/build/signin.js"
-      ]
-    },
-    "order-map": {
-      "js": [
-        "/build/order-map.js"
-      ]
-    },
-    "order-form": {
-      "js": [
-        "/build/order-form.js"
-      ]
-    },
-    "edit-profile": {
-      "js": [
-        "/build/edit-profile.js"
-      ]
-    },
-    "edit-order": {
-      "js": [
-        "/build/edit-order.js"
+        "/build/add-employee.js"
       ]
     },
     "edit-employee": {
@@ -86,9 +33,47 @@
         "/build/manage-menu.js"
       ]
     },
-    "manage-dish": {
+    "menu-images": {
       "js": [
-        "/build/manage-dish.js"
+        "/build/menu-images.js"
+      ]
+    },
+    "menu-filters": {
+      "css": [
+        "/build/menu-filters.css"
+      ],
+      "js": [
+        "/build/menu-filters.js"
+      ]
+    },
+    "home": {
+      "js": [
+        "/build/home.js"
+      ]
+    },
+    "order-form": {
+      "js": [
+        "/build/order-form.js"
+      ]
+    },
+    "order-map": {
+      "js": [
+        "/build/order-map.js"
+      ]
+    },
+    "order-filters": {
+      "js": [
+        "/build/order-filters.js"
+      ]
+    },
+    "edit-order": {
+      "js": [
+        "/build/edit-order.js"
+      ]
+    },
+    "cancel-order": {
+      "js": [
+        "/build/cancel-order.js"
       ]
     },
     "update-order": {
@@ -96,9 +81,29 @@
         "/build/update-order.js"
       ]
     },
+    "contact": {
+      "js": [
+        "/build/contact.js"
+      ]
+    },
+    "edit-profile": {
+      "js": [
+        "/build/edit-profile.js"
+      ]
+    },
+    "manage-dish": {
+      "js": [
+        "/build/manage-dish.js"
+      ]
+    },
     "opening-hours-form": {
       "js": [
         "/build/opening-hours-form.js"
+      ]
+    },
+    "stats": {
+      "js": [
+        "/build/stats.js"
       ]
     }
   }

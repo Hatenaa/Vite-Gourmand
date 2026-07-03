@@ -1,4 +1,4 @@
-import {  validateImageFile, validatePosition, setupFormValidation } from './validators';
+import {  validateImageFile, validatePosition, setupFormValidation } from '../shared/validators.js';
 
 const fileInput = document.querySelector('[data-validate="menuImageFile"]');
 const positionInput = document.querySelector('[data-validate="menuImagePosition"]');

@@ -1,4 +1,4 @@
-import { validateEmail, validatePassword, checkFormValidity } from './validators.js';
+import { validateEmail, validatePassword, checkFormValidity } from '../shared/validators.js';
 
 const inputMail = document.querySelector('[data-validate="email"]');
 const inputPassword = document.querySelector('[data-validate="password"]');

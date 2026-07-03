@@ -1,4 +1,4 @@
-import { validateRequired, setupFormValidation } from './validators';
+import { validateRequired, setupFormValidation } from '../shared/validators.js';
 
 const titleInput = document.querySelector('[data-validate="dishTitle"]');
 const typeSelect = document.querySelector('[data-validate="dishType"]');

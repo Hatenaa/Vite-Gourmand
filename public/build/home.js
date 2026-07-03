@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
-/*!*********************************!*\
-  !*** ./assets/js/home-menus.js ***!
-  \*********************************/
+/*!********************************!*\
+  !*** ./assets/js/menu/home.js ***!
+  \********************************/
 document.addEventListener('DOMContentLoaded', function () {
   var container = document.getElementById('menuCards');
   var tabs = document.querySelectorAll('#menuTabs .nav-link');

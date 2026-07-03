@@ -1,4 +1,4 @@
-import { setValid, setInvalid, checkFormValidity, setupFormValidation } from './validators';
+import { setValid, setInvalid, checkFormValidity, setupFormValidation } from '../shared/validators.js';
 
 const openingTimeInput = document.querySelector('[data-validate="opening-time"]');
 const closingTimeInput = document.querySelector('[data-validate="closing-time"]');

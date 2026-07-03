@@ -1,4 +1,4 @@
-import { setValid, setInvalid, validateRequired, validateDate, checkFormValidity } from "./validators";
+import { setValid, setInvalid, validateRequired, validateDate, checkFormValidity } from "../shared/validators.js";
 
 const addressInput = document.querySelector('[data-validate="address"]');
 const cityInput = document.querySelector('[data-validate="city"]');

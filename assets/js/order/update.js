@@ -1,4 +1,4 @@
-import { validateSelectRequired, validateRequired, setupFormValidation } from './validators';
+import { validateSelectRequired, validateRequired, setupFormValidation } from '../shared/validators.js';
 
 const statusInput = document.querySelector('[data-validate="status"]');
 const contactModeInput = document.querySelector('[data-validate="contactMode"]');
