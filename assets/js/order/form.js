@@ -85,10 +85,10 @@ if (submitBtn) {
 
     function validateForm() {
 
-        validateRequired(addressInput);
-        validateRequired(cityInput);
+        validateRequired(addressInput, 6);
+        validateRequired(cityInput, 2);
         validateDate(dateInput);
-        validateRequired(timeInput);
+        validateRequired(timeInput, 2);
         validatePeopleCount(peopleInput);
         updateButtonPrice();
         checkFormValidity([addressInput, cityInput, dateInput, timeInput, peopleInput], submitBtn);
