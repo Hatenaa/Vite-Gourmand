@@ -27,7 +27,7 @@ class FooterController extends AbstractController
             $orderedHours[] = $hoursByDay[$day] ?? null;
         }
 
-        // Pour éviter de se répéter, on va grouper les jours qui on les mêmes horaires dans le footer
+        // Pour éviter de se répéter, on va grouper les jours qui ont les mêmes horaires dans le footer
         $groups = [];
         $lastKey = null;
 
