@@ -32,6 +32,7 @@ Encore
     .addEntry('edit-profile', './assets/js/forms/profile.js')
     .addEntry('manage-dish', './assets/js/forms/dish.js')
     .addEntry('opening-hours-form', './assets/js/forms/opening-hours.js')
+    .addEntry('reset-password', './assets/js/forms/reset-password.js')
     
     // Utils
     .addEntry('stats', './assets/js/stats/chart.js')
