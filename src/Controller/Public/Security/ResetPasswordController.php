@@ -62,7 +62,7 @@ class ResetPasswordController extends AbstractController
             $user = $entityManager->getRepository(User::class)->findOneBy(['resetToken' => $token]);
 
             if (!$user || $user->getResetTokenExpiresAt() < new \DateTimeImmutable()) {
-                $this->addFlash('error', 'Le lien de réinitialisation est invalide ou a expiré.');
+                $this->addFlash('danger', 'Le lien de réinitialisation est invalide ou a expiré.');
                 return $this->redirectToRoute('forgot_password_request');
             }
 
