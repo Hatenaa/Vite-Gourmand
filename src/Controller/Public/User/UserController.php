@@ -147,12 +147,12 @@ class UserController extends AbstractController
         }
 
         if($order->getStatus() !== 'PENDING'){
-            $this->addFlash('error', 'Action non autorisée.');
+            $this->addFlash('danger', 'Action non autorisée.');
             return $this->redirectToRoute('user_dashboard');
         }
 
         if(!$this->isCsrfTokenValid('cancel_order_' . $id, $request->request->get('_token'))){
-            $this->addFlash('error', 'Action non autorisée.');
+            $this->addFlash('danger', 'Action non autorisée.');
             return $this->redirectToRoute('user_dashboard');
         }
 
@@ -176,13 +176,13 @@ class UserController extends AbstractController
         }
 
         if($order->getStatus() !== 'COMPLETED'){
-            $this->addFlash('error', 'Vous ne pouvez pas encore laisser un avis.');
-            return $this->redirectToRoute('user_order_detail', ['id' => $id]);
+            $this->addFlash('danger', 'Vous ne pouvez pas encore laisser un avis.');
+            return $this->redirectToRoute('user_dashboard');
         }
 
         if($order->getReview() !== null){
-            $this->addFlash('error', 'Vous avez déjà laissé un avis pour cette commande.');
-            return $this->redirectToRoute('user_order_detail', ['id' => $id]);
+            $this->addFlash('danger', 'Vous avez déjà laissé un avis pour cette commande.');
+            return $this->redirectToRoute('user_dashboard');
         }
 
         $review = new Review();
@@ -199,7 +199,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Votre avis a bien été envoyé. Il sera visible après validation.');
-            return $this->redirectToRoute('user_order_detail', ['id' => $id]);
+            return $this->redirectToRoute('user_dashboard');
         }
 
         return $this->render('public/user/submit_review.html.twig', [
