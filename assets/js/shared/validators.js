@@ -95,11 +95,11 @@ export function validatePrice(input) {
     return valid;
 }
 
-export function validatePositiveNumber(input) {
+export function validatePositiveNumber(input, minValue = 0, maxValue = null) {
 
     if (!input) return false;
     const val = parseInt(input.value, 10);
-    const valid = !isNaN(val) && val >= 0;
+    const valid = !isNaN(val) && val >= minValue && (!maxValue || val <= maxValue);
     valid ? setValid(input) : setInvalid(input);
     return valid;
 }
