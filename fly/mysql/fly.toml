@@ -1,0 +1,16 @@
+app = "vite-et-gourmand-mysql"
+primary_region = "cdg"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+MYSQL_DATABASE = "vitegourmand"
+
+[[mounts]]
+source = "mysql_data"
+destination = "/var/lib/mysql"
+
+[[services]]
+internal_port = 3306
+protocol = "tcp"
