@@ -35,7 +35,6 @@ class ResetPasswordController extends AbstractController
                 $entityManager->flush();
 
                 $emailMessage = (new TemplatedEmail())
-                    ->from('noreply@vite-et-gourmand.fr')
                     ->to($user->getEmail())
                     ->subject('Réinitialisation de votre mot de passe')
                     ->htmlTemplate('emails/reset_password.html.twig')

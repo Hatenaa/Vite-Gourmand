@@ -55,7 +55,6 @@ class OrderController extends AbstractController
                 $order->setHasBorrowedMaterial(true);
                 
                 $email = (new TemplatedEmail())
-                    ->from('noreply@vite-et-gourmand.fr')
                     ->to($order->getEmail())
                     ->subject('Retour de matériel | Vite & Gourmand')
                     ->htmlTemplate('emails/waiting_material.html.twig')
@@ -66,7 +65,6 @@ class OrderController extends AbstractController
 
             if ($newStatus === 'COMPLETED') {
                 $email = (new TemplatedEmail())
-                    ->from('noreply@vite-et-gourmand.fr')
                     ->to($order->getEmail())
                     ->subject('Votre commande est terminée — Donnez votre avis !')
                     ->htmlTemplate('emails/order_completed.html.twig')

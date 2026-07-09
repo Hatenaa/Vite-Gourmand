@@ -22,8 +22,7 @@ class ContactController extends AbstractController
             $data = $form->getData();
 
             $email = (new TemplatedEmail())
-                ->from('noreply@vite-et-gourmand.fr')
-                ->to('contact@vite-et-gourmand.fr')
+                ->to($this->getParameter('contact_email'))
                 ->replyTo($data['email'])
                 ->subject('[Contact] ' . $data['title'])
                 ->htmlTemplate('emails/contact.html.twig')

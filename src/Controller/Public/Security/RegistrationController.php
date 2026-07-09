@@ -52,7 +52,6 @@ final class RegistrationController extends AbstractController
             $entityManager->flush();
 
             $email = (new Email())
-            ->from('noreply@vite-et-gourmand.fr')
             ->to($user->getEmail())
             ->subject('Bienvenue chez Vite & Gourmand !')
             ->html('<p>Bonjour ' . $user->getFirstName() . ',</p><p>Votre compte a bien été créé. Bienvenue !</p>');

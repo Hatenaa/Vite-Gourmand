@@ -310,7 +310,6 @@ class OrderController extends AbstractController
         // Maintenant, mettons à jour nos statistiques MongoDB...
 
         $email = (new TemplatedEmail())
-            ->from('noreply@vite-et-gourmand.fr')
             ->to($order->getEmail())
             ->subject('Confirmation de votre commande')
             ->htmlTemplate('emails/order_confirmation.html.twig')
