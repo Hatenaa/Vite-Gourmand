@@ -75,6 +75,6 @@ Accès : http://localhost:8080
 
 L'application est déployée sur fly.io.
 
-URL Production : https://vite-et-gourmand.fly.dev
+URL Production : https://vite-et-gourmand-bordeaux.fly.dev
 
 Pour plus de détails, voir la documentation technique.
