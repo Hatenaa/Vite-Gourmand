@@ -29,8 +29,8 @@ Vite & Gourmand est une application e-commerce développée sous le framework Sy
 ### 1. Cloner le repository
 
 ```bash
-git clone https://github.com/Amisp/vite-et-gourmand.git
-cd vite-et-gourmand
+git clone https://github.com/Hatenaa/Vite-Gourmand.git
+cd Vite-Gourmand
 ```
 
 ### 2. Installer les dépendances
