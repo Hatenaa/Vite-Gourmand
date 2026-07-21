@@ -10,8 +10,8 @@ Vite & Gourmand est une application e-commerce développée sous le framework Sy
 
 - **Framework** : Symfony 7.4
 - **Langage** : PHP 8.2
-- **Base de données relationnelle** : MySQL 8.0
-- **Base de données NoSQL** : MongoDB 6.0
+- **Base de données relationnelle** : MySQL 8.2
+- **Base de données NoSQL** : MongoDB 7
 - **Frontend** : Twig, Bootstrap 5, JavaScript (ES6+)
 - **Build tool** : Webpack Encore
 - **Conteneurisation** : Docker & Docker Compose
