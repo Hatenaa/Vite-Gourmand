@@ -7,7 +7,7 @@ dockerfile = "Dockerfile"
 [env]
 APP_ENV = "prod"
 DEFAULT_URI = "https://vite-et-gourmand-bordeaux.fly.dev"
-DATABASE_URL = "mysql://app:apppass123@vite-et-gourmand-mysql.internal:3306/vitegourmand?serverVersion=8.0.32&charset=utf8mb4"
+DATABASE_URL = "mysql://app:!ChangeMe!@vite-et-gourmand-mysql.internal:3306/vitegourmand?serverVersion=8.0.32&charset=utf8mb4"
 MONGODB_URI = "mongodb://vite-et-gourmand-mongodb.internal:27017"
 MONGODB_DB = "vitegourmand"
 
