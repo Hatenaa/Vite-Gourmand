@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/front-restaurant.jpg" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
+		{% include '_partials/_nav.html.twig' %}
+
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">Statistiques des commandes</h1>
+				<p class="lead text-white mb-0">Mesurons l'impact de votre activité dès maintenant...</p>
+			</div>
+
+			<div class="d-grid d-md-block">
+				<a href="{{ path('admin_dashboard') }}" class="btn btn-outline-light">
+					<i class="bi bi-sliders"></i>
+					Espace administrateur
+				</a>
+			</div>
+		</div>
+
+	</section>
+
+	{% include '_partials/_offcanvas.html.twig' %}
+
+	<main
+		class="container py-4">
+
+		{# Zone filtres #}
+		<div class="row g-3 align-items-end mb-4">
+
+			<div class="col-md-3">
+				<label for="menu-a" class="form-label fw-semibold">Menu A</label>
+				<select id="menu-a" class="form-select">
+					<option value="">Liste des menus</option>
+					{% for menu in menus %}
+						<option value="{{ menu.title }}" {% if loop.first %}selected{% endif %}>{{ menu.title }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-md-3">
+				<label for="menu-b" class="form-label fw-semibold">Menu B</label>
+				<select id="menu-b" class="form-select">
+					<option value="">Liste des menus</option>
+					{% for menu in menus %}
+						<option value="{{ menu.title }}" {% if loop.index == 2 %}selected{% endif %}>{{ menu.title }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="col-md-3">
+				<label for="date-from" class="form-label fw-semibold">De</label>
+				<input type="month" id="date-from" class="form-control">
+			</div>
+
+			<div class="col-md-3">
+				<label for="date-to" class="form-label fw-semibold">À</label>
+				<input type="month" id="date-to" class="form-control">
+			</div>
+
+		</div>
+
+		<div id="stats-alert" class="alert alert-dark d-none" role="alert">
+			Sélectionnez au moins un menu pour afficher les graphiques.
+		</div>
+
+		{# Zone graphiques #}
+		<div class="row g-4">
+
+			<div class="col-md-6">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h6 class="card-title text-muted mb-3">Commandes par menu</h6>
+						<canvas id="chart-orders"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h6 class="card-title text-muted mb-3">Chiffres d'affaires par menu</h6>
+						<canvas id="chart-revenue"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('stats') }}
+{% endblock %}

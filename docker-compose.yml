@@ -1,0 +1,78 @@
+services:
+  nginx:
+    image: nginx:1.22-alpine
+    depends_on:
+      - php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/app/public:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+  php:
+    build:
+      context: .
+      dockerfile: dockerfiles/php/Dockerfile
+    working_dir: /app
+    depends_on:
+      - mysql
+    volumes:
+      - ./bin:/app/bin
+      - ./composer.json:/app/composer.json
+      - ./composer.lock:/app/composer.lock
+      - ./symfony.lock:/app/symfony.lock
+      - ./config:/app/config
+      - ./migrations:/app/migrations
+      - ./public:/app/public
+      - ./src:/app/src
+      - ./templates:/app/templates
+      - symfony_vendor:/app/vendor
+      - ./.env:/app/.env
+      - ./.env.dev:/app/.env.dev
+      - ./.env.local:/app/.env.local
+      - symfony_cache:/app/var/cache
+      - symfony_log:/app/var/log
+      - symfony_sessions:/app/var/sessions
+
+  mysql:
+    build:
+      context: dockerfiles/mysql
+      dockerfile: Dockerfile
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - data:/var/lib/mysql
+
+  mongodb:
+    image: mongodb/mongodb-atlas-local
+    hostname: mongodb
+    environment: {}
+    ports:
+      - 27017:27017
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - db:/data/db
+      - configdb:/data/configdb
+      - mongot:/data/mongot
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025"
+
+volumes:
+  data:
+  db:
+  configdb:
+  mongot:
+  symfony_vendor:
+  symfony_cache:
+  symfony_log:
+  symfony_sessions:

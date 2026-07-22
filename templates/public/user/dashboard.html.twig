@@ -1,0 +1,256 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon espace
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+	{% set statusLabels = {
+    'PENDING': 'En attente',
+    'ACCEPTED': 'Acceptée',
+    'IN_PREPARATION': 'En préparation',
+    'IN_DELIVERY': 'En cours de livraison',
+    'DELIVERED': 'Livrée',
+    'WAITING_MATERIAL': 'En attente retour matériel',
+    'COMPLETED': 'Terminée',
+    'CANCELLED': 'Annulée'
+} %}
+
+	{% set statusColors = {
+    'PENDING': 'dark',
+    'ACCEPTED': 'info',
+    'IN_PREPARATION': 'primary',
+    'IN_DELIVERY': 'primary',
+    'DELIVERED': 'success',
+    'WAITING_MATERIAL': 'secondary',
+    'COMPLETED': 'success',
+    'CANCELLED': 'primary'
+} %}
+
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/front-restaurant-deux.jpg" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
+		{% include '_partials/_nav.html.twig' %}
+
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">Mon espace</h1>
+				<p class="lead text-white mb-0">Bienvenue,
+					{{ app.user.firstName }}.</p>
+			</div>
+			<div class="d-grid d-md-block">
+				<a href="{{ path('user_edit_profile') }}" class="btn btn-outline-light">
+					<i class="bi bi-pencil me-2"></i>Modifier mon profil
+				</a>
+			</div>
+		</div>
+
+	</section>
+
+	{% include '_partials/_offcanvas.html.twig' %}
+
+	<div class="container py-5">
+
+		<h2 class="mb-4">Mes commandes</h2>
+
+		{% if orders is empty %}
+			<p class="text-muted">Vous n'avez pas encore de commande{# ({{ app.user.firstName }} #}.</p>
+		{% else %}
+			<div class="d-flex flex-column gap-3">
+				{% for order in orders %}
+					<div class="card shadow-sm">
+						<div class="card-body p-3 p-md-4">
+
+							<div class="d-flex align-items-center gap-3">
+								{% if order.menu.images|length > 0 %}
+									{% set menuImage = order.menu.images|first %}
+									<img src="{{ asset(menuImage.path) }}" alt="{{ menuImage.alt ?? order.menu.title }}" class="rounded flex-shrink-0 object-fit-cover" style="width: 55px; height: 55px;">
+								{% endif %}
+								<div class="flex-grow-1 min-w-0">
+									<h6 class="mb-1 fw-bold text-truncate">{{ order.menu.title }}</h6>
+									<small class="text-muted">
+										<i class="bi bi-calendar me-1"></i>
+										{{ order.deliveryDate|date('d/m/Y') }}
+										&nbsp;·&nbsp;
+										<i class="bi bi-people me-1"></i>
+										{{ order.peopleCount }}
+										pers.
+									</small>
+								</div>
+
+								{# Desktop uniquement : badge + prix + boutons inline #}
+								<div class="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
+									<span class="badge bg-{{ statusColors[order.status] ?? 'secondary' }}">
+										{{ statusLabels[order.status] ?? order.status }}
+									</span>
+									<strong>{{ order.totalPrice|number_format(2, '.', ' ') }}
+										€</strong>
+									<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">Détail</button>
+									{% if order.status == 'PENDING' %}
+										<a href="{{ path('user_edit_order', {id: order.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+										<form method="post" action="{{ path('user_cancel_order', {id: order.id}) }}">
+											<input type="hidden" name="_token" value="{{ csrf_token('cancel_order_' ~ order.id) }}">
+											<button type="submit" class="btn btn-outline-danger">Annuler</button>
+										</form>
+									{% endif %}
+
+									{% if order.status == 'COMPLETED' and order.review is null %}
+										<a href="{{ path('user_submit_review', {id: order.id}) }}" class="btn btn-outline-secondary">
+											<i class="bi bi-star me-1"></i> Laisser un avis
+										</a>
+									{% endif %}
+
+								</div>
+							</div>
+
+							{# Mobile uniquement #}
+							<div class="d-flex d-lg-none flex-column gap-2 mt-2 pt-2 border-top">
+
+								{# Ligne 2 : badge gauche, prix droite #}
+								<div class="d-flex align-items-center justify-content-between py-3">
+									<span class="badge bg-{{ statusColors[order.status] ?? 'secondary' }}">
+										{{ statusLabels[order.status] ?? order.status }}
+									</span>
+									<strong>{{ order.totalPrice|number_format(2, '.', ' ') }} €</strong>
+								</div>
+
+								{# Ligne 3 : boutons à gauche #}
+								<div class="d-flex gap-2">
+									<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">Détail</button>
+									{% if order.status == 'PENDING' %}
+										<a href="{{ path('user_edit_order', {id: order.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+										<form method="post" action="{{ path('user_cancel_order', {id: order.id}) }}">
+											<input type="hidden" name="_token" value="{{ csrf_token('cancel_order_' ~ order.id) }}">
+											<button type="submit" class="btn btn-outline-danger">Annuler</button>
+										</form>
+									{% endif %}
+
+									{% if order.status == 'COMPLETED' and order.review is null %}
+										<a href="{{ path('user_submit_review', {id: order.id}) }}" class="btn btn-outline-secondary">
+											<i class="bi bi-star me-1"></i> Laisser un avis
+										</a>
+									{% endif %}
+
+								</div>
+
+							</div>
+
+
+						</div>
+					</div>
+
+
+					<div class="modal fade" id="orderModal{{ order.id }}" tabindex="-1" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+							<div class="modal-content rounded-4 overflow-hidden border-0 shadow" style="max-height: 70vh;">
+
+
+								{% if order.menu.images|length > 0 %}
+									{% set menuImage = order.menu.images|first %}
+									<div class="position-relative">
+										<img src="{{ asset(menuImage.path) }}" alt="{{ menuImage.alt ?? order.menu.title }}" class="w-100 object-fit-cover" style="height: 200px;">
+										<span class="position-absolute top-0 end-0 m-2 badge bg-{{ statusColors[order.status] ?? 'secondary' }} fw-normal">
+											{{ statusLabels[order.status] ?? order.status }}
+										</span>
+									</div>
+								{% endif %}
+
+								<div class="modal-body p-4">
+
+									<div class="d-flex align-items-baseline gap-2 mb-2">
+										<h4 class="fw-bold mb-0">{{ order.menu.title }}</h4>
+
+									</div>
+									<p class="text-muted small mb-4">{{ order.menu.description }}</p>
+
+									<p class="fw-bold ps-0 pt-3 text-uppercase small mb-2">Livraison</p>
+									<table class="table table-sm mb-4">
+										<tbody>
+											<tr>
+												<td class="text-muted ps-0">Date</td>
+												<td class="text-end text-muted">{{ order.deliveryDate|date('d/m/Y') }}</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Heure</td>
+												<td class="text-end text-muted">{{ order.deliveryTime|date('H:i') }}</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Adresse</td>
+												<td class="text-end text-muted">{{ order.address }}</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Ville</td>
+												<td class="text-end text-muted">{{ order.city }}</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Personnes</td>
+												<td class="text-end text-muted">{{ order.peopleCount }}</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Matériel</td>
+												<td class="text-end text-muted">{{ order.hasBorrowedMaterial ? 'Oui' : 'Non' }}</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<p class="fw-bold ps-0 pt-3 text-uppercase small mb-2">Tarifs</p>
+									<table class="table table-sm mb-0">
+										<tbody>
+											<tr>
+												<td class="text-muted ps-0">Menu / pers.</td>
+												<td class="text-end text-muted">{{ order.menu.basePrice }}
+													€</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Sous-total (×{{ order.peopleCount }})</td>
+												<td class="text-end text-muted">{{ order.menuPrice|number_format(2, '.', ' ') }}
+													€</td>
+											</tr>
+											<tr>
+												<td class="text-muted ps-0">Livraison</td>
+												<td class="text-end text-muted">{{ order.deliveryPrice|number_format(2, '.', ' ') }}
+													€</td>
+											</tr>
+											{% if order.discount > 0 %}
+												<tr>
+													<td class=" ps-0">Remise</td>
+													<td class="text-end text-success">−{{ order.discount|number_format(2, '.', ' ') }}
+														€</td>
+												</tr>
+											{% endif %}
+											<tr class="border-top">
+												<td class="fw-bold ps-0 pt-3">Total</td>
+												<td class="text-end fw-bold text-primary fs-5 pt-3">
+													{{ order.totalPrice|number_format(2, '.', ' ') }}
+													€
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+
+
+								<div class="modal-footer border-0 pt-0 px-4 pb-4">
+									<button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">Fermer</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+				{% endfor %}
+			</div>
+		{% endif %}
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+{% endblock %}

@@ -1,0 +1,38 @@
+app = "vite-et-gourmand-bordeaux"
+primary_region = "cdg"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+APP_ENV = "prod"
+DEFAULT_URI = "https://vite-et-gourmand-bordeaux.fly.dev"
+DATABASE_URL = "mysql://app:!ChangeMe!@vite-et-gourmand-mysql.internal:3306/vitegourmand?serverVersion=8.0.32&charset=utf8mb4"
+MONGODB_URI = "mongodb://vite-et-gourmand-mongodb.internal:27017"
+MONGODB_DB = "vitegourmand"
+
+[[mounts]]
+source = "uploads_data"
+destination = "/app/public/uploads"
+
+[http_service]
+internal_port = 80
+force_https = true
+auto_stop_machines = "off"
+auto_start_machines = true
+min_machines_running = 1
+processes = ["app"]
+
+[[http_service.checks]]
+grace_period = "15s"
+interval = "15s"
+method = "GET"
+path = "/"
+protocol = "http"
+timeout = "5s"
+
+[deploy]
+# release_command = "php bin/console doctrine:migrations:migrate --no-interaction"
+
+[processes]
+app = "supervisord -c /etc/supervisor/conf.d/supervisord.conf"

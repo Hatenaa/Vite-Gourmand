@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annuler la commande #{{ order.id }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+	<img src="/images/main/front-restaurant-deux.jpg" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+	<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
+	{% include '_partials/_nav.html.twig' %}
+
+	<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+		<div>
+			<h1 class="fw-bold text-white">Annuler cette commande</h1>
+			<p class="lead text-white mb-0">
+				effectuée par
+				{{ order.firstName }}
+				{{ order.lastName }}
+			</p>
+		</div>
+
+		<div class="d-grid gap-2 d-md-flex">
+			<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
+				<i class="bi bi-person-workspace"></i>
+				Espace employé
+			</a>
+            <a href="{{ path('employee_update_order_status', {id: order.id}) }}" class="btn btn-outline-light">
+				Modifier cette commande
+			</a>
+		</div>
+	</div>
+</section>
+
+<main class="container">
+
+	{% include 'employee/_partials/_items.html.twig' %}
+
+	<div class="alert alert-dark" role="alert">
+		<i class="bi bi-exclamation-triangle-fill"></i>
+		Vous devez avoir contacté le client avant de procéder à l'annulation.
+	</div>
+
+	{{ form_start(form) }}
+
+	<div class="row g-3">
+		<div class="col-12">
+			{{ form_label(form.contactMode, 'Mode de contact utilisé', {'label_attr': {'class': 'form-label'}}) }}
+			{{ form_widget(form.contactMode, {
+                    'attr': {
+                        'class': 'form-select',
+                        'data-validate': 'contactMode'
+                    }
+                }) }}
+			<div class="invalid-feedback" data-feedback="contactMode">
+				Veuillez sélectionner un mode de contact.
+			</div>
+		</div>
+	</div>
+
+	<div class="row g-3 mt-2">
+		<div class="col-12">
+			{{ form_label(form.reason, 'Motif d\'annulation', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.reason, {
+                    'attr': {
+                        'class': 'form-control',
+                        'rows': 3,
+                        'data-validate': 'reason'
+                    }
+                }) }}
+                <div class="invalid-feedback" data-feedback="reason">
+                    Veuillez indiquer un motif d'annulation valide.
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-12 col-md-3">
+                <button class="btn btn-primary w-100" type="submit" data-spinner-btn>
+                    <span class="btn-label">Confirmer l'annulation</span>
+                    <span class="btn-spinner p-1 d-none justify-content-center">
+                        <span class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+		{{ form_end(form) }}
+	</main>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('cancel-order') }}
+{% endblock %}

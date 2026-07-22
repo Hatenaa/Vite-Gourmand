@@ -1,0 +1,7 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        headers:
+            From: 'Vite & Gourmand <%env(MAILER_FROM)%>'
+        envelope:
+            sender: '%env(MAILER_FROM)%'

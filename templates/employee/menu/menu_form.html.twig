@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/catering-tables.jpg" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
+		{% include '_partials/_nav.html.twig' %}
+
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">{{ title }}</h1>
+				<p class="lead text-white mb-0">
+					{{ description }}
+				</p>
+			</div>
+
+			<div class="d-grid gap-2 d-md-flex">
+				<a href="{{ path('employee_dashboard') }}" class="btn btn-outline-light">
+					<i class="bi bi-person-workspace"></i>
+					Espace employé
+				</a>
+				{% if menu is defined %}
+					<a href="{{ path('employee_menu_images', {id: menu.id}) }}" class="btn btn-outline-light">
+						<i class="bi bi-image"></i>
+						Gérer les images
+					</a>
+				{% endif %}
+			</div>
+
+
+		</div>
+
+	</section>
+
+	<main class="container">
+
+		{% include 'employee/_partials/_items.html.twig' %}
+
+		<div class="container py-5">
+
+			{{ form_start(form) }}
+			{{ form_errors(form) }}
+
+			<div class="row">
+				<div class="col-lg-6 pe-4 pb-4">
+					<h4 class="mb-3">Informations du menu</h4>
+
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							{{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Menu spécial', 'data-validate': 'menuTitle'}}) }}
+							<div class="invalid-feedback">Ce champ est requis</div>
+							{{ form_errors(form.title) }}
+						</div>
+						<div class="col-md-6 mb-3">
+							{{ form_label(form.basePrice, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.basePrice, {'attr': {'class': 'form-control', 'placeholder': '45.00', 'data-validate': 'menuBasePrice' }}) }}
+							<div class="invalid-feedback">Doit être un nombre supérieur à 0</div>
+							{{ form_errors(form.basePrice) }}
+						</div>
+
+						<div class="col-md-6 mb-3">
+							{{ form_label(form.minPeople, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.minPeople, {'attr': {'class': 'form-control', 'placeholder': '2', 'data-validate': 'menuMinPeople' }}) }}
+							<div class="invalid-feedback">Doit être un nombre positif</div>
+							{{ form_errors(form.minPeople) }}
+						</div>
+						<div class="col-md-6 mb-3">
+							{{ form_label(form.stock, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.stock, {'attr': {'class': 'form-control', 'placeholder': '10', 'data-validate': 'menuStock' }}) }}
+							<div class="invalid-feedback">Doit être un nombre positif</div>
+							{{ form_errors(form.stock) }}
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							{{ form_label(form.theme, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.theme, {'attr': {'class': 'form-select', 'data-validate': 'menuTheme' }}) }}
+							<div class="invalid-feedback">Veuillez sélectionner un thème</div>
+							{{ form_errors(form.theme) }}
+						</div>
+						<div class="col-md-6 mb-3">
+							{{ form_label(form.regime, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.regime, {'attr': {'class': 'form-select', 'data-validate': 'menuRegime' }}) }}
+							<div class="invalid-feedback">Veuillez sélectionner un régime</div>
+							{{ form_errors(form.regime) }}
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-12">
+							{{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '3', 'placeholder': 'Décrivez votre menu...'}}) }}
+							{{ form_errors(form.description) }}
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<div class="col-12">
+							{{ form_label(form.conditions, null, {'label_attr': {'class': 'form-label'}}) }}
+							{{ form_widget(form.conditions, {'attr': {'class': 'form-control', 'rows': '3', 'placeholder': 'Conditions de vente, restrictions...', 'data-validate': 'menuConditions'}}) }}
+							<div class="invalid-feedback">Le champ sur les conditions est requis</div>
+							{{ form_errors(form.conditions) }}
+						</div>
+					</div>
+
+
+					<div class="d-flex gap-3 mt-4 flex-column flex-lg-row">
+						<button type="submit" class="btn btn-primary w-100 flex-lg-1" data-spinner-btn>
+							<span class="btn-label">
+								{% if menu is defined %}
+									Enregistrer les modifications
+								{% else %}
+									Créer le menu
+								{% endif %}
+							</span>
+							<span class="btn-spinner p-1 d-none justify-content-center">
+								<span class="spinner-border spinner-border-sm" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</span>
+							</span>
+						</button>
+
+						<div class="btn-group w-100 flex-lg-1" role="group">
+							{{ form_widget(form.isActive, {'attr': {'class': 'btn-check', 'autocomplete': 'off'}}) }}
+							<label class="btn btn-outline-dark w-100" for="menu_isActive" id="isActiveLabel"></label>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-lg-6">
+					<h4 class="mb-3">Plats inclus</h4>
+					<div class="border rounded p-3 overflow-y-auto" style="max-height: 500px;">
+						<div class="d-flex flex-column gap-3">
+							{% for dish in dishes %}
+								<div class="card shadow-sm">
+									<div class="card-body p-3 p-md-4">
+										<div class="d-flex align-items-start gap-3">
+
+											<div class="form-check flex-shrink-0 d-flex align-items-center" style="align-self: stretch;">
+												<input class="form-check-input" type="checkbox" name="menu[dishes][]" value="{{ dish.id }}" id="dish_{{ dish.id }}" {% if dish.id in form.dishes.vars.value %} checked {% endif %}>
+
+												<label class="form-check-label" for="dish_{{ dish.id }}"></label>
+											</div>
+
+											{% if dish.image %}
+												<img src="{{ asset('uploads/dishes/' ~ dish.image) }}" alt="{{ dish.title }}" class="rounded align-self-center flex-shrink-0 object-fit-cover" style="width: 55px; height: 55px;">
+											{% endif %}
+
+											<div class="flex-grow-1 min-w-0">
+												<h6 class="mb-1 fw-bold">{{ dish.title }}</h6>
+												{% if dish.description %}
+													<small class="text-muted d-block">{{ dish.description }}</small>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{% do form.dishes.setRendered() %}
+			{{ form_end(form) }}
+
+		</div>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('manage-menu') }}
+{% endblock %}

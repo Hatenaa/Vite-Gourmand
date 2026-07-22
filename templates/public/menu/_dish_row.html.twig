@@ -1,0 +1,72 @@
+{% if menu.dishes is not empty %}
+	<div class="py-5" id="custom-cards">
+		<span class="h2 pb-2">Plats du menu</span>
+		<div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+
+			{% for dish in menu.dishes %}
+				<div class="col">
+					<div class="card h-100 overflow-hidden rounded-4 shadow-sm position-relative">
+						{% if dish.image %}
+							<img src="{{ asset('uploads/dishes/' ~ dish.image) }}" class="card-img h-100 object-fit-cover" alt="{{ dish.title }}">
+						{% endif %}
+
+						<div class="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50">
+
+
+							<h2 class="h5 card-title text-white fw-bold mb-0">{{ dish.title }}</h2>
+
+							<div class="mt-3">
+
+								<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#dishModal{{ dish.id }}">
+									En savoir plus
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal fade" id="dishModal{{ dish.id }}" tabindex="-1" aria-labelledby="dishModalLabel{{ dish.id }}" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<span class="modal-title h3" id="dishModalLabel">{{ dish.title }}</span>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p>{{ dish.description }}</p>
+							</div>
+							<div class="modal-footer justify-content-start gap-1 flex-wrap">
+								{% if dish.allergens is not empty %}
+
+									<ul class="list-group w-100">
+										{% if dish.allergens|length == 1 %}
+											<li class="list-group-item">
+												<strong>Attention</strong>, ce plat contient l'allergène suivant:
+											</li>
+										{% else %}
+											<li class="list-group-item">
+												<strong>Attention</strong>, ce plat contient les allergènes suivants:
+											</li>
+										{% endif %}
+										<li class="list-group-item">
+											{% for allergen in dish.allergens %}
+
+												<span class="badge text-bg-primary">
+													{{ allergen.label }}
+												</span>
+
+											{% endfor %}
+										</li>
+									</ul>
+
+								{% endif %}
+							</div>
+
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+{% endif %}

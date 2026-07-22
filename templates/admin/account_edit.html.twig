@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le compte de
+	{{ employee.firstName }}
+	{{ employee.lastName }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+
+	<section class="position-relative overflow-hidden d-flex flex-column justify-content-between" style="min-height: 380px;">
+		<img src="/images/main/front-restaurant-deux.jpg" alt="" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover hero-parallax">
+		<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-75"></div>
+
+		{% include '_partials/_nav.html.twig' %}
+
+		<div class="position-relative z-1 py-5 px-3 container d-flex flex-column flex-md-row justify-content-md-between align-items-md-end gap-3">
+			<div>
+				<h1 class="fw-bold text-white">Modifier un compte employé</h1>
+				<p class="lead text-white mb-0">{{ employee.firstName }}
+					{{ employee.lastName }}</p>
+			</div>
+
+            <div class="d-grid d-md-block">
+				<a href="{{ path('admin_dashboard') }}" class="btn btn-outline-light">
+					<i class="bi bi-sliders"></i> 
+					Espace administrateur
+				</a>
+			</div>
+		</div>
+        
+	</section>
+
+	{% include '_partials/_offcanvas.html.twig' %}
+
+	<div class="container py-5">
+
+		{{ form_start(form) }}
+		{{ form_errors(form) }}
+
+		<h4 class="mb-3">Informations du compte</h4>
+
+		<div class="row">
+			<div class="col-md-6 mb-3">
+				{{ form_label(form.firstName, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Jean', 'data-validate': 'firstName'}}) }}
+                <div class="invalid-feedback">Le prénom de l'employé est obligatoire.</div>
+				{{ form_errors(form.firstName) }}
+			</div>
+			<div class="col-md-6 mb-3">
+				{{ form_label(form.lastName, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Dupont', 'data-validate': 'lastName'}}) }}
+                <div class="invalid-feedback">Le nom de l'employé est obligatoire.</div>
+				{{ form_errors(form.lastName) }}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8 mb-3">
+				{{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'jean.dupont@email.com', 'data-validate': 'email'}}) }}
+                <div class="invalid-feedback">L'adresse email de l'employé est obligatoire.</div>
+				{{ form_errors(form.email) }}
+			</div>
+			<div class="col-md-4 mb-3">
+				{{ form_label(form.plainPassword, null, {'label_attr': {'class': 'form-label'}}) }}
+				{{ form_widget(form.plainPassword, {'attr': {'class': 'form-control', 'data-validate': 'plainPassword'}}) }}
+				<div class="invalid-feedback">Min. 10 caractères, une majuscule, une minuscule, un chiffre, un caractère spécial.</div>
+				{{ form_errors(form.plainPassword) }}
+			</div>
+		</div>
+
+        <div class="row mt-2">
+            <div class="col-12 col-md-3">
+                <button type="submit" class="btn btn-primary w-100" data-spinner-btn>
+                    <span class="btn-label">Enregistrer les modifications</span>
+                    <span class="btn-spinner p-1 d-none justify-content-center">
+                        <span class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+		{{ form_end(form) }}
+
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('edit-employee') }}
+
+{% endblock %}

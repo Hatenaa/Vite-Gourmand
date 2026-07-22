@@ -1,0 +1,216 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ menu.title }}
+{% endblock %}
+
+{% block body %}
+	<main>
+
+		<div class="container py-5">
+			<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item">
+						<a href="{{ path('home') }}" class="text-decoration-none text-dark">Accueil</a>
+					</li>
+					<li class="breadcrumb-item">
+						<a href="{{ path('menu_index') }}" class="text-decoration-none text-dark">Menus</a>
+					</li>
+					<li class="breadcrumb-item active" aria-current="page">
+						{{ menu.title }}
+					</li>
+				</ol>
+			</nav>
+
+			<div class="row flex-lg-row-reverse align-items-center g-5">
+
+				<div class="col-lg-6 order-2 order-lg-1">
+
+					<div class="pb-3">
+						<span class="badge text-bg-dark">
+							<i class="bi bi-people-fill"></i>
+							À partir de
+							{{ menu.minPeople }}
+							personnes
+						</span>
+					</div>
+
+					<h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">{{ menu.title }}</h1>
+
+					<div class="accordion-body p-0">
+						<div class="alert alert-dark mb-4 d-flex gap-2 align-items-start">
+							<i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0 mt-1"></i>
+							<div>
+								<strong>Conditions importantes</strong>
+								<p class="mb-0 mt-1">{{ menu.conditions }}</p>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="d-grid gap-2 w-100">
+
+
+						{% if app.user %}
+						
+							<!-- Bouton de commande -->
+							<a href="{{ path('order_new', {'menuId': menu.id}) }}" class="btn btn-primary" id="btn-commander" data-spinner-btn>
+								<span class="btn-label">
+									Commander ce menu ·
+									{{ menu.basePrice }}
+									€
+								</span>
+								<span class="btn-spinner p-1 d-none justify-content-center">
+									<span class="spinner-border spinner-border-sm" role="status">
+										<span class="visually-hidden">Loading...</span>
+									</span>
+								</span>
+							</a>
+
+
+						{% else %}
+							<p class="ms-3">Pour commander, vous devez
+								<a class="text-decoration-none link--flash" href="{{ path('login', {'_target_path': app.request.uri}) }}">vous connecter</a>
+								ou
+								<a class="text-decoration-none link--flash" href="{{ path('registration', {'from_menu': menu.id}) }}">créer un compte</a>.</p>
+						{% endif %}
+
+						<div class="pt-2 accordion accordion-flush" id="accordionFlushExample">
+							<div class="accordion-item">
+								<span class="accordion-header">
+									<button class="accordion-button rounded-top collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+										Description
+									</button>
+								</span>
+								<div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+									<div class="accordion-body">
+										{{ menu.description }}
+									</div>
+								</div>
+							</div>
+							<div class="accordion-item">
+								<span class="accordion-header">
+									<button class="accordion-button rounded-bottom collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+										Informations
+									</button>
+								</span>
+								<div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+									<div class="accordion-body">
+										<table class="table table-sm">
+											<thead>
+												<tr>
+
+													<th scope="col">Thème</th>
+													<th scope="col">Régime</th>
+													<th scope="col">Stock</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+
+													<td>
+														<!-- Thème du menu -->
+														<span class="badge text-bg-dark">
+															{{ menu.theme.label }}</span>
+													</td>
+													<td>
+														<!-- Régime du menu -->
+														<span class="badge text-bg-dark">
+															{{ menu.regime.label }}</span>
+
+													</td>
+													<td>
+														<!-- Stock disponbible pour ce menu -->
+														{% if menu.stock > 1 %}
+															<span class="badge text-bg-primary">
+																<i class="bi bi-fork-knife"></i>
+																{{ menu.stock }}
+																menus disponibles.</span>
+														{% elseif menu.stock == 1 %}
+
+															<span class="badge text-bg-primary">
+																<i class="bi bi-fork-knife"></i>
+																{{ menu.stock }}
+																menu disponible.</span>
+
+														{% else %}
+
+															<span class="badge text-bg-primary">
+																<i class="bi bi-stopwatch"></i>
+																Plus de stock disponible</span>
+														{% endif %}
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+							</div>
+							<div class="accordion-item">
+								<span class="accordion-header">
+									<button class="accordion-button rounded-top collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+										Avertissement
+									</button>
+								</span>
+								<div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+									<div class="accordion-body">
+										<p class="mb-2">
+											<strong>Matériel prêté</strong>
+											— Dans le cadre de votre commande, du matériel peut vous être confié pour le bon déroulement de votre événement.
+										</p>
+										<p class="mb-2">
+											Dès que votre commande atteint le statut
+											<strong>« Terminée »</strong>, vous recevrez automatiquement un e-mail vous invitant à nous restituer ce matériel dans un délai de
+											<strong>dix jours ouvrés</strong>.
+										</p>
+										<p class="mb-0">
+											Passé ce délai, et conformément à nos
+											<a href="{{ path('legal_cgv') }}" class="link--flash text-decoration-none class">conditions générales de vente</a>,
+																																																																																																        des frais de
+											<strong>six cents euros</strong>
+											seront appliqués.
+																																																																																								        Pour organiser le retour du matériel, il vous suffit de
+											<strong>nous contacter directement</strong>
+											en réponse à l'e-mail reçu.
+										</p>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- Images du menu -->
+				<div class="col-12 col-lg-6 order-1 order-lg-2">
+					{% if menu.images | length > 0 %}
+						<div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+							<div class="carousel-inner">
+								{% for image in menu.images %}
+									<div class="carousel-item {{ loop.first ? 'active' : '' }}">
+										<img class="d-block w-100 h-100 rounded-4 object-fit-cover" src="{{ asset(image.path) }}" alt="{{ image.alt ?? menu.title }}" style="height: 350px;">
+									</div>
+								{% endfor %}
+							</div>
+							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Previous</span>
+							</button>
+							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+								<span class="visually-hidden">Next</span>
+							</button>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<!-- Liste des plats -->
+
+			{% include 'public/menu/_dish_row.html.twig' %}
+		</div>
+
+	</main>
+{% endblock %}

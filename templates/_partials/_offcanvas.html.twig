@@ -1,0 +1,14 @@
+{# Offcanvas drawer espace admin et employé  #}
+<div class="offcanvas offcanvas-end" id="dashboardNav" tabindex="-1" aria-labelledby="dashboardNavLabel">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title" id="dashboardNavLabel">Navigation</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+	</div>
+	<div class="offcanvas-body">
+		<nav class="d-flex flex-column gap-3">
+			{% for link in nav_links() %}
+				<a href="{{ path(link.route) }}" class="text-muted text-decoration-none">{{ link.label }}</a>
+			{% endfor %}
+		</nav>
+	</div>
+</div>

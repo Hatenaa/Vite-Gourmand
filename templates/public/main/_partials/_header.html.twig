@@ -1,0 +1,40 @@
+<div class="sticky-top bg-body">
+	<div class="container">
+		<header class="navbar navbar-expand-md py-3 mt-2 mb-2">
+			<a href="{{ path('home') }}" class="navbar-brand text-dark text-decoration-none">
+				<span class="fs-4 fw-bold">Vite et
+					<span class="text-primary">Gourmand</span>
+				</span>
+			</a>
+
+			<button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarMain">
+				<ul class="navbar-nav ms-auto align-items-center">
+					{% for link in nav_links('public') %}
+						{% set variant = link.variant|default('link') %}
+
+						{% if variant == 'button-primary' %}
+							<li class="nav-item ms-2">
+								<a href="{{ path(link.route) }}" class="btn btn-primary px-4">
+									{{ link.label }}
+									{% if link.icon is defined %}<i class="bi {{ link.icon }}"></i>{% endif %}
+								</a>
+							</li>
+						{% elseif variant == 'button-outline' %}
+							<li class="nav-item ms-2">
+								<a href="{{ path(link.route) }}" class="btn btn-outline-secondary px-4">{{ link.label }}</a>
+							</li>
+						{% else %}
+							<li class="nav-items">
+								<a href="{{ path(link.route) }}" class="nav-link">{{ link.label }}</a>
+							</li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
+		</header>
+	</div>
+</div>

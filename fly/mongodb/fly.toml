@@ -1,0 +1,14 @@
+app = 'vite-et-gourmand-mongodb'
+primary_region = 'cdg'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[[mounts]]
+  source = 'mongodb_data'
+  destination = '/data/db'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
