@@ -23,6 +23,21 @@ export function validateRequired(input, minLength = 0, maxLength = null) {
     return valid;
 }
 
+export function validateOptional(input, validatorFn = null) {
+
+    if (!input) return false;
+    if (input.value.trim() === '') {
+        setValid(input);
+        return true;
+    }
+    if (validatorFn) {
+        return validatorFn(input);
+    }
+    setValid(input);
+    return true;
+}
+
+
 export function validateEmail(input) {
 
     if (!input) return false;
