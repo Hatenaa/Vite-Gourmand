@@ -1,9 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { escapeHtml, escapeUrlSegment } from '../shared/security.js';
 
+document.addEventListener('DOMContentLoaded', () => {
 
     const container = document.getElementById('menuCards');
     const tabs = document.querySelectorAll('#menuTabs .nav-link');
-
 
     function renderCards(menus) {
         if (menus.length === 0) {
@@ -11,32 +11,41 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        container.innerHTML = menus.slice(0, 3).map(menu => `
-            <div class="col">
-                <div class="card h-100 overflow-hidden rounded-4 shadow-sm position-relative" style="min-height: 300px;">
-                    ${menu.image
-                        ? `<img src="/${menu.image.path}" class="card-img h-100 object-fit-cover" alt="${menu.image.alt ?? menu.title}">`
-                        : `<div class="card-img h-100 bg-secondary"></div>`
-                    }
-                    <div class="card-img-overlay d-flex align-items-end bg-dark bg-opacity-50">
-                        <h3 class="card-title text-white fw-bold">${menu.title}</h3>
-                        <a href="/menus/${menu.id}" class="stretched-link"></a>
-                    </div>
-                </div>
-            </div>      
-        `).join('');
-    }
+        container.innerHTML = menus.slice(0, 3).map(menu => {
+            const safeId = escapeUrlSegment(menu.id);
+            const safeTitle = escapeHtml(menu.title);
+            const safeAlt = escapeHtml(menu.image?.alt ?? menu.title ?? '');
+            const safePath = escapeHtml(menu.image?.path ?? '');
 
+            return `
+                <div class="col">
+                    <div class="card h-100 overflow-hidden rounded-4 shadow-sm position-relative" style="min-height: 300px;">
+                        ${menu.image
+                            ? `<img src="/${safePath}" class="card-img h-100 object-fit-cover" alt="${safeAlt}">`
+                            : `<div class="card-img h-100 bg-secondary"></div>`
+                        }
+                        <div class="card-img-overlay d-flex align-items-end bg-dark bg-opacity-50">
+                            <h3 class="card-title text-white fw-bold">${safeTitle}</h3>
+                            <a href="/menus/${safeId}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>      
+            `;
+        }).join('');
+    }
 
     function fetchMenus(themeId = '') {
         container.innerHTML = '<div class="text-center py-5 w-100"><div class="spinner-border text-primary" role="status"></div></div>';
-        const url = themeId ? `/api/menus?theme=${themeId}` : '/api/menus';
+        const url = themeId
+            ? `/api/menus?theme=${encodeURIComponent(themeId)}`
+            : '/api/menus';
         fetch(url)
             .then(r => r.json())
-            .then(renderCards);
+            .then(renderCards)
+            .catch(() => {
+                container.innerHTML = '<p class="text-center text-muted">Erreur de chargement.</p>';
+            });
     }
-
-
 
     tabs.forEach(tab => {
         tab.addEventListener('click', e => {
@@ -52,8 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     fetchMenus();
-
-
 
     const track = document.getElementById('reviewsTrack');
     const btn = document.getElementById('reviewsNavBtn');

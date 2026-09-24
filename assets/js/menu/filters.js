@@ -1,5 +1,6 @@
 import 'nouislider/dist/nouislider.css';
 import noUiSlider from 'nouislider';
+import { escapeHtml, escapeUrlSegment, toSafeNumber } from '../shared/security.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -113,13 +114,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function createMenuCard(menu) {
+
+    const safeId = escapeUrlSegment(menu.id);
+    const safeTitle = escapeHtml(menu.title);
+    const safeDescription = escapeHtml(menu.description ?? '');
+    const safeAlt = escapeHtml(menu.image?.alt ?? menu.title ?? '');
+    const safeImagePath = escapeHtml(menu.image?.path ?? '');
+    const safeMinPeople = toSafeNumber(menu.minPeople, 0);
+    const safeBasePrice = toSafeNumber(menu.basePrice, 0);
+
     const imageHtml = menu.image ? `
         <div class="position-relative">
-            <img src="${menu.image.path}" alt="${menu.image.alt ?? menu.title}"
+            <img src="${safeImagePath}" alt="${safeAlt}"
                  class="card-img-top object-fit-cover" style="height: 220px;">
             <span class="position-absolute top-0 end-0 m-2 badge bg-dark fw-normal">
                 <i class="bi bi-people-fill"></i>
-                À partir de ${menu.minPeople} personnes
+                À partir de ${safeMinPeople} personnes
             </span>
         </div>` : '';
 
@@ -129,15 +139,15 @@ function createMenuCard(menu) {
                 ${imageHtml}
                 <div class="card-body d-flex flex-column p-4">
                     <div class="d-flex align-items-baseline gap-2 mb-3">
-                        <h3 class="fw-bold mb-0 h4">${menu.title}</h3>
+                        <h3 class="fw-bold mb-0 h4">${safeTitle}</h3>
                         <span class="ms-auto d-flex align-items-baseline gap-1">
-                            <span class="text-primary fw-bold fs-2 lh-1">${menu.basePrice}€</span>
+                            <span class="text-primary fw-bold fs-2 lh-1">${safeBasePrice}€</span>
                             <small class="text-muted">/ per.</small>
                         </span>
                     </div>
-                    <p class="text-muted text-justify small flex-grow-1">${menu.description ?? ''}</p>
+                    <p class="text-muted text-justify small flex-grow-1">${safeDescription}</p>
                     <div class="d-grid gap-2 mt-3">
-                        <a href="/menus/${menu.id}" class="btn btn-primary" data-spinner-btn>
+                        <a href="/menus/${safeId}" class="btn btn-primary" data-spinner-btn>
                             <span class="btn-label">Voir en détail <i class="bi bi-fork-knife"></i></span>
                             <span class="btn-spinner p-1 d-none justify-content-center">
                                 <span class="spinner-border spinner-border-sm" role="status">
@@ -145,7 +155,7 @@ function createMenuCard(menu) {
                                 </span>
                             </span>
                         </a>
-                        <a href="/commande/nouvelle/${menu.id}" class="btn btn-outline-secondary" data-spinner-btn>
+                        <a href="/commande/nouvelle/${safeId}" class="btn btn-outline-secondary" data-spinner-btn>
                             <span class="btn-label">Commander ce menu</span>
                             <span class="btn-spinner p-1 d-none justify-content-center">
                                 <span class="spinner-border spinner-border-sm" role="status">
@@ -157,5 +167,4 @@ function createMenuCard(menu) {
                 </div>
             </article>
         </div>`;
-    
 }

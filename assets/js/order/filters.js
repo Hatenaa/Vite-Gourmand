@@ -1,3 +1,5 @@
+import { escapeHtml, escapeUrl, toSafeNumber } from '../shared/security';
+
 const statusLabels = {
     'PENDING': 'En attente',
     'ACCEPTED': 'Acceptée',
@@ -113,13 +115,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createOrderCard(order) {
-        const imageHtml = order.menuImages && order.menuImages.length > 0
-            ? `<img src="${order.menuImages[0].path}" alt="${order.menuImages[0].alt}" class="rounded flex-shrink-0 object-fit-cover" style="width: 55px; height: 55px;">`
+        
+        const rawStatus = order.status ?? '';
+
+        const safeMenuTitle = escapeHtml(order.menuTitle ?? '');
+        const safeFirstName = escapeHtml(order.firstName ?? '');
+        const safeLastName = escapeHtml(order.lastName ?? '');
+        const safeDeliveryDate = escapeHtml(order.deliveryDate ?? '');
+        const safePeopleCount = toSafeNumber(order.peopleCount, 0);
+        const safeManageUrl = escapeUrl(order.manageUrl ?? '');
+
+        const safeStatusBadge = escapeHtml(statusLabels[rawStatus] ?? rawStatus);
+        const statusColor = statusColors[rawStatus] ?? 'secondary';
+
+        const safePrice = toSafeNumber(parseFloat(order.totalPrice), 0)
+            .toFixed(2)
+            .replace('.', ',');
+
+        const hasImage = Array.isArray(order.menuImages) && order.menuImages.length > 0;
+        const safeImagePath = hasImage ? escapeUrl(order.menuImages[0].path ?? '') : '';
+        const safeImageAlt = hasImage
+            ? escapeHtml(order.menuImages[0].alt ?? order.menuTitle ?? '')
             : '';
 
-        const statusBadge = statusLabels[order.status] ?? order.status;
-        const statusColor = statusColors[order.status] ?? 'secondary';
-        const price = parseFloat(order.totalPrice).toFixed(2).replace('.', ',');
+        const imageHtml = hasImage
+            ? `<img src="${safeImagePath}" alt="${safeImageAlt}" class="rounded flex-shrink-0 object-fit-cover" style="width: 55px; height: 55px;">`
+            : '';
 
         return `
             <div class="card shadow-sm">
@@ -127,25 +148,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="d-flex align-items-center gap-3">
                         ${imageHtml}
                         <div class="flex-grow-1 min-w-0">
-                            <h6 class="mb-1 fw-bold text-truncate">${order.menuTitle}</h6>
+                            <h6 class="mb-1 fw-bold text-truncate">${safeMenuTitle}</h6>
                             <small class="text-muted">
                                 <i class="bi bi-person me-1"></i>
-                                ${order.firstName} ${order.lastName}
+                                ${safeFirstName} ${safeLastName}
                                 &nbsp;·&nbsp;
                                 <i class="bi bi-calendar me-1"></i>
-                                ${order.deliveryDate}
+                                ${safeDeliveryDate}
                                 &nbsp;·&nbsp;
                                 <i class="bi bi-people me-1"></i>
-                                ${order.peopleCount} pers.
+                                ${safePeopleCount} pers.
                             </small>
                         </div>
 
                         <div class="d-none d-lg-flex align-items-center gap-3 flex-shrink-0">
                             <span class="badge bg-${statusColor}">
-                                ${statusBadge}
+                                ${safeStatusBadge}
                             </span>
-                            <strong>${price} €</strong>
-                            <a href="${order.manageUrl}" class="btn btn-outline-primary">
+                            <strong>${safePrice} €</strong>
+                            <a href="${safeManageUrl}" class="btn btn-outline-primary">
                                 <i class="bi bi-pencil me-1"></i>Gérer
                             </a>
                         </div>
@@ -154,11 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="d-flex d-lg-none flex-column gap-2 mt-2 pt-2 border-top">
                         <div class="d-flex align-items-center justify-content-between py-3">
                             <span class="badge bg-${statusColor}">
-                                ${statusBadge}
+                                ${safeStatusBadge}
                             </span>
-                            <strong>${price} €</strong>
+                            <strong>${safePrice} €</strong>
                         </div>
-                        <a href="${order.manageUrl}" class="btn btn-outline-primary w-100">
+                        <a href="${safeManageUrl}" class="btn btn-outline-primary w-100">
                             <i class="bi bi-pencil me-1"></i>Gérer cette commande
                         </a>
                     </div>
